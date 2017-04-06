@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.css">
+    <link rel="stylesheet" href="css/estateDetails.css">
+    <link rel="stylesheet" href="css/slideshow.css">
+
+    <link href="css/jquery-ui-1.10.1.css" rel="stylesheet">
+  	<link href="css/nigran.datepicker.css" rel="stylesheet">
+
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="node_modules/semantic-ui/dist/semantic.min.js"></script>
+    <script src="node_modules/semantic-ui/dist/semantic.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/slideshow.js"></script>
+
+    <script src="js/locations.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+
+    <style>
+  		input { /*for the datepicker*/
+  			font-size: 1em;
+  		}
+  	</style>
+
+    <link rel="icon" type="image/png" href="images/place-finder.png">
+    <title>PerF</title>
+  </head>
+  <body>
+
+
+    <div id="top" class="ui massive blue menu">
+      <a href="./homePage.html">
+        <img class="ui mini image" style="position:absolute;left: 20%; top:5px;" src="images/place-finder.png">
+      </a>
+      <div id="addProperty" >
+        <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
+      </div>
+      <div id="signup">
+        <button class="ui inverted blue button" onclick="document.getElementById('id01').style.display='block'">Sign up</button>
+      </div>
+      <div id="login">
+        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'">Log-in</button>
+      </div>
+    </div>
+  <div class="ui raised container segment" style="position:absolute;width:60%;height: 220%; left:10%; right:10%; background: #f1f1f2;">
+      <div class="ui borderless blue inverted menu" style="margin-top:-1.5%;margin-left:-1.5%;margin-right:-1.5%;">
+        <div class="item">
+            <button class="ui inverted white button" type="submit" onclick="getBack()"><i class="chevron circle left icon"></i>Back to search</button>
+
+          <script>
+            function getBack(){
+              window.location = "./searchCity.html";
+            }
+          </script>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <div>
+            <div class="ui image label" style="background-color: #f1f1f2;">
+              <a href="homePage.html">
+                <h5 class="ui header">Home</h5>
+              </a>
+            </div>
+            <i class="chevron circle right icon"></i>
+            <div class="ui image label" style="background-color:  #f1f1f2;">
+              <h4 class="ui header">Add a propriety</h4>
+            </div>
+          </div>
+
+          <div>
+            <div class="ui image label" style="background-color:#f1f1f2;">
+              <h1 class="ui header">New property</h1>
+            </div>
+          </div>
+
+
+          <div>
+            <div class="ui image label" style="background-color:#f1f1f2;">
+              <div class="ui form">
+                <div class="inline fields">
+                  <div class="sixteen wide field">
+                    <h3><label>Name</label></h3>
+                    <input type="text" placeholder="Add propriety name">
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="ui image label" style="background-color:#f1f1f2;">
+            <div class="ui form">
+              <div class="inline fields">
+                <div class="sixteen wide field">
+                  <h3><label>Category</label></h3>
+                  <select>
+                    <option value="">Choose</option>
+                    <option value="0">House</option>
+                    <option value="1">Appartement</option>
+                    <option value="2">Comercial space</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="ui image label" style="background-color:#f1f1f2;">
+            <div class="ui form">
+              <div class="inline fields">
+                <div class="sixteen wide field">
+                  <h3><label>Rooms</label></h3>
+                  <select>
+                    <option value="">Choose</option>
+                    <option value="0">1 room</option>
+                    <option value="1">2 rooms</option>
+                    <option value="2">3 rooms</option>
+                    <option value="3">4 or more</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+            <div class="ui image label" style="background-color:#f1f1f2;">
+              <div class="ui form">
+                <h3><label>Transaction type</label></h3>
+                <div class="field">
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="rent">
+                    <label>Rent</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui checkbox">
+                    <input type="checkbox" name="sale">
+                    <label>Sale</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="ui image label" style="background-color:#f1f1f2;">
+              <div class="ui form">
+                <div class="inline fields">
+                  <div class="sixteen wide field">
+                    <h3><label>Price</label></h3>
+                    <input type="text" placeholder="Add price">
+                    <div class="ui image label" style="background-color:#f1f1f2;">
+                      <h4 class="ui header"><i class="euro icon"></i></h4>
+                    </div>
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="negociable">
+                      <label>Negociable</label>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="ui image label" style="background-color:#f1f1f2;">
+            <div class="ui form">
+              <div class="inline fields">
+                <div class="sixteen wide field">
+                  <h3><label>Usable surface</label></h3>
+                  <input type="text" placeholder="Add surface in square meters">
+                  <div class="ui image label" style="background-color:#f1f1f2;">
+                  <h3>m<sup>2</sup></h3>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="ui image label" style="background-color:#f1f1f2;">
+          <div class="ui form">
+            <div class="inline fields">
+              <div class="sixteen wide field">
+                <h3><label>Construction year</label></h3>
+                <select>
+                  <option value="">Choose</option>
+                  <option value="0">1800 - 1977</option>
+                  <option value="1">1977 - 1990</option>
+                  <option value="2">1990 - 2000</option>
+                  <option value="3">2000 - 2017</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="ui image label" style="background-color:#f1f1f2;">
+          <div class="ui form">
+            <div class="inline fields">
+              <div class="sixteen wide field">
+                <h3><label>Furniture/Utilities</label></h3>
+                <select>
+                  <option value="">Choose</option>
+                  <option value="0">Complete</option>
+                  <option value="1">Partial</option>
+                  <option value="2">None</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="ui image label" style="background-color:#f1f1f2;">
+          <div class="ui form">
+            <div class="field">
+              <h3><label>Description</label></h3>
+            </div>
+          </div>
+        </div>
+        <div class="ui form">
+          <textarea>Add a drescription here...</textarea>
+        </div>
+      </div>
+
+      <div>
+        <div class="ui image label" style="background-color:#f1f1f2;">
+          <div class="ui form">
+            <div class="inline fields">
+              <div class="sixteen wide field">
+                <h3><label>Contact name</label></h3>
+                <input type="text" placeholder="Add name">
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="ui image label" style="background-color:#f1f1f2;">
+        <div class="ui form">
+          <div class="inline fields">
+            <div class="sixteen wide field">
+              <h3><label>Email</label></h3>
+              <input type="text" placeholder="Add email">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="ui image label" style="background-color:#f1f1f2;">
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="sixteen wide field">
+            <h3><label>Telefon number</label></h3>
+            <input type="text" placeholder="Add telefon number">
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="ui image label" style="background-color:#f1f1f2;">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="sixteen wide field">
+          <h3><label>City</label></h3>
+          <input type="text" placeholder="Add city">
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<div>
+  <div class="ui image label" style="background-color:#f1f1f2;">
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="sixteen wide field">
+          <h3><label>Adress</label></h3>
+          <input type="text" placeholder="Add adress">
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+
+</div>
+      </div>
+      <script>
+      $('a').click(function(){
+      $('html, body').animate({
+          scrollTop: $( $(this).attr('href') ).offset().top
+      }, 500);
+      return false;
+      });
+      </script>
+
+     <!-- <script async defer
+       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzIgiHa5eWqPLvnoX7pS75GHTZffQo61k&callback=initMap2">
+       </script>-->
+  </div>
+    </body>
+  </html>

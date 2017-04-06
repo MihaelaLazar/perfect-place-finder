@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.css">
+    <link rel="stylesheet" href="css/searchCity.css">
+    <link rel="stylesheet" href="css/indexCustom.css">
+    <!--<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
+
+    <!-- Ignite UI Required Combined CSS Files -->
+    <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
+    <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/structure/infragistics.css" rel="stylesheet" />
+
+    <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.8.3.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+
+    <script src="node_modules/semantic-ui/dist/semantic.min.js"></script>
+    <script src="node_modules/semantic-ui/dist/semantic.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/estates.js"></script>
+    <script src="js/cityLocations.js"></script>
+    <script src="js/heatmapLocations.js"></script>
+
+
+
+    <script src="js/nouislider.min.js"></script>
+    <link href="css/nouislider.min.css" rel="stylesheet">
+    <script src="jsons/CustomLayer.geo.json"></script>
+      <script src="jsons/Iasigeo.json"></script>
+      <script src="jsons/NewYorkgeo.json"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+
+
+    <link rel="icon" type="image/png" href="images/place-finder.png">
+    <title>PerF</title>
+</head>
+<body style="background-color: lightblue;">
+
+    <div class="ui massive blue menu">
+      <a  href="./homePage.html">
+          <img class="ui mini image" style="margin-left: 550%; top:5px;" src="images/place-finder.png">
+      </a>
+      <a>
+        <img class="ui medium image" style="margin-left: 70%;" src="images/logo.png">
+      </a>
+      <div id="addProperty">
+        <form method="GET" action="/addProperty">
+        <button class="ui inverted blue button" >Add property</button>
+        </form>
+      </div>
+      <div id="signup">
+        <button class="ui inverted blue button" onclick="document.getElementById('signupButton').style.display='block'">Sign up</button>
+      </div>
+      <div id="login">
+        <button class="ui inverted blue button" onclick="document.getElementById('loginButton').style.display='block'">Log-in</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+<div style=" height: 100%;margin-left:10%; margin-top:0%; width:80%;height:93%; background:#f1f1f2;">
+    <div id="menuBar" class="ui massive borderless blue inverted menu" style="position:absolute;">
+        <form style="height:25%;width:120px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+          <select  name="city" id="city" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+            <option value="0" disabled selected>City</option>
+            <option value="London">London</option>
+            <option value="Bucuresti">Bucuresti</option>
+            <option value="New York">New York</option>
+            <option value="Iasi">Iasi</option>
+          </select>
+         </form>
+
+       <form style="height:25%;width:100px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+         <select  name="transType" id="transType" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+           <option value="0" disabled selected>Transaction type</option>
+           <option value="rent">Rent</option>
+           <option value="sale">Sale</option>
+         </select>
+        </form>
+
+         <form style="height:25%;width:105px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+        		<select name="square" id="square" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+        			<option value="0" disabled selected>Square ft.</option>
+        		  <option value="29"> < 30 mp</option>
+        		  <option value="30"> 30 mp - 50 mp</option>
+              <option value="50"> 50 mp - 70 mp</option>
+        		  <option value="70"> 70 mp - 90 mp</option>
+              <option value="90"> 90 mp - 120 mp</option>
+        		  <option value="120"> 120 mp - 150 mp</option>
+              <option value="150"> 150 mp - 200 mp</option>
+              <option value="200"> > 200 mp</option>
+        		</select>
+          </form>
+
+  		 <form style="height:25%;width:105px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+  			<select name="type" id="type" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+  			  <option value="0" disabled selected>Type</option>
+  			  <option value="house">Houses</option>
+  			  <option value="appartment">Appartaments</option>
+          <option value="space">Commercial spaces</option>
+  			</select>
+      </form>
+
+
+         <form style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+    			<select name="price" id="minPrice" class="ui icon dropdown button" required onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+            <option value="0" disabled selected>Min price</option>
+    			  <option value="100">€100</option>
+            <option value="200">€200</option>
+            <option value="300">€300</option>
+            <option value="400">€400</option>
+            <option value="500">€500</option>
+            <option value="600">€600</option>
+            <option value="700">€700</option>
+            <option value="800">€800</option>
+            <option value="900">€900</option>
+            <option value="1000">€1000</option>
+            <option value="1100">€1100</option>
+            <option value="1200">€1200</option>
+            <option value="1300">€1300</option>
+            <option value="1400">€1400</option>
+            <option value="1500">€1500</option>
+            <option value="1700">€1700</option>
+            <option value="1900">€1900</option>
+            <option value="2000">€2000</option>
+            <option value="2500">€2500</option>
+            <option value="3000">€3000</option>
+    			</select>
+        </form>
+
+        <form style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+         <select name="price" id="maxPrice" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+           <option value="0" disabled selected>Max price</option>
+           <option value="300">€300</option>
+           <option value="400">€400</option>
+           <option value="500">€500</option>
+           <option value="600">€600</option>
+           <option value="700">€700</option>
+           <option value="800">€800</option>
+           <option value="900">€900</option>
+           <option value="1000">€1000</option>
+           <option value="1100">€1100</option>
+           <option value="1200">€1200</option>
+           <option value="1300">€1300</option>
+           <option value="1400">€1400</option>
+           <option value="1500">€1500</option>
+           <option value="1700">€1700</option>
+           <option value="1900">€1900</option>
+           <option value="2000">€2000</option>
+           <option value="2500">€2500</option>
+           <option value="3000">€3000</option>
+           <option value="3100">€3000 +</option>
+         </select>
+       </form>
+
+         <form style="height:25%;width:175px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+    			<select name="year" id="year" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+            <option value="0" disabled selected>Year of construction</option>
+    			  <option value="1800">1800 - 1977</option>
+            <option value="1977">1977 - 1990</option>
+            <option value="1990">1990 - 2000 </option>
+            <option value="2000">2000 - 2017</option>
+    			</select>
+        </form>
+
+    </div>
+
+    <div class="ui two column grid" style="position:absolute;margin-top:3.5%;margin-right:0%;width:100%;">
+          <div class="column" style="width:20%;margin-left:2%;">
+            <div class="item">
+              <h3 class="ui left aligned header">
+                Number Of properties :
+              </h3>
+            </div>
+          </div>
+          <div class="column" style="width:100%;margin-right:10%;margin-top:0%;">
+              <div class="item">
+                <div class="ui raised padded segment" style="margin-left:31%;margin-right:10%; margin-top:-4%; height:60px;">
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui checkbox">
+                      <input id='trafficLayer' name="trafficLayer" type="checkbox" onChange={changeOverlay('trafficLayer')} unchecked={}>
+                      <label>Traffic layer</label>
+                    </div>
+                  </div>
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui  checkbox">
+                      <input id='noiseLayer' name="noiseLayer" type="checkbox" onChange={changeOverlay('noiseLayer')} unchecked={}>
+                      <label>Noise</label>
+                    </div>
+                  </div>
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui  checkbox">
+                      <input id='pollutionLayer' name="pollutionLayer" type="checkbox" onChange={changeOverlay('pollutionLayer')} unchecked={}>
+                      <label>Pollution</label>
+                    </div>
+                  </div>
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui  checkbox">
+                      <input id='congestionLayer' name="congestionLayer" type="checkbox" onChange={changeOverlay('congestionLayer')} unchecked={}>
+                      <label>Level of congestion</label>
+                    </div>
+                  </div>
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui  checkbox">
+                      <input id="schools" name="schools" type="checkbox" onChange={changeOverlay('schools')} unchecked={}>
+                      <label>Schools nearby</label>
+                    </div>
+                  </div>
+                  <div class="ui image label" style="background-color: white;">
+                    <div class="ui  checkbox">
+                      <input id='transitLayer' name="transitLayer" type="checkbox" onChange={changeOverlay('transitLayer')} unchecked={}>
+                      <label>Transit</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+    </div>
+
+  <div class="ui two column grid">
+    <div class="column" id="scrolling" onscroll="loadmore()" style="position:absolute;width:27%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
+      <div id="estates" class="ui left aligned grid" style="width:544px;float: left">
+      </div>
+    </div>
+
+    <div class="column " id="map" style="position:absolute;width:52%;margin-top: 7%;margin-left: 28.5%; height:75%"></div>
+  </div>
+</div>
+
+    <div id="loginButton" class="modal">
+      <span onclick="document.getElementById('loginButton').style.display='none'" class="close" title="Close Modal">×</span>
+      <div  class="modal-content animate" action="./searchCity.html" style="width:30%;">
+        <div class="container">
+
+          <form class="ui form">
+            <h4 class="ui dividing header">Login into your account</h4>
+            <div class="field">
+              <label>Email</label>
+              <input class="ui input" type="text" name="email" placeholder="Email"  required>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input class="ui input" id="password" type="text" name="last-name" placeholder="Password" type="text" required>
+            </div>
+              <form method="POST" action="./searchCity.html">
+                  <button id="loginButtonSubmit" class="ui button" type="submit">Log In</button>
+              </form>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="signupButton" class="modal">
+      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+        <div class="container">
+            <h4 class="ui dividing header">Sign up</h4>
+            <div class="field" style="width:100%;">
+                <div id="errorMessageContainer" style="display:none;">
+                    <ul>
+                        <li id="errorMessage"></li>
+                    </ul>
+                </div>
+              <label>First Name</label>
+                <div id="first-name-input" class="ui fluid input">
+                     <input  id="first-name" name="first-name" placeholder="First Name" type="text">
+                </div>
+            </div>
+
+
+            <br>
+            <div class="field" style="width:100%;">
+              <label>Last Name</label>
+                <div id="last-name-input" class="ui fluid input">
+                    <input id="last-name" name="last-name" placeholder="Last Name" type="text">
+                </div>
+            </div>
+            <br>
+            <div class="field" style="width:100%;">
+              <label>Email</label>
+                <div id="email-input" class="ui fluid input">
+                    <input class="ui input" id="email" name="email" placeholder="Email" type="text">
+                </div>
+            </div>
+            <br>
+            <div class="field" style="width:100%;">
+              <label>Password</label>
+                <div id="password-input" class="ui fluid input">
+                    <input class="ui input" id="passwordSignUp" name="password" placeholder="Password" type="text">
+                </div>
+            </div>
+            <br>
+              <button class="ui fluid blue button" type="submit" value="Submit" onclick="signUpPOST()">Sign Up</button>
+              </div>
+    </div>
+    </div>
+
+    <div id="addPropModal" class="modal">
+      <span onclick="document.getElementById('addPropModal').style.display='none'" class="close" title="Close Modal">×</span>
+      <form class="modal-content animate" action="./searchCity.html" style="width:30%;">
+        <div class="container">
+          <form class="ui form">
+            <div class="field">
+              <label>Name</label>
+              <input name="first-name" placeholder="First Name" type="text" >
+            </div>
+            <div class="field">
+              <label>Address</label>
+              <input name="address" placeholder="Address" type="text">
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <input name="description" placeholder="Description" type="text">
+            </div>
+            <div class="field">
+              <label>Price</label>
+              <input name="price" placeholder="Price" type="text">
+            </div>
+            <div class="field">
+              <label>Square ft.</label>
+              <input name="sqft" placeholder="Square ft." type="text">
+            </div><br>
+            <div class="field">
+              <label>Rooms</label>
+              <input type="number" name="Rooms" min="1" max="5">
+            </div><br>
+            <form>
+              <label>Amenities:</label><br><br>
+              <input type="checkbox" name="amenities1" value="Bike"> Water/Sewage <br>
+              <input type="checkbox" name="amenities2" value="Bike"> Parking <br>
+              <input type="checkbox" name="amenities3" value="Bike"> Stove <br>
+              <input type="checkbox" name="amenities4" value="Bike"> Washer/Dryer<br>
+              <input type="checkbox" name="amenities5" value="Bike"> Cable TV <br>
+              <input type="checkbox" name="amenities6" value="Bike"> Refrigerator <br>
+            </form>
+
+
+            <form method="get" action="./searchCity.html">
+              <button class="ui button" type="submit">Submit</button>
+            </form>
+
+          </form>
+        </div>
+      </form>
+    </div>
+
+
+   <div class="example">
+     <div id="html5" class="noUi-target noUi-ltr noUi-horizontal" style="width:25%;">
+       </div>
+     </div>
+     <select id="input-select">
+       <option value="-20">-20</option>
+       <option value="-19">-19</option>
+       <option value="-18">-18</option>
+       <option value="-17">-17</option>
+       <option value="-16">-16</option>
+       <option value="-15">-15</option>
+       <option value="-14">-14</option>
+       <option value="-13">-13</option>
+       <option value="-12">-12</option>
+       <option value="-11">-11</option>
+       <option value="-10">-10</option>
+       <option value="-9">-9</option>
+       <option value="-8">-8</option>
+       <option value="-7">-7</option>
+       <option value="-6">-6</option>
+       <option value="-5">-5</option>
+       <option value="-4">-4</option>
+       <option value="-3">-3</option>
+       <option value="-2">-2</option>
+       <option value="-1">-1</option>
+       <option value="0">0</option>
+       <option value="1">1</option>
+       <option value="5">5</option>
+       <option value="6">6</option>
+       <option value="37">37</option>
+       <option value="38">38</option>
+       <option value="39">39</option>
+       <option value="40">40</option>
+     </select>
+     <input min="-20" max="40" step="1" id="input-number" type="number">
+     </div>
+
+
+    <script>
+      function goToAddProperty(){
+         window.location = "/addPropertyRaluca.html";
+      }
+         var myCurrentCityInPage = getQueryVariable('city');
+         function insertParam(key, value) {
+           var myURL = document.location.toString();
+           var newURL;
+           var foundQueryString = false;
+           var index;
+           for (index = 0; index < myURL.length; index ++){
+             if (myURL[index] === "?"){
+               foundQueryString = true;
+             }
+           }
+           if (foundQueryString === false) {
+             newURL = myURL + "?"+ key + "="+value;
+           } else {
+             newURL = myURL + "&"+ key + "="+value;
+           }
+           window.history.pushState({}, null, newURL);
+          }
+
+          function removeURLParameter(url, parameter) {
+                //prefer to use l.search if you have a location/link object
+                var urlparts= url.split('?');
+                if (urlparts.length >= 2) {
+
+                    var prefix= encodeURIComponent(parameter)+'=';
+                    var pars= urlparts[1].split(/[&;]/g);
+                    if (pars.length === 1 ){
+                      var copyOfPars = "=" + pars;
+                      var firstPartOrPars = copyOfPars.split(/[=;]/g);
+                      if (parameter === firstPartOrPars[1]) {
+                        var uri = window.location.toString();
+                        var clean_uri = uri.substring(0, uri.indexOf("?"));
+                        window.history.replaceState({}, document.title, clean_uri);
+                        return url.split("?")[0];
+                      }
+                    } else {
+                      //reverse iteration as may be destructive
+                      for (var i = pars.length; i-- > 0;) {
+                          //idiom for string.startsWith
+                          if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                              pars.splice(i, 1);
+                          }
+                      }
+
+                      url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+                      return url;
+                    }
+
+                } else {
+                    return url;
+                }
+          }
+         function getQueryVariable(variable) {
+             var query = window.location.search.substring(1);
+             var vars = query.split("&");
+             for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable) {
+                   return pair[1].replace('%20',' ');
+                }
+             }
+             return null;
+          }
+         var selectCity ;
+
+          selectCity = document.getElementById('city');
+
+        var city_id;
+
+        if(selectCity.value === '0') {
+            selectCity.value = getQueryVariable('city');
+             city_id =  getQueryVariable('city');
+        }
+        console.log("SELECTCITY: " + selectCity.value);
+
+        if(city_id != "") {
+          console.log("my city value is: " + city_id);
+        }
+         function getEstatesByFilter() {
+           var myNode = document.getElementById("estates");
+           while (myNode.firstChild) {
+             myNode.removeChild(myNode.firstChild);
+           }
+
+            var city_id = selectCity.options[selectCity.selectedIndex].value;
+            cityCoordinates = getCityCoordinates(city_id);
+            if (globalMap.getCenter() != cityCoordinates) {
+              console.log("CHANGING CITY TO: " + city_id);
+              globalMap.setCenter(cityCoordinates);
+
+            }
+            var selectType = document.getElementById('type');
+            var type_id = selectType.options[selectType.selectedIndex].value;
+            var selectSquare = document.getElementById('square');
+            var square_id = selectSquare.options[selectSquare.selectedIndex].value;
+            var selectMinPrice = document.getElementById('minPrice');
+            var min_price_id = selectMinPrice.options[selectMinPrice.selectedIndex].value;
+            var selectMaxPrice = document.getElementById('maxPrice');
+            var max_price_id = selectMaxPrice.options[selectMaxPrice.selectedIndex].value;
+            var selectYear = document.getElementById('year');
+            var year_id = selectYear.options[selectYear.selectedIndex].value;
+            var selectTransType = document.getElementById('transType');
+            var trans_type_id = selectTransType.options[selectTransType.selectedIndex].value;
+            if (getQueryVariable('city') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'city'));
+            }
+            if (getQueryVariable('type') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'type'));
+            }
+            if (getQueryVariable('square') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'square'));
+            }
+            if (getQueryVariable('minPrice') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'minPrice'));
+            }
+            if (getQueryVariable('maxPrice') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPrice'));
+            }
+            if (getQueryVariable('year') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'year'));
+            }
+            if (getQueryVariable('transType') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'transType'));
+            }
+            if (city_id != 0) {
+              insertParam('city', city_id);
+            }
+            if (type_id != 0) {
+              insertParam('type', type_id);
+            }
+            if (square_id != 0){
+              insertParam('square', square_id);
+            }
+            if(min_price_id != 0 ){
+                insertParam('minPrice',min_price_id);
+            }
+            if (max_price_id != 0){
+                insertParam('maxPrice', max_price_id);
+            }
+            if (year_id != 0){
+                insertParam('year', year_id);
+            }
+            if (trans_type_id != 0){
+                insertParam('transType',trans_type_id);
+            }
+            var i;
+            var firstChildPut = false;
+            for (i = 0; i < estates.length; i ++) {
+                  var currentDiv;
+                  var respectsFilters = true;
+                  if (year_id != 0 && estates[i].year < year_id){
+                    respectsFilters = false;
+                  }
+                  if (trans_type_id != 0 && estates[i].typeOfTransaction != trans_type_id){
+                    respectsFilters = false;
+                  }
+                  if (type_id != 0 && estates[i].typeOfEstate != type_id){
+                    respectsFilters = false;
+                  }
+                  if (min_price_id != 0 && estates[i].price < min_price_id){
+                    respectsFilters = false;
+                  }
+                  if (max_price_id != 0 && estates[i].price > max_price_id && max_price_id < 3100 ){
+                    respectsFilters = false;
+                  }
+                  if (square_id != 0 && estates[i].surface < square_id && square_id >= 30 ){
+                    respectsFilters = false;
+                  }
+                  if (estates[i].city === city_id && respectsFilters === true) {
+                    if (firstChildPut === false) {
+                      currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+                      firstChildPut = true;
+                    } else {
+                      currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate= " + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+                    }
+
+                    $("#estates").append(currentDiv);
+                  }
+            }
+        }
+
+
+         var scrollLoad = true;
+         var myScroll = document.getElementById('scrolling');
+         window.onload = function() {
+                    console.log("LOAD");
+                    if (getQueryVariable('type') != null) {
+                      document.getElementById('type').value = getQueryVariable('type');
+                    }
+                    if (getQueryVariable('city') != null) {
+                      document.getElementById('city').value = getQueryVariable('city');
+
+                    }else {
+                      document.getElementById('city').value = 'Iasi';
+                    }
+                    if (getQueryVariable('maxPrice') != null) {
+                      document.getElementById('maxPrice').value = getQueryVariable('maxPrice');
+                    }
+                    if (getQueryVariable('minPrice') != null) {
+                      document.getElementById('minPrice').value = getQueryVariable('minPrice');
+                    }
+                    if (getQueryVariable('transType') != null) {
+                      document.getElementById('transType').value = getQueryVariable('transType');
+                    }
+                    if (getQueryVariable('year') != null) {
+                      document.getElementById('year').value = getQueryVariable('year');
+                    }
+                    if (getQueryVariable('square') != null) {
+                      document.getElementById('square').value = getQueryVariable('square');
+                    }
+
+                    getEstatesByFilter();
+                    initMap();
+                    var i;
+                    var firstChildPut = false;
+                    for (i = 0; i < estates.length; i ++) {
+                      var currentDiv;
+                      if (estates[i].city === city_id) {
+                        if (firstChildPut === false ) {
+                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+                          firstChildPut = true;
+                        } else {
+                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate="+ estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+                        }
+
+                        $("#estates").append(currentDiv);
+                    }
+                  }
+
+                  };
+                  $("#scrolling").scroll(function () {
+                        if (isScrollBottom()) {
+                            console.log("Hi I reached bottom. Do Something!");
+                            var div = $("<div class='only row'><div class='column'><div class='ui card' style='width:91%;margin-top:-7%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='images/house-example.png' style='width:120px;'><div class='header'> Morningside Park </div><div class='meta'>New York</div><div class='description'> Villa with 3 rooms, 2 floors situated in a residential area. </div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html'><button class='ui blue button' type='submit'>See details</button></form><form method='get' action='estateDetails.html' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+                          //  $("#estates").append(div);
+                        }
+                    });
+
+                    function isScrollBottom() {
+
+                        var elementHeight = $("#scrolling")[0].scrollHeight;
+                        var scrollPosition = $("#scrolling").innerHeight() + $("#scrolling").scrollTop() + 0.5;
+                      //  console.log("elementHeight: " + elementHeight + ", scrollPosition: " + scrollPosition);
+                        return (elementHeight <= scrollPosition);
+                    };
+
+                function loadmore() {
+                }
+              var globalMap  = null;
+              var markerGlobal;
+              var trafficLayer;
+              var transitLayer;
+              var pollutionLayerIasi;
+              var pollutionLayerBucuresti;
+              var pollutionLayerNewYork;
+              var geocoder;
+              var smogMarkersArray = [];
+              var noiseMarkersArray = [];
+              var schoolsMarkersArray = [];
+              var cityCoordinates;
+              var heatmap;
+
+              function initMap() {
+                    console.log("initMap");
+                    cityCoordinates = getCityCoordinates(getQueryVariable('city'));
+                    console.log("cityyyyy: " + getQueryVariable('city'));
+                    if (getQueryVariable('city') === null) {
+                      cityCoordinates = getCityCoordinates('Iasi');
+                    }
+                    globalMap  = null;
+                    geocoder = new google.maps.Geocoder();
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                      zoom: 14,
+                      center: cityCoordinates
+                    });
+                    globalMap = map;
+                    var image = 'images/pollution-marker.png';
+                    var icon = {
+                      url: "images/pollution-marker.png",
+                      scaledSize: new google.maps.Size(40, 40),
+                      origin: new google.maps.Point(0,0),
+                      anchor: new google.maps.Point(0, 0)
+                    };
+                    var marker = new google.maps.Marker({
+                      position: cityCoordinates,
+                      map: globalMap,
+                      title: "Click here to zoom",
+                      icon: icon
+                    });
+                    markerGlobal = marker;
+
+                    var infoWindow = new google.maps.InfoWindow({
+                      content: '<select><option value="volvo">Volvo</option><option value="saab">Saab</option><option value="audi">Audi</option></select>'
+                    })
+                    var infoWindowOnMouseover = new google.maps.InfoWindow({
+                      content: '<div popup  data-tooltip="Add users to your feed" data-position="top center"> My fav house </div>'
+                    })
+
+                    marker.addListener('click',function(){
+                      console.log('click'),
+                      globalMap.setCenter(marker.getPosition()),
+                      document.getElementById('myButton').style.display = 'initial';
+                   })
+                    marker.addListener('mouseover',function(){
+                      globalMap.setCenter(marker.getPosition()),
+                      infoWindowOnMouseover.open(map,marker)
+
+                    })
+                    google.maps.event.addListener(marker, 'mouseout', function () {
+                        infoWindowOnMouseover.close();
+                    });
+                   trafficLayer = new google.maps.TrafficLayer();
+                   transitLayer = new google.maps.TransitLayer();
+                   pollutionLayerIasi = new google.maps.Data();
+                   pollutionLayerBucuresti = new google.maps.Data();
+                   pollutionLayerNewYork = new google.maps.Data();
+              }
+
+              function getCityCoordinates(city_id) {
+                var i = 0;
+                var currentCityCoordinates = {};
+                console.log("hei, city_id: " + city_id);
+                for (i = 0; i < citiesCenterCoordinates.length; i++){
+                  if (city_id == citiesCenterCoordinates[i].name){
+                    currentCityCoordinates.lat = citiesCenterCoordinates[i].lat;
+                    currentCityCoordinates.lng = citiesCenterCoordinates[i].lng;
+                  }
+                }
+                return currentCityCoordinates;
+              }
+
+              function changeOverlay(id){
+                if(document.getElementById(id).checked) {
+                  addOverlay(id);
+                } else {
+                  removeOverlay(id);
+                }
+              }
+              function removeOverlay(id) {
+                if(id == 'trafficLayer'){
+                  trafficLayer.setMap(null);
+                } else {
+                  if (id == 'transitLayer'){
+                    transitLayer.setMap(null);
+                  } else {
+                    if (id == 'smogLayer'){
+                      var marker, i;
+                      for (i in smogMarkersArray) {
+                        smogMarkersArray[i]['marker'].setMap(null);
+                        smogMarkersArray[i]['circle'].setMap(null);
+                        delete smogMarkersArray[i];
+                        //smogMarkersArray.splice(i, 1);
+                      }
+                    } else {
+                      if (id == 'noiseLayer'){
+                        var marker, i;
+                        for (i in noiseMarkersArray) {
+                          noiseMarkersArray[i]['marker'].setMap(null);
+                          noiseMarkersArray[i]['circle'].setMap(null);
+                          delete noiseMarkersArray[i];
+                        }
+                      } else {
+                        if (id=="schools"){
+                          for (i in schoolsMarkersArray) {
+                            schoolsMarkersArray[i].setMap(null);
+                            delete schoolsMarkersArray[i];
+                          }
+                        } else {
+                          if ( id === "pollutionLayer"){
+                              pollutionLayerIasi.setMap(null);
+                              pollutionLayerBucuresti.setMap(null);
+                              pollutionLayerNewYork.setMap(null);
+                          } else {
+                            if (id === "congestionLayer"){
+                              heatmap.setMap(null);
+
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+             }
+             function addOverlay(id) {
+               if(id == 'trafficLayer'){
+                 trafficLayer.setMap(globalMap);
+               }else {
+                 if (id == 'transitLayer'){
+                   transitLayer.setMap(globalMap);
+                 } else {
+                   if (id == 'smogLayer'){
+                     var icon = {
+                       url: "images/pollution-marker.png",
+                       scaledSize: new google.maps.Size(40, 40),
+                       origin: new google.maps.Point(0,0),
+                       anchor: new google.maps.Point(0, 0)
+                     };
+                     var marker, i;
+                     for (i = 0; i < smogLocations.length; i++) {
+                       marker = new google.maps.Marker({
+                         position: new google.maps.LatLng(smogLocations[i][0], smogLocations[i][1]),
+                         map: globalMap,
+                         icon: icon
+                       });
+                       var cityCircle = new google.maps.Circle({
+                         strokeColor: '#808080',
+                         strokeOpacity: 0.8,
+                         strokeWeight: 2,
+                         fillColor: '#808080',
+                         fillOpacity: 0.35,
+                         map: globalMap,
+                         center: marker.position,
+                         radius: 100
+                         });
+                         smogMarkersArray[i] = {marker: marker, circle: cityCircle};
+                       }
+                       console.log(smogMarkersArray);
+                   } else {
+                     if (id == 'noiseLayer'){
+                       var icon = {
+                         url: "images/pollution-marker.png",
+                         scaledSize: new google.maps.Size(40, 40),
+                         origin: new google.maps.Point(0,0),
+                         anchor: new google.maps.Point(0, 0)
+                       };
+                       var marker, i;
+                       for (i = 0; i < noiseLocations.length; i++) {
+                         marker = new google.maps.Marker({
+                           position: new google.maps.LatLng(noiseLocations[i][0], noiseLocations[i][1]),
+                          // map: globalMap,
+                           icon: icon
+                         });
+                         var cityCircle = new google.maps.Circle({
+                           strokeColor: '#808080',
+                           strokeOpacity: 0.8,
+                           strokeWeight: 2,
+                           fillColor: '#808080',
+                           fillOpacity: 0.35,
+                           map: globalMap,
+                           center: marker.position,
+                           radius: 100
+                           });
+                           noiseMarkersArray[i] = {marker: marker, circle: cityCircle};
+                         }
+                         console.log(noiseMarkersArray);
+                     } else {
+                       if (id == "schools"){
+                         var service = new google.maps.places.PlacesService(globalMap);
+                         service.nearbySearch({
+                           location: globalMap.getCenter(),
+                           radius: 1000,
+                           type: ['school']
+                         }, callback);
+                       } else {
+                         if (id === "pollutionLayer") {
+                             pollutionLayerIasi.addGeoJson(iasiPollution);
+                             pollutionLayerIasi.setStyle(function(feature) {
+                                return ({
+                                  fillColor: feature.getProperty('color'),
+                                  strokeWeight: 1,
+                                  strokeColor: feature.getProperty('strokeColor'),
+                                  fillOpacity: feature.getProperty('fillOpacity')
+                                });
+                              });
+                              pollutionLayerIasi.setMap(globalMap);
+                              pollutionLayerBucuresti.addGeoJson(bucurestiPollution);
+                              pollutionLayerBucuresti.setStyle(function(feature) {
+                                  return ({
+                                    fillColor: feature.getProperty('color'),
+                                    strokeWeight: 1,
+                                    strokeColor: feature.getProperty('strokeColor'),
+                                    fillOpacity: feature.getProperty('fillOpacity')
+                                  });
+                              });
+                              pollutionLayerBucuresti.setMap(globalMap);
+                              pollutionLayerNewYork.addGeoJson(newyorkPollution);
+                              pollutionLayerNewYork.setStyle(function(feature) {
+                                  return ({
+                                    fillColor: feature.getProperty('color'),
+                                    strokeWeight: 1,
+                                    strokeColor: feature.getProperty('strokeColor'),
+                                    fillOpacity: feature.getProperty('fillOpacity')
+                                  });
+                              });
+                              pollutionLayerNewYork.setMap(globalMap);
+                                   } else {
+                             if (id === "congestionLayer"){
+                               heatmap = new google.maps.visualization.HeatmapLayer({
+                                   data: getPoints(),
+                                   map: globalMap
+                               });
+                              changeGradient();
+                             }
+                           }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+               function callback(results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                      for (var i = 0; i < results.length; i++) {
+                          createMarker(results[i]);
+                      }
+                    }
+                }
+                function createMarker(place) {
+                    var placeLoc = place.geometry.location;
+                    var marker = new google.maps.Marker({
+                      map: globalMap,
+                      position: place.geometry.location
+                    });
+                    schoolsMarkersArray.push(marker);
+                }
+                function codeAddress() {
+                  var address = document.getElementById('address').value;
+                  geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == 'OK') {
+                      globalMap.setCenter(results[0].geometry.location);
+                      var marker = new google.maps.Marker({
+                        map: globalMap,
+                        position: results[0].geometry.location
+                      });
+                    } else {
+                      alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                  });
+                }
+
+                function addLayerOnPadding() {
+                  var selectLayer = document.getElementById('layer');
+                  var layer_id = selectLayer.options[selectLayer.selectedIndex].value;
+                }
+
+                function redirectToEstate(estateId){
+                  window.location = "./estateDetails.html?estate=" + estateId;
+                }
+
+    $( "marker" )
+            .mouseup(function() {
+              $(this).hide();
+            });
+
+
+            var modalLoginSearchCity = document.getElementById('loginButton');
+                  // When the user clicks anywhere outside of the modal, close it
+                  var modalSignupSearchCity = document.getElementById('signupButton');
+                  window.onclick = function(event) {
+                      if(event.target == modalSignupSearchCity ){
+                          modalSignupSearchCity.style.display = "none";
+                          $('#first-name-input').removeClass('error');
+                          $('#first-name').attr("placeholder","First name");
+                          $('#last-name-input').removeClass('error');
+                          $('#last-name').attr("placeholder","Last name");
+                          $('#email-input').removeClass('error');
+                          $('#email').attr("placeholder","Email");
+                          $('#password-input').removeClass('error');
+                          $('#password-name').attr("placeholder","Password");
+                          $('#errorMessageContainer').css("display", "none");
+                          $("#email").val("");
+                          $("#passwordSignUp").val("");
+                          $("#first-name").val("");
+                          $("#last-name").val("");
+                      } else {
+                        if (event.target == modalLoginSearchCity){
+                          modalLoginSearchCity.style.display = "none";
+                        }
+                      }
+                  }
+
+      var select = document.getElementById('input-select');
+
+           // Append the option elements
+           for ( var i = -20; i <= 40; i++ ){
+
+           	var option = document.createElement("option");
+           		option.text = i;
+           		option.value = i;
+
+           	select.appendChild(option);
+           }
+
+       var html5Slider = document.getElementById('html5');
+          html5Slider.style = "height:10px;width:25%;";
+
+          noUiSlider.create(html5Slider, {
+          	start: [ 10, 30 ],
+          	connect: true,
+          	range: {
+          		'min': -20,
+          		'max': 40
+          	}
+          });
+       var inputNumber = document.getElementById('input-number');
+
+           html5Slider.noUiSlider.on('update', function( values, handle ) {
+
+           	var value = values[handle];
+
+           	if ( handle ) {
+           		inputNumber.value = value;
+           	} else {
+           		select.value = Math.round(value);
+           	}
+           });
+
+           select.addEventListener('change', function(){
+           	html5Slider.noUiSlider.set([this.value, null]);
+           });
+
+           inputNumber.addEventListener('change', function(){
+           	html5Slider.noUiSlider.set([null, this.value]);
+           });
+
+           function signUpPOST() {
+                  $('#password-input').removeClass('error');
+                  $('#first-name-input').removeClass('error');
+                  $('#last-name-input').removeClass('error');
+                  $('#email-input').removeClass('error');
+                  console.log('signUpPOST');
+                  var url = "/addPerson";
+                  var method = "POST";
+                  var firstNameInput = document.getElementById('first-name');
+                  var firstName = firstNameInput.value;
+                  var lastNameInput = document.getElementById('last-name');
+                  var lastName = lastNameInput.value;
+                  var passInput = document.getElementById('passwordSignUp');
+                  var password = passInput.value;
+                  var emailInput = document.getElementById('email');
+                  var email = emailInput.value;
+                  var isValid = true;
+                  var atpos = email.indexOf("@");
+                  var dotpos = email.lastIndexOf(".");
+                 if (firstName === "") {
+                        $('#first-name-input').addClass('error');
+                        $('#first-name').attr("placeholder","Insert first name");
+                        $('#errorMessage').text("Insert first name");
+                        $('#errorMessageContainer').css("display", "block");
+                        isValid = false;
+                  }
+                  if (lastName === "") {
+                        $('#last-name-input').addClass('error');
+                        $('#last-name').attr("placeholder","Insert last name");
+                            $('#errorMessage').text("Insert last name");
+                            $('#errorMessageContainer').css("display", "block");
+
+                        isValid = false;
+                  }
+                  if (password === "") {
+                        $('#password-input').addClass('error');
+                        $('#passwordSignUp').attr("placeholder","Insert password");
+                             $('#errorMessage').text("Insert password");
+                             $('#errorMessageContainer').css("display", "block");
+
+                        isValid = false;
+                  }
+                  if (email === "" || atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
+                        $('#email-input').addClass('error');
+                        $('#email').attr("placeholder","Insert email");
+                            $('#errorMessage').text("Insert email");
+                            $('#errorMessageContainer').css("display", "block");
+
+                        isValid = false;
+                  }
+                  var postData = {
+                      "first-name": firstName,
+                       "last-name" : lastName,
+                       "password" : password,
+                       "email" : email
+
+                      };
+                  if (isValid === true ){
+                      var async = true;
+                      var request = new XMLHttpRequest();
+                      request.onload = function () {
+                            var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                         var data = request.responseText; // Returned data, e.g., an HTML document.
+                      }
+
+                      request.open(method, url,true);
+                      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                      //var formData = new FormData();
+                     //formData.append('my_data', 'back to basics')
+                      //request.send(formData);
+                      request.send(JSON.stringify(postData));
+                      document.getElementById('signupButton').style.display='none';
+                       $("#email").val("");
+                       $("#passwordSignUp").val("");
+                       $("#first-name").val("");
+                       $("#last-name").val("");
+                        var serverResponse = request.responseText;
+                        console.log(serverResponse);
+                  }
+           }
+
+           $('#loginButtonSubmit').click(function(event){
+                event.preventDefault();
+                var inpObj = document.getElementById('password');
+                if (inpObj.checkValidity() == false) {
+                     document.getElementById("demo").innerHTML = inpObj.validationMessage;
+                 }
+                document.getElementById('loginButton').style.display='none';
+
+            });
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiF0Un_CZtZJXb_az1JsfXQaejuF6iCXk&libraries=places,visualization&callback=initMap">
+    </script>
+  </body>
+</html>

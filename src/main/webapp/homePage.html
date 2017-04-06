@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="css/myCustom.css">
+    <link rel="stylesheet" href="css/singUpForm.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+
+    <script src="node_modules/semantic-ui/dist/semantic.min.js"></script>
+    <link rel="icon" type="image/png" href="images/place-finder.png">
+    <title>PerF</title>
+  </head>
+  <body>
+
+    <div class="ui massive blue menu">
+      <a >
+          <img class="ui mini image" style="left: 550%;top:5px;" src="images/place-finder.png">
+      </a>
+      <a>
+        <img class="ui medium image" style="left: 70%;" src="images/logo.png">
+      </a>
+      <div id="signup">
+        <button class="ui inverted blue button" onclick="document.getElementById('id01').style.display='block'">Sign up</button>
+      </div>
+      <div id="login">
+        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'">Log-in</button>
+      </div>
+    </div>
+
+    <div style="margin-top:200px;">
+    <center>
+      <h1 style="font-size:70px;font-weight:bolder;color: #fff;line-height: 1;">Get your perfect place </h1>
+      <br></br>
+      <div id="myInput" class="ui massive left icon input" style="width:35%;">
+        <i class="marker icon"></i>
+        <input id="chosenCity" name="chosenCity" placeholder="City" type="text" formaction="checkCity()" style="width:75%;">
+  <!--      <form method="get" action="./searchCity.html"> -->
+          <button  class=" ui large  black button" onclick="checkCity()" type="submit" style="width:50%;"><span>Let's Go   </span><span><i class="ui large search icon"></i></span> </button>
+  <!--      </form>-->
+      </div>
+
+
+    </center>
+
+    <div id="id02" class="modal">
+      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
+      <form class="modal-content animate" action="/create/user" style="width:30%;">
+        <div class="container">
+          <form class="ui form">
+            <div class="field">
+              <label>First Name</label>
+              <input name="first-name" placeholder="First Name" type="text" >
+            </div>
+            <div class="field">
+              <label>Last Name</label>
+              <input name="last-name" placeholder="Last Name" type="text">
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input tabindex="0" class="hidden" type="checkbox">
+                <label>I agree to the Terms and Conditions</label>
+              </div>
+            </div>
+           <form method="POST" action="/create/user">
+              <button class="ui button" type="submit">Submit</button>
+            </form>
+          </form>
+        </div>
+      </form>
+    </div>
+
+
+  <div id="id01" class="modal">
+    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+    <form class="modal-content animate"  style="width:30%;">
+      <div class="container">
+        <form class="ui form">
+          <div class="field">
+            <label>First Name</label>
+            <input name="firstName" placeholder="First Name" type="text">
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input name="last-name" placeholder="Last Name" type="text">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input name="email" placeholder="Email" type="text">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input name="password" placeholder="Password" type="text">
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input tabindex="0" class="hidden" type="checkbox">
+              <label>I agree to the Terms and Conditions</label>
+            </div>
+          </div>
+            <button class="ui button" onclick="sendData()">Submit</button>
+        </form>
+      </div>
+    </form>
+  </div>
+
+  <script>
+var modal = document.getElementById('id01');
+    // When the user clicks anywhere outside of the modal, close it
+    var modal2 = document.getElementById('id02');
+    window.onclick = function(event) {
+        if(event.target == modal ){
+            modal.style.display = "none";
+        } else {
+          if (event.target == modal2){
+            modal2.style.display = "none";
+          }
+        }
+    }
+
+
+    var txt = document.getElementById('chosenCity');
+    txt.addEventListener("keypress", function(event) {
+      if (event.keyCode == 13)
+          checkCity();
+   });
+
+
+    function checkCity(){
+      var input = document.getElementById('chosenCity'),
+        cityName = input.value;
+    if (cityName == "Iasi" || cityName == "Bucuresti" || cityName == "New York" || cityName == "London") {
+        window.location = "./searchCity.html?city=" + cityName;
+        var cityInputValue = document.getElementById('chosenCity').value;
+        document.getElementById('city').value = cityInputValue;
+    } else {
+        document.getElementsByName('chosenCity')[0].placeholder='Pleace specify a valid city';
+        document.getElementById('chosenCity').value = null;
+          console.log("I'll shake");
+          $('#myInput').click(function(){
+          $('#myInput').addClass('animated shake')
+          .one('webkitAnimationEnd oAnimationEnd', function(){
+              $('#myInput').removeClass('animated shake');
+         });
+        });
+        document.getElementById('myInput').classList.remove("animated");
+        document.getElementById('myInput').classList.remove("shake");
+        console.log("removed");
+      }
+    }
+
+//     $(document).ready(function(){
+//         $.ajax({
+//          url: "/user/register",
+//          type: "GET",
+//          data : {json: "hello" }, //in servlet use request.getParameters("json")
+//          dataType : 'json',
+//          success: function(data) {}, //data holds {success:true} - see below
+//          error: errorFunction
+//         });
+//      })
+
+var array = [ 1, 2, 3, 4 ];
+
+	var json = JSON.stringify(array);
+
+
+	$.ajax({ url:"/create/user",
+          type:"POST",
+          data: json,
+          dataType:'json',
+         success:function(data){
+				$("#output").append( data );
+			//	window.location = 'testArrFour.jsp';
+			},
+			error: function() {
+				 $("#output").html("fail");
+			}
+	});
+
+	var data = new FormData();
+    data.append('name', 'Bob');
+
+    function sendData() {
+    console.log("In sendData()");
+        $.ajax({
+            url: '/create/user',
+            type: 'POST',
+            contentType: false,
+            data: data,
+            dataType: 'json'
+        });
+    }
+
+  </script>
+
+  </div>
+</body>
+</html>
