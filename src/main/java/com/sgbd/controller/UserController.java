@@ -8,6 +8,7 @@ import com.sgbd.model.User;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,8 +94,7 @@ public class UserController {
         //oracleCon.connectToDB();
         response.setContentType("application/json");
 
-        
-        return new ResponseEntity<String>("{'Lala':'mama'}",HttpStatus.OK);
+        return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);
 //        try {
 //            return "Successfully added person";
 //

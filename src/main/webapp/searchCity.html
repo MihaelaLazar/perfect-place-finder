@@ -247,7 +247,7 @@
               <label>Email</label>
               <input class="ui input" type="text" name="email" placeholder="Email"  required>
             </div>
-            <div class="field">
+            <div id="passwordContainerLogin" class="field">
               <label>Password</label>
               <input class="ui input" id="password" type="text" name="last-name" placeholder="Password" type="text" required>
             </div>
@@ -1075,6 +1075,7 @@
                       request.onload = function () {
                             var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
                          var data = request.responseText; // Returned data, e.g., an HTML document.
+                         console.log(data);
                       }
 
                       request.open(method, url,true);
@@ -1088,8 +1089,7 @@
                        $("#passwordSignUp").val("");
                        $("#first-name").val("");
                        $("#last-name").val("");
-                        var serverResponse = request.responseText;
-                        console.log(serverResponse);
+
                   }
            }
 
@@ -1097,8 +1097,10 @@
                 event.preventDefault();
                 var inpObj = document.getElementById('password');
                 if (inpObj.checkValidity() == false) {
-                     document.getElementById("demo").innerHTML = inpObj.validationMessage;
+                     document.getElementById("passwordContainerLogin").innerHTML = inpObj.validationMessage;
                  }
+                 var requestLogin = new XMLHttpRequest();
+
                 document.getElementById('loginButton').style.display='none';
 
             });

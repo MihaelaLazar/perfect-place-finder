@@ -31,6 +31,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web") {
 		exclude module: "spring-boot-starter-tomcat"
 	}
+	compile 'com.google.guava:guava:14.0'
 	compile("org.springframework.boot:spring-boot-starter-jetty")
 	// end::jetty[]
 	// tag::actuator[]
@@ -39,4 +40,4 @@ dependencies {
 	testCompile("junit:junit")
 	compile project (':domain')
 	compile project (':repository')
-		}
+}
