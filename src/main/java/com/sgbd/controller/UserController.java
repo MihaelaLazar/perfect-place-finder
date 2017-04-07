@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by mihae on 4/3/2017.
@@ -90,18 +91,21 @@ public class UserController {
         System.out.println("ADD PERSON");
         System.out.println(request.getHttpFields());
         System.out.println(postData);
+        String postDataCopy = "";
+        for (int index = 1; index < postData.length() -1; index++) {
+            postDataCopy += postData.charAt(index);
+        }
+        String [] fields = postDataCopy.split(",");
         OracleCon oracleCon = new OracleCon();
-        oracleCon.connectToDB();
+        try {
+            oracleCon.addUser(fields);
+        } catch (SQLException e) {
+            return new ResponseEntity<String>("DUPLICATE",HttpStatus.FORBIDDEN);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         response.setContentType("application/json");
-
         return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);
-//        try {
-//            return "Successfully added person";
-//
-//        } catch (Exception ex) {
-//        }
-//        return "lalalalalla";
-
     }
 
         @RequestMapping(value="/create", method=RequestMethod.GET)
