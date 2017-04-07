@@ -1,0 +1,32 @@
+#myButton {
+	display:  none
+}
+
+#principal {
+  width: 60%;
+}
+
+
+#signupAddProperty {
+	position: fixed;
+    left: 70%;
+		top: 5px;
+}
+
+#loginAddProperty {
+	position: fixed;
+    left: 75.5%;
+		top:5px;
+}
+
+#menuBar {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+}
+
+#addPropertyInAddProperty{
+	position: fixed;
+    left: 62.5%;
+		top:5px;
+}

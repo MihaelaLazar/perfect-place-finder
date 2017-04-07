@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui-css/semantic.css">
     <link rel="stylesheet" href="css/estateDetails.css">
     <link rel="stylesheet" href="css/slideshow.css">
+      <link rel="stylesheet" href="css/addProperty.css">
 
     <link href="css/jquery-ui-1.10.1.css" rel="stylesheet">
   	<link href="css/nigran.datepicker.css" rel="stylesheet">
@@ -35,24 +36,45 @@
     <link rel="icon" type="image/png" href="images/place-finder.png">
     <title>PerF</title>
   </head>
-  <body>
+  <body style="background-color: lightblue;">
 
-    <div id="top" class="ui massive blue menu">
+    <div id="topAddProperty" class="ui massive blue menu" >
       <a href="./homePage.html">
         <img class="ui mini image" style="position:absolute;left: 20%; top:5px;" src="images/place-finder.png">
       </a>
-      <div id="addProperty" >
+        <a>
+            <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
+        </a>
+
+      <div id="addPropertyInAddProperty" >
         <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
       </div>
-      <div id="signup">
+      <div id="signupAddProperty">
         <button class="ui inverted blue button" onclick="document.getElementById('id01').style.display='block'">Sign up</button>
       </div>
-      <div id="login">
+      <div id="loginAddProperty">
         <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'">Log-in</button>
       </div>
     </div>
 
-  <div class="ui raised container segment" style="position:absolute;width:60%;height: 130%; left:10%; right:10%; background: #f1f1f2;">
+    <script>
+          $(function(){
+              var stickyHeaderTopAddProperty = $('#topAddProperty').offset().top;
+
+              $(window).scroll(function(){
+                          if( $(window).scrollTop() > stickyHeaderTopAddProperty ) {
+                                  $('#topAddProperty').css({position: 'fixed', top: '0px'});
+                                  $('#topAddProperty').css('width','100%');
+                                  $('#topAddProperty').css('display', 'block');
+                                  $('#topAddProperty').css('z-index','999999');
+                          } else {
+                                  $('#topAddProperty').css({position: 'static', top: '0px'});
+                          }
+                  });
+        });
+    </script>
+
+  <div class="ui raised container segment" style="position:absolute;width:60%;height: 130%; left:10%; right:10%; background: #f1f1f2;z-index: 9;">
       <div class="ui borderless blue inverted menu" style="margin-top:-1.5%;margin-left:-1.5%;margin-right:-1.5%;">
         <div class="item">
             <button class="ui inverted white button" type="submit" onclick="getBack()"><i class="chevron circle left icon"></i>Back to search</button>
