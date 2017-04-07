@@ -91,7 +91,7 @@ public class UserController {
         System.out.println(request.getHttpFields());
         System.out.println(postData);
         OracleCon oracleCon = new OracleCon();
-        //oracleCon.connectToDB();
+        oracleCon.connectToDB();
         response.setContentType("application/json");
 
         return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);

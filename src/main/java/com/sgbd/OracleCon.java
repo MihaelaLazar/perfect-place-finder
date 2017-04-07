@@ -23,7 +23,7 @@ public class OracleCon {
             Statement stmt=con.createStatement();
 
             //step4 execute query
-            ResultSet rs=stmt.executeQuery("select * from real_estate");
+            ResultSet rs=stmt.executeQuery("select * from users");
             while(rs.next())
                 System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
 
