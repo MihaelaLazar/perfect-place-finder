@@ -1,5 +1,6 @@
 package com.sgbd;
 
+import com.sgbd.model.CitiesDTO;
 import com.sgbd.model.Estate;
 
 import java.sql.*;
@@ -59,7 +60,100 @@ public class OracleCon {
         ResultSet rs=stmt.executeQuery(query);
     }
 
-    public List<Estate> getEstates() throws SQLException, ClassNotFoundException {
+    public CitiesDTO getEstates(int startPosition, int draw,String[] filters) throws SQLException, ClassNotFoundException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Connection con=DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
+        Statement stmt=con.createStatement();
+        String queryFilters = " ";
+        filters[0] = filters[0].trim();
+        filters[1] = filters[1].trim();
+        filters[2] = filters[2].trim();
+        filters[3] = filters[3].trim();
+        filters[4] = filters[4].trim();
+        filters[5] = filters[5].trim();
+        filters[6] = filters[6].trim();
+        filters[7] = filters[7].trim();
+        filters[8] = filters[8].trim();
+        filters[9] = filters[9].trim();
+        filters[10] = filters[10].trim();
+        filters[11] = filters[11].trim();
+        filters[12] = filters[12].trim();
+        if (filters[0].length() > 0) {
+            queryFilters += "id = " + filters[0] + " and ";
+        }
+        if (filters[1].length() > 0) {
+            queryFilters += "upper(real_estate_type) like '%" + filters[1].toUpperCase() + "%' and ";
+        }
+        if (filters[2].length() > 0) {
+            queryFilters += "upper(address) like '%" + filters[2].toUpperCase() + "%' and ";
+        }
+        if (filters[3].length() > 0) {
+            queryFilters += "surface = " + filters[3] + " and ";
+        }
+        if (filters[4].length() > 0) {
+            queryFilters += "rooms_number = " + filters[4] + " and ";
+        }
+        if (filters[5].length() > 0) {
+            queryFilters += "rent_price = " + filters[5] + " and ";
+        }
+        if (filters[6].length() > 0) {
+            queryFilters += "buy_price = " + filters[6] + " and ";
+        }
+        if (filters[7].length() > 0) {
+            queryFilters += "upper(division) like '%" + filters[7].toUpperCase() + "%' and ";
+        }
+        if (filters[8].length() > 0) {
+            queryFilters += "construction_year = " + filters[8] + " and ";
+        }
+        if (filters[9].length() > 0) {
+            queryFilters += "upper(description) like '%" + filters[9].toUpperCase() + "%' and ";
+        }
+        if (filters[10].length() > 0) {
+            queryFilters += "rent_price = " + filters[10] + " and ";
+        }
+        if (filters[11].length() > 0) {
+            queryFilters += "buy_price = " + filters[11] + " and ";
+        }
+        if (filters[12].length() > 0) {
+            queryFilters += "upper(city) like '%" + filters[12].toUpperCase() + "%' and ";
+        }
+        System.out.println("Query filters: " + queryFilters + "!!!");
+
+        ResultSet rs=stmt.executeQuery("select * from real_estate where "+ queryFilters + "id >= " + startPosition + " and id <= " + (startPosition + 10) + "order by id");
+        List<Estate> estates = new ArrayList<>();
+        String [][] estatesString = new String[12][14];
+        int index = 0;
+        while(rs.next()){
+            String currentEstateString[] = new String[13];
+            currentEstateString[0] = String.valueOf(rs.getInt(1));
+            currentEstateString[1] = rs.getString(2);
+            currentEstateString[2] = rs.getString(3);
+            currentEstateString[3] = String.valueOf(rs.getString(4));
+            currentEstateString[4] = String.valueOf(rs.getString(5));
+            currentEstateString[5] = String.valueOf(rs.getString(6));
+            currentEstateString[6] = String.valueOf(rs.getString(7));
+            currentEstateString[7] = rs.getString(8);
+            currentEstateString[8] = String.valueOf(rs.getString(9));
+            currentEstateString[9] = rs.getString(10);
+            currentEstateString[10] = rs.getDate(11).toString();
+            currentEstateString[11] = rs.getDate(12).toString();
+            currentEstateString[12] = rs.getString(13);
+            estatesString[index] = currentEstateString;
+            index ++;
+        }
+        rs=stmt.executeQuery("select count(*) from real_estate");
+        int totalCount = 0;
+        while (rs.next()){
+           totalCount = rs.getInt(1);
+        }
+
+        CitiesDTO citiesDTO = new CitiesDTO(draw,totalCount,totalCount, estatesString);
+        con.close();
+        return citiesDTO;
+    }
+
+    public List<Estate> getEstatesWithFilters(String [] filters) throws SQLException, ClassNotFoundException  {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection con=DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
@@ -86,6 +180,6 @@ public class OracleCon {
         //step5 close the connection object
         con.close();
         return estates;
-    }
 
+    }
 }

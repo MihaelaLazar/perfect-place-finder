@@ -3,6 +3,7 @@ package com.sgbd.controller;
 
 import com.sgbd.OracleCon;
 import com.sgbd.UserService;
+import com.sgbd.model.CitiesDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 
@@ -137,21 +138,52 @@ public class UserController {
         return "";
     }
 
-    @RequestMapping(path = "/paginate", method = RequestMethod.POST)
-    public ResponseEntity<List<Estate>> getPaginatedTableData(Request request, Response response) {
+    @RequestMapping(path = "/api/paginate", method = RequestMethod.GET)
+    public ResponseEntity<CitiesDTO> getPaginatedTableData(Request request, Response response) {
         System.out.println("Redirect in paginateTable POST");
         response.setContentType("application/json");
-        List<Estate> estates = new ArrayList<>(1000);
         OracleCon oracleCon = new OracleCon();
-        List<String> estatesCity = new ArrayList<>();
+        CitiesDTO estatesByCity = new CitiesDTO();
+        String Uri = request.getQueryString();
+        System.out.println(Uri);
+        System.out.println(request.getParameter("start"));
+        System.out.println(request.getParameter("columns[0][search][value]"));
+        System.out.println(request.getParameter("columns[1][search][value]"));
+        String[] filters = new String[14];
+        for(int index = 0; index < 13; index ++) {
+            filters[index] = request.getParameter("columns["+ index+"][search][value]");
+        }
         try {
-            estates = oracleCon.getEstates();
+            estatesByCity = oracleCon.getEstates(Integer.parseInt(request.getParameter("start")), Integer.parseInt(request.getParameter("draw")),filters);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return new ResponseEntity<>(estatesByCity,HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/paginate/filters", method = RequestMethod.POST)
+    public ResponseEntity<List<Estate>> getPaginatedTableDataFilters(Request request, Response response, @RequestBody String postData) {
+        System.out.println("Redirect in paginateTable POST");
+        response.setContentType("application/json");
+        List<Estate> estates = new ArrayList<>(1000);
+        OracleCon oracleCon = new OracleCon();
+        List<String> estatesCity = new ArrayList<>();
+        String postDataCopy = "";
+        for (int index = 1; index < postData.length() -1; index++) {
+            postDataCopy += postData.charAt(index);
+        }
+        String [] filters = postDataCopy.split(",");
+//        try {
+//            estates = oracleCon.getEstates();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
         return new ResponseEntity<>(estates,HttpStatus.OK);
     }
+
 
 }
