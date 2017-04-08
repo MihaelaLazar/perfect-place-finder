@@ -3,6 +3,7 @@ package com.sgbd.controller;
 
 import com.sgbd.OracleCon;
 import com.sgbd.UserService;
+import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 
 import org.eclipse.jetty.server.Request;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mihae on 4/3/2017.
@@ -108,15 +111,6 @@ public class UserController {
         return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);
     }
 
-        @RequestMapping(value="/create", method=RequestMethod.POST,
-                produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-        @ResponseBody
-        public User createUser(@RequestBody User user) {
-            return userService.createUser(user);
-        }
-
-
-
     @RequestMapping(path = "/addProperty", method = RequestMethod.GET)
     public @ResponseBody String getAddProperty(Response response) {
         System.out.println();
@@ -128,6 +122,36 @@ public class UserController {
             e.printStackTrace();
         }
         return "";
-
     }
+
+    @RequestMapping(path = "/paginate", method = RequestMethod.GET)
+    public Object getPaginatedTable(Request request, Response response) {
+        System.out.println("Redirect in paginateTable");
+        response.setContentType("text/html");
+
+        try {
+            response.sendRedirect("/paginateTable.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @RequestMapping(path = "/paginate", method = RequestMethod.POST)
+    public ResponseEntity<List<Estate>> getPaginatedTableData(Request request, Response response) {
+        System.out.println("Redirect in paginateTable POST");
+        response.setContentType("application/json");
+        List<Estate> estates = new ArrayList<>(1000);
+        OracleCon oracleCon = new OracleCon();
+        List<String> estatesCity = new ArrayList<>();
+        try {
+            estates = oracleCon.getEstates();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(estates,HttpStatus.OK);
+    }
+
 }

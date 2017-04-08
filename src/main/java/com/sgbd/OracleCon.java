@@ -1,6 +1,10 @@
 package com.sgbd;
 
+import com.sgbd.model.Estate;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OracleCon {
 
@@ -54,4 +58,34 @@ public class OracleCon {
         query += "'" + username + "','user')";
         ResultSet rs=stmt.executeQuery(query);
     }
+
+    public List<Estate> getEstates() throws SQLException, ClassNotFoundException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Connection con=DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
+        Statement stmt=con.createStatement();
+        ResultSet rs=stmt.executeQuery("select * from real_estate");
+        List<Estate> estates = new ArrayList<>();
+        while(rs.next()){
+            Estate currentEstate = new Estate();
+            currentEstate.setID(rs.getInt(1));
+            currentEstate.setType(rs.getString(2));
+            currentEstate.setAddress(rs.getString(3));
+            currentEstate.setSurface(rs.getInt(4));
+            currentEstate.setRooms(rs.getInt(5));
+            currentEstate.setRentPrice(rs.getInt(6));
+            currentEstate.setBuyPrice(rs.getInt(7));
+            currentEstate.setDivision(rs.getString(8));
+            currentEstate.setConstructionYear(rs.getInt(9));
+            currentEstate.setDescription(rs.getString(10));
+            currentEstate.setCreationDate(rs.getDate(11).toString());
+            currentEstate.setLastUpdate(rs.getDate(12).toString());
+            currentEstate.setCity(rs.getString(13));
+            estates.add(currentEstate);
+        }
+        //step5 close the connection object
+        con.close();
+        return estates;
+    }
+
 }

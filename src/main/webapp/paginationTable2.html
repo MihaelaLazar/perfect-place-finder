@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <style>
+#pagination a {
+display:inline-block;
+margin-right:5px;
+
+}
+
+
+</style>
+    <script>
+function pagination(){
+		var req_num_row=10;
+		var $tr=jQuery('tbody tr');
+		var total_num_row=$tr.length;
+		var num_pages=0;
+		if(total_num_row % req_num_row ==0){
+			num_pages=total_num_row / req_num_row;
+		}
+		if(total_num_row % req_num_row >=1){
+			num_pages=total_num_row / req_num_row;
+			num_pages++;
+			num_pages=Math.floor(num_pages++);
+		}
+		for(var i=1; i<=num_pages; i++){
+			jQuery('#pagination').append(" "+i+" ");
+		}
+		$tr.each(function(i){
+			jQuery(this).hide();
+			if(i+1 <= req_num_row){
+				$tr.eq(i).show();
+			}
+
+		});
+		jQuery('#pagination a').click(function(e){
+			e.preventDefault();
+			$tr.hide();
+			var page=jQuery(this).text();
+			var temp=page-1;
+			var start=temp*req_num_row;
+			//alert(start);
+
+			for(var i=0; i< req_num_row; i++){
+
+				$tr.eq(start+i).show();
+
+			}
+		});
+	}
+jQuery('document').ready(function(){
+	pagination();
+
+
+
+});
+
+</script>
+</head>
+<body>
+<div id="pagination">
+</div>
+<div class="table-responsive">
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Property ID</th>
+        <th>Type</th>
+        <th>Address</th>
+        <th>Surface</th>
+        <th>Rooms</th>
+        <th>Rent</th>
+        <th>Buy</th>
+        <th>Division</th>
+        <th>Construction year</th>
+        <th>Description</th>
+        <th>Create date</th>
+        <th>Last update</th>
+        <th>City</th>
+    </tr>
+    </thead>
+    <tbody id="tableBody3">
+    <script>
+
+                  console.log('paginatePost');
+                  var url = "/paginate";
+                  var method = "POST";
+                  var postData = {"estates" : "data"};
+                  var async = true;
+                  var request = new XMLHttpRequest();
+                  var status;
+                  var data;
+                  request.open(method, url,true);
+                  request.send(JSON.stringify(postData));
+                  request.onload = function () {
+                      status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                      data = request.responseText; // Returned data, e.g., an HTML document.
+                      var estatesArray = JSON.parse(data);
+                      console.log(estatesArray.length);
+                      console.log(estatesArray[0].type);
+                      var index;
+                      for (index = 0; index < estatesArray.length; index ++) {
+                            var currentEstate = $("<tr><td>" + estatesArray[index].id + "</td>" + "<td>" +estatesArray[index].type +"</td>" +"<td>"+ estatesArray[index].address+"</td>"+"<td>"+ estatesArray[index].surface+"</td>" + "<td>"+ estatesArray[index].rooms+"</td>"+ "<td>"+ estatesArray[index].rentPrice+"</td>"+ "<td>"+ estatesArray[index].BuyPrice+ "<td>"+ estatesArray[index].division+"</td>" +"</td>" +  "<td>"+ estatesArray[index].constructionYear+"</td>" + "<td>"+ estatesArray[index].description+"</td>"+"<td>"+ estatesArray[index].creationDate +"</td>"+"<td>"+ estatesArray[index].lastUpdate+"</td>"+"<td>"+ estatesArray[index].city+"</td>" +"</tr>");
+                            $("#tableBody3").append(currentEstate);
+                      }
+                  }
+    </script>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

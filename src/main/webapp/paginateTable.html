@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui-css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui-css/semantic.css">
+
+
+    <link href="css/jquery-ui-1.10.1.css" rel="stylesheet">
+
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="node_modules/semantic-ui-css/semantic.min.js"></script>
+    <script src="node_modules/semantic-ui-css/semantic.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.semanticui.min.js"></script>
+    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+
+
+    <style>
+  		input { /*for the datepicker*/
+  			font-size: 1em;
+  		}
+  	</style>
+
+    <link rel="icon" type="image/png" href="images/place-finder.png">
+    <title>PerF</title>
+</head>
+<body>
+
+
+<table id="example" class="ui celled table" width="75%" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Property ID</th>
+        <th>Type</th>
+        <th>Address</th>
+        <th>Surface</th>
+        <th>Rooms</th>
+        <th>Rent</th>
+        <th>Buy</th>
+        <th>Division</th>
+        <th>Construction year</th>
+        <th>Description</th>
+        <th>Create date</th>
+        <th>Last update</th>
+        <th>City</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Property ID</th>
+        <th>Type</th>
+        <th>Address</th>
+        <th>Surface</th>
+        <th>Rooms</th>
+        <th>Rent</th>
+        <th>Buy</th>
+        <th>Division</th>
+        <th>Construction year</th>
+        <th>Description</th>
+        <th>Create date</th>
+        <th>Last update</th>
+        <th>City</th>
+    </tr>
+    </tfoot>
+    <tbody id="tableBody">
+
+    <tr>
+        <td>5</td>
+        <td>Sale</td>
+        <td>Edinburgh 32 Street </td>
+        <td>150 mp</td>
+        <td>2</td>
+        <td>$320,800</td>
+        <td>$320,800</td>
+        <td>Decomandat</td>
+        <td>2014</td>
+        <td>Luxuriant</td>
+        <td>14/03/2017</td>
+        <td>14/03/2017</td>
+        <td>New York</td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+    <script>
+                  console.log('paginatePost');
+                  var url = "/paginate";
+                  var method = "POST";
+                  var postData = {"estates" : "data"};
+                  var async = true;
+                  var request = new XMLHttpRequest();
+                  var status;
+                  var data;
+                  request.open(method, url,true);
+                  request.send(JSON.stringify(postData));
+                  request.onload = function () {
+                      status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                      data = request.responseText; // Returned data, e.g., an HTML document.
+                      var estatesArray = JSON.parse(data);
+                      console.log(estatesArray.length);
+                      console.log(estatesArray[0].type);
+                      var index;
+                      for (index = 0; index < estatesArray.length; index ++) {
+                            var currentEstate = $("<tr><td>" + estatesArray[index].id + "</td>" + "<td>" +estatesArray[index].type +"</td>" +"<td>"+ estatesArray[index].address+"</td>"+"<td>"+ estatesArray[index].surface+"</td>" + "<td>"+ estatesArray[index].rooms+"</td>"+ "<td>"+ estatesArray[index].rentPrice+"</td>"+ "<td>"+ estatesArray[index].BuyPrice+ "<td>"+ estatesArray[index].division+"</td>" +"</td>" +  "<td>"+ estatesArray[index].constructionYear+"</td>" + "<td>"+ estatesArray[index].description+"</td>"+"<td>"+ estatesArray[index].creationDate +"</td>"+"<td>"+ estatesArray[index].lastUpdate+"</td>"+"<td>"+ estatesArray[index].city+"</td>" +"</tr>");
+                            $("#tableBody").append(currentEstate);
+                      }
+                      $('#example').DataTable();
+                  }
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>
