@@ -262,6 +262,14 @@
         </div>
     </div>
 
+    <div class="modal" id="signInStatusFailed">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <h2>Email already existent in data base</h2>
+            </form>
+        </div>
+    </div>
+
     <div id="signupButton" class="modal">
       <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
         <div class="container">
@@ -950,6 +958,7 @@
                   var modalSignedId = document.getElementById('signInStatus');
                   window.onclick = function(event) {
                       if(event.target == modalSignupSearchCity ){
+                         console.log('CLOSSSE modalSignupSearchCity');
                           modalSignupSearchCity.style.display = "none";
                           $('#first-name-input').removeClass('error');
                           $('#first-name').attr("placeholder","First name");
@@ -968,8 +977,12 @@
                         if (event.target == modalLoginSearchCity){
                           modalLoginSearchCity.style.display = "none";
                         } else {
-                            if (event.target == document.getElementById('signInStatus')) {
+                            if (event.target === document.getElementById('signInStatus')) {
                                 document.getElementById('signInStatus').style.display='none';
+                            } else {
+                                if (event.target ===  document.getElementById('signInStatusFailed')){
+                                    document.getElementById('signInStatusFailed').style.display='none';
+                                }
                             }
                         }
                       }
@@ -1079,20 +1092,24 @@
                   if (isValid === true ){
                       var async = true;
                       var request = new XMLHttpRequest();
+                      var status;
+                      var data;
                       request.onload = function () {
-                            var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-                         var data = request.responseText; // Returned data, e.g., an HTML document.
-                         console.log(data);
+                            status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                            data = request.responseText; // Returned data, e.g., an HTML document.
+                            if (data === 'DUPLICATE') {
+                                console.log ("DUPLICATE EMAIL");
+                                document.getElementById('signupButton').style.display='none';
+                                document.getElementById('signInStatusFailed').style.display='block';
+                            } else {
+                              document.getElementById('signupButton').style.display='none';
+                              document.getElementById('signInStatus').style.display='block';
+
+                          }
                       }
 
                       request.open(method, url,true);
                       request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                      if (request.status == 403) {
-                            console.log ("DUPLICATE EMAIL");
-                      } else {
-                        document.getElementById('signupButton').style.display='none';
-                        document.getElementById('signInStatus').style.display='block';
-                      }
                       request.send(JSON.stringify(postData));
                       document.getElementById('signupButton').style.display='none';
                        $("#email").val("");

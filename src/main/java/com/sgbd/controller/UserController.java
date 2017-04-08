@@ -89,8 +89,8 @@ public class UserController {
     @ResponseBody
     public  ResponseEntity<String>  addPerson(Request request,Response response, @RequestBody String postData) {
         System.out.println("ADD PERSON");
-        System.out.println(request.getHttpFields());
-        System.out.println(postData);
+        //System.out.println(request.getHttpFields());
+        //System.out.println(postData);
         String postDataCopy = "";
         for (int index = 1; index < postData.length() -1; index++) {
             postDataCopy += postData.charAt(index);
@@ -107,13 +107,6 @@ public class UserController {
         response.setContentType("application/json");
         return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);
     }
-
-        @RequestMapping(value="/create", method=RequestMethod.GET)
-        public ModelAndView createSmartphonePage() {
-            ModelAndView mav = new ModelAndView("phones/new-phone");
-            mav.addObject("sPhone", new User());
-            return mav;
-        }
 
         @RequestMapping(value="/create", method=RequestMethod.POST,
                 produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

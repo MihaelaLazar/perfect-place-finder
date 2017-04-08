@@ -50,7 +50,6 @@ public class OracleCon {
                 username = nameAndValue[1].toLowerCase();
             }
             query += "'"+ nameAndValue[1] + "' ,";
-           // System.out.println(nameAndValue[0] + " " + nameAndValue[1]);
         }
         query += "'" + username + "','user')";
         ResultSet rs=stmt.executeQuery(query);
