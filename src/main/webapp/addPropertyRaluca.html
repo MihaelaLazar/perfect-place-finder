@@ -91,28 +91,21 @@
         <div>
           <form class="ui form">
               <h4 class="ui dividing header">Add property</h4>
-              <div class="field">
-                  <label>Property ID:</label>
-                  <div class="two fields">
-                      <div class="four wide field">
-                          <input name="shipping[first-name]" placeholder="Add property ID" type="text">
-                      </div>
-                  </div>
-              </div>
+
               <div class="field">
                   <div class="fields">
                       <div class="four wide field">
                           <label>Category:</label>
-                          <select>
+                          <select id="category-select">
                               <option value="" disabled selected>Choose</option>
-                              <option value="0">House</option>
-                              <option value="1">Appartement</option>
-                              <option value="2">Comercial space</option>
+                              <option value="1">House</option>
+                              <option value="2">Appartement</option>
+                              <option value="3">Comercial space</option>
                           </select>
                       </div>
                       <div class="four wide field">
                           <label>Rooms:</label>
-                          <select>
+                          <select id="rooms-select">
                               <option value="" disabled selected>Choose</option>
                               <option value="1">1 room</option>
                               <option value="2">2 rooms</option>
@@ -127,30 +120,51 @@
                           <label >Transaction type:</label>
                           <div class="field">
                               <div class="ui radio checkbox">
-                                  <input name="fruit" tabindex="0" type="radio">
+                                  <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={}>
                                   <label>Rent</label>
                               </div>
                           </div>
                           <div class="field">
                               <div class="ui radio checkbox">
-                                  <input name="fruit" tabindex="0" type="radio">
+                                  <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
                                   <label>Sale</label>
                               </div>
                           </div>
                   </div>
               </div>
+              <script>
 
+              function setCheckbox(id) {
+				isForRent=0;
+				isForSale=0;
+                if(document.getElementById(id).checked) {
+                  if(id==="transaction-type-sale-input")
+                    isForSale=1;
+                  if(id==="transaction-type-rent-input")
+                      isForRent=1;
+                }
+              }
+
+			  function setNegociable(id) {
+				isNegociable=0;
+                if(document.getElementById(id).checked) {
+                  if(id==="is-negociable-input")
+                    isNegociable=1;
+                }
+              }
+
+              </script>
               <div class="two wide fields">
                   <div class="eight wide field">
                       <div class="field">
                           <div class="field">
                               <label>Price:</label>
                               <div class="two fields">
-                                  <div class="field">
-                                      <input name="shipping[first-name]" placeholder="Add price" type="text">
+                                  <div id="price-input" class="field">
+                                      <input id="price" name="price" placeholder="Add price" type="text">
                                   </div>
                                   <div class="ui checkbox" style="margin-top:1%;">
-                                      <input type="checkbox" name="negociable">
+                                      <input id="is-negociable-input" type="checkbox" name="negociable" onChange={setNegociable('is-negociable-input')} unchecked={}>
                                       <label>Negociable</label>
                                   </div>
                               </div>
@@ -159,8 +173,8 @@
                           <div class="field">
                               <label>Usable surface:</label>
                               <div class="two fields">
-                                  <div class="field">
-                                      <input name="shipping[first-name]" placeholder="Add surface in square meters" type="text">
+                                  <div id="usable-surface-input" class="field">
+                                      <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="text">
                                   </div>
 
                                   <div class="ui image label" style="background-color:#f1f1f2;">
@@ -171,23 +185,19 @@
 
                           <div class="eight wide field">
                               <label>Construction year:</label>
-                                  <select>
-                                      <option value="" disabled selected>Choose</option>
-                                      <option value="0">1800 - 1977</option>
-                                      <option value="1">1977 - 1990</option>
-                                      <option value="2">1990 - 2000</option>
-                                      <option value="3">2000 - 2017</option>
-                                  </select>
+                                  <div id="construction-year-input">
+                                      <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017">
+                                  </div>
                           </div>
 
                           <div class="eight wide field">
                               <label>Furniture/Utilities</label>
                               <div class=" field">
-                                  <select>
+                                  <select id="furniture-utilities-select">
                                       <option value="" disabled selected>Choose</option>
-                                      <option value="0">Complete</option>
-                                      <option value="1">Partial</option>
-                                      <option value="2">None</option>
+                                      <option value="1">Complete</option>
+                                      <option value="2">Partial</option>
+                                      <option value="3">None</option>
                                   </select>
                               </div>
                           </div>
@@ -211,35 +221,34 @@
 
               <div class="field">
                   <label>Description</label>
-                  <div class="ui form">
-                      <textarea>Add a description here...</textarea>
-                  </div>
-              </div>
+                  <div id="description-textarea" class="ui form">
+                      <textarea id="description" placeholder="Add a drescription here.." ></textarea>
+                 </div>
 
 
               <h4 class="ui dividing header">Contact</h4>
               <div class="field">
                   <label>Contact name</label>
-                  <div class="four wide field">
-                      <input type="text" placeholder="Add name">
+                  <div id="name-input" class="four wide field">
+                      <input id="name" type="text" placeholder="Add name">
                   </div>
               </div>
 
               <div class="field">
                   <label>Email</label>
-                  <div class="four wide field">
-                      <input type="text" placeholder="Add email">
+                  <div id="email-input" class="four wide field">
+                      <input id="email" type="text" placeholder="Add email">
                   </div>
               </div>
 
               <div class="field">
                   <label>Phone number</label>
-                  <div class="four wide field">
-                      <input type="text" placeholder="Add phone number">
+                  <div id="phone-number-input"class="four wide field">
+                      <input id="phone-number" type="text" placeholder="Add phone number">
                   </div>
               </div>
 
-              <div class="ui button" tabindex="0">Submit Order</div>
+              <div class="ui button" tabindex="0" value="Submit" onclick="addPropertyPOST()">Submit Order</div>
           </form>
 </div>
       </div>
@@ -264,6 +273,13 @@
 
       <script>
         var globalMap11;
+
+        var isForRent=0;
+        var isForSale=0;
+        var isNegociable=0;
+        var addressLat=0;
+        var addressLng=0;
+        var markersArray = [];
         function initMap11() {
               var map11 = new google.maps.Map(document.getElementById('map11'), {
                 zoom: 14,
@@ -272,15 +288,141 @@
               globalMap11 = map11;
               google.maps.event.addListener(globalMap11, 'click', function(event) {
                 placeMarker(event.latLng);
-                console.log("coordinates: "+ event.latLng.lat() + ", " + event.latLng.lng());
+                addressLat=event.latLng.lat();
+                addressLng=event.latLng.lng();
+                //console.log("coordinates: "+ event.latLng.lat() + ", " + event.latLng.lng());
               });
         }
         function placeMarker(location) {
+            deleteOverlays();
             var marker = new google.maps.Marker({
                 position: location,
                 map: globalMap11
             });
+            markersArray.push(marker);
         }
+        function deleteOverlays() {
+            if (markersArray) {
+                for (i in markersArray) {
+                    markersArray[i].setMap(null);
+                }
+            markersArray.length = 0;
+            }
+        }
+
+        function addPropertyPOST() {
+
+               console.log('addPropertyPOST');
+               var method = "POST";
+               var categoryInput = document.getElementById('category-select');
+               var category = categoryInput.value;
+               console.log(category);
+               var roomsInput = document.getElementById('rooms-select');
+               var rooms = roomsInput.value;
+               console.log(rooms);
+               console.log("rent: " + isForRent);
+               console.log("sale: " + isForSale);
+               var priceInput = document.getElementById('price');
+               var price= priceInput.value;
+               console.log("price: " + price);
+               console.log("negociable: " + isNegociable);
+               var surfaceInput = document.getElementById('usable-surface');
+               var surface = surfaceInput.value;
+               console.log("surface: " + surface);
+               var yearInput = document.getElementById('construction-year');
+               var year = yearInput.value;
+               console.log("year:" + year);
+               var furnitureInput = document.getElementById('furniture-utilities-select');
+               var furniture = furnitureInput.value;
+               console.log("furniture:" + furniture);
+               var descriptionInput = document.getElementById('description');
+               var description = descriptionInput.value;
+               console.log("description:" + description);
+               var nameInput = document.getElementById('name');
+               var name = nameInput.value;
+               console.log("name:" + name);
+               var emailInput = document.getElementById('email');
+               var email = emailInput.value;
+               console.log("email:" + email);
+               var phoneNumberInput = document.getElementById('phone-number');
+               var phoneNumber = phoneNumberInput.value;
+               console.log("phoneNumber:" + phoneNumber);
+               console.log("lat:" + addressLat);
+               console.log("lng:" + addressLng);
+               /*
+               var passInput = document.getElementById('passwordSignUp');
+               var password = passInput.value;
+               var emailInput = document.getElementById('email');
+               var email = emailInput.value;
+               var isValid = true;
+               var atpos = email.indexOf("@");
+               var dotpos = email.lastIndexOf(".");
+              if (firstName === "") {
+                     $('#first-name-input').addClass('error');
+                     $('#first-name').attr("placeholder","Insert first name");
+                     $('#errorMessage').text("Insert first name");
+                     $('#errorMessageContainer').css("display", "block");
+                     isValid = false;
+               }
+               if (lastName === "") {
+                     $('#last-name-input').addClass('error');
+                     $('#last-name').attr("placeholder","Insert last name");
+                         $('#errorMessage').text("Insert last name");
+                         $('#errorMessageContainer').css("display", "block");
+
+                     isValid = false;
+               }
+               if (password === "") {
+                     $('#password-input').addClass('error');
+                     $('#passwordSignUp').attr("placeholder","Insert password");
+                          $('#errorMessage').text("Insert password");
+                          $('#errorMessageContainer').css("display", "block");
+
+                     isValid = false;
+               }
+               if (email === "" || atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
+                     $('#email-input').addClass('error');
+                     $('#email').attr("placeholder","Insert email");
+                         $('#errorMessage').text("Insert email");
+                         $('#errorMessageContainer').css("display", "block");
+
+                     isValid = false;
+               }
+               var postData = {
+                   "first-name": firstName,
+                    "last-name" : lastName,
+                    "password" : password,
+                    "email" : email
+
+                   };
+               if (isValid === true ){
+                   var async = true;
+                   var request = new XMLHttpRequest();
+                   request.onload = function () {
+                         var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                      var data = request.responseText; // Returned data, e.g., an HTML document.
+                      console.log(data);
+                   }
+
+                   request.open(method, url,true);
+                   request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                   if (request.status == 403) {
+                         console.log ("DUPLICATE EMAIL");
+                   } else {
+                     document.getElementById('signupButton').style.display='none';
+                     document.getElementById('signInStatus').style.display='block';
+                   }
+                   request.send(JSON.stringify(postData));
+                   document.getElementById('signupButton').style.display='none';
+                    $("#email").val("");
+                    $("#passwordSignUp").val("");
+                    $("#first-name").val("");
+                    $("#last-name").val("");
+
+               }
+               */
+        }
+
     </script>
 
       <script async defer
