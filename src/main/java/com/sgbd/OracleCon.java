@@ -189,7 +189,7 @@ public class OracleCon {
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
         Statement stmt=con.createStatement();
 
-        String query = "insert into real_estate(id, real_estate_type,surface,rooms_number, rent_price,buy_price, construction_year, description,address,division,create_date,last_update) values( (select MAX(ID)+ 1 from real_estate), ";
+        String query = "insert into real_estate(id, real_estate_type,surface,rooms_number, rent_price,buy_price, construction_year, description,address,division,city,create_date,last_update) values( (select MAX(ID)+ 1 from real_estate), ";
         String estate_type ="";
         int surface;
         int roomsNumber = 0;
@@ -199,6 +199,7 @@ public class OracleCon {
         String description = "";
         String address = "";
         String division = "";
+        String city="";
         for (String field: fields) {
             String postDataCopy = "";
             for (int index = 1; index < field.length() -1; index++) {
@@ -247,6 +248,11 @@ public class OracleCon {
             if(nameAndValue[0].equals("addressLng")){
                 address += nameAndValue[1];
                 query += "'" + address + "', ";
+            }
+
+            if(nameAndValue[0].equals("city")){
+                city += nameAndValue[1];
+                query += "'" + city + "', ";
             }
 
         }

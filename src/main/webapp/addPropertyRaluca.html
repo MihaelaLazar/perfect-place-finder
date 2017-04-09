@@ -305,6 +305,7 @@
         var addressLat = 0;
         var addressLng = 0;
         var markersArray = [];
+        var city;
 
         function initMap11() {
             var myLatLng = {lat:47, lng:27};
@@ -321,30 +322,33 @@
               addressLng=27;
               markersArray.push(marker);
               google.maps.event.addListener(globalMap11, 'click', function(event) {
-                placeMarker(event.latLng);
-                addressLat=event.latLng.lat();
-                addressLng=event.latLng.lng();
-                //console.log("coordinates: "+ event.latLng.lat() + ", " + event.latLng.lng());
+                    placeMarker(event.latLng);
+                    addressLat=event.latLng.lat();
+                    addressLng=event.latLng.lng();
+                    var geocoder = new google.maps.Geocoder;
+                    var latlng = {lat: addressLat, lng: addressLng};
+                    geocoder.geocode({'location': latlng}, function(results, status) {
+                       if (status === 'OK') {
+                          console.log(results[1].formatted_address);
+                          var cityAddress = results[1].formatted_address.split(", ")
+                          city = cityAddress[cityAddress.length - 2];
+                          console.log(city);
+                        }
+                      }
+                    );
               });
 
-               var geocoder = new google.maps.Geocoder;
-               var latlng = {lat: 47.1369953, lng: 27.6040804};
-               geocoder.geocode({'location': latlng}, function(results, status) {
-                   if (status === 'OK') {
-                      console.log(results[1].formatted_address);
-                    }
-                  }
-                );
+
         }
         function placeMarker(location) {
-            deleteOverlays();
+            deleteMarker();
             var marker = new google.maps.Marker({
                 position: location,
                 map: globalMap11
             });
             markersArray.push(marker);
         }
-        function deleteOverlays() {
+        function deleteMarker() {
             if (markersArray) {
                 for (i in markersArray) {
                     markersArray[i].setMap(null);
@@ -439,7 +443,6 @@
                       isValidLogin = false;
                }
 
-
                if (isValidLogin === true ){
                      if(isForRent===1){
                         rent_price = price;
@@ -464,8 +467,12 @@
                           "description" : description,
                           "addressLat" : addressLatString,
                           "addressLng" : addressLngString,
-                          "division" : division
+                          "division" : division,
+                          "city" : city
                     };
+
+
+
                    var async = true;
                    var requestAddProperty = new XMLHttpRequest();
                    var data;
@@ -497,36 +504,6 @@
                             }
                       }
         }
-        var address ;
-        function getAddress (latitude, longitude) {
-            return new Promise(function (resolve, reject) {
-                var requestAddress = new XMLHttpRequest();
-
-                var method = 'GET';
-                var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&sensor=true';
-                var async = true;
-
-                requestAddress.open(method, url, async);
-                requestAddress.onreadystatechange = function () {
-                    if (requestAddress.readyState == 4) {
-                        if (requestAddress.status == 200) {
-                            var data = JSON.parse(requestAddress.responseText);
-                            address = data.results[0];
-                            resolve(address);
-
-                        }
-                        else {
-                            reject(requestAddress.status);
-                        }
-                    }
-                };
-                requestAddress.send();
-            });
-        };
-        getAddress(47.1369953, 27.6040804).then(console.log).catch(console.error);
-
-
-
     </script>
 
       <script async defer
