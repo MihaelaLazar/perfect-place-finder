@@ -326,6 +326,15 @@
                 addressLng=event.latLng.lng();
                 //console.log("coordinates: "+ event.latLng.lat() + ", " + event.latLng.lng());
               });
+
+               var geocoder = new google.maps.Geocoder;
+               var latlng = {lat: 47.1369953, lng: 27.6040804};
+               geocoder.geocode({'location': latlng}, function(results, status) {
+                   if (status === 'OK') {
+                      console.log(results[1].formatted_address);
+                    }
+                  }
+                );
         }
         function placeMarker(location) {
             deleteOverlays();
@@ -487,7 +496,37 @@
                                 modalPropertySuccess.style.display = "none";
                             }
                       }
-               }
+        }
+        var address ;
+        function getAddress (latitude, longitude) {
+            return new Promise(function (resolve, reject) {
+                var requestAddress = new XMLHttpRequest();
+
+                var method = 'GET';
+                var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + ',' + longitude + '&sensor=true';
+                var async = true;
+
+                requestAddress.open(method, url, async);
+                requestAddress.onreadystatechange = function () {
+                    if (requestAddress.readyState == 4) {
+                        if (requestAddress.status == 200) {
+                            var data = JSON.parse(requestAddress.responseText);
+                            address = data.results[0];
+                            resolve(address);
+
+                        }
+                        else {
+                            reject(requestAddress.status);
+                        }
+                    }
+                };
+                requestAddress.send();
+            });
+        };
+        getAddress(47.1369953, 27.6040804).then(console.log).catch(console.error);
+
+
+
     </script>
 
       <script async defer
