@@ -18,7 +18,6 @@
     <script src="node_modules/semantic-ui-css/semantic.min.js"></script>
     <script src="node_modules/semantic-ui-css/semantic.js"></script>
     <script src="js/locations.js"></script>
-    <script src="js/slideshow.js"></script>
 
     <script src="js/locations.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -85,6 +84,22 @@
             }
           </script>
         </div>
+      </div>
+
+      <div class="modal" id="addPropertySuccessfulModal">
+          <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+              <form class="ui form">
+                  <h2>Successfully added property.</h2>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal" id="addPropertyFailedModal">
+          <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+              <form class="ui form">
+                  <h2>Cannot add property. Already existent property with same address.</h2>
+              </form>
+          </div>
       </div>
 
       <div>
@@ -190,14 +205,24 @@
                                   </div>
                           </div>
 
-                          <div class="eight wide field">
-                              <label>Furniture/Utilities</label>
+                          <div class="two wide fields">
+
                               <div class=" field">
+                                  <label>Furniture/Utilities</label>
                                   <select name="furniture" id="furniture-utilities-select" required>
                                       <option value="" disabled selected>Choose</option>
                                       <option value="1">Complete</option>
                                       <option value="2">Partial</option>
                                       <option value="3">None</option>
+                                  </select>
+                              </div>
+                              <div class=" field">
+                                  <label>Division</label>
+                                  <select name="division" id="division-select" required>
+                                      <option value="" disabled selected>Choose</option>
+                                      <option value="Semi-detached">Semi-detached</option>
+                                      <option value="Detached">Detached</option>
+                                      <option value="Non-detached">Non-detached</option>
                                   </select>
                               </div>
                           </div>
@@ -206,7 +231,6 @@
                   </div>
                   <div class="field">
                       <label>Property address: </label>
-
                       <style>
                         #map11 {
                           margin-top: 50%;
@@ -218,13 +242,11 @@
                        <div id="map11"></div>
                   </div>
               </div>
-
               <div class="field">
                   <label>Description</label>
                   <div id="description-textarea" class="ui form">
                       <textarea id="description" placeholder="Add a drescription here.." required></textarea>
                  </div>
-
 
               <h4 class="ui dividing header">Contact</h4>
               <div class="field">
@@ -248,9 +270,11 @@
                   </div>
               </div>
 
-              <button class="ui button" tabindex="0" value="Submit" onclick="addPropertyPOST()">Submit Order</button>
-
+              <button class="ui button" onclick="addPropertyPOST(event)">Submit Order</button>
+              </div>
           </form>
+        </div>
+      </div>
 </div>
       </div>
       <script>
@@ -263,23 +287,23 @@
       </script>
 
       <style>
-    #map11 {
-      margin-top: 0%;
-      margin-left: 0%;
-      height: 100%;
-      width: 100%;
-      }
+        #map11 {
+          margin-top: 0%;
+          margin-left: 0%;
+          height: 100%;
+          width: 100%;
+          }
     </style>
      <!-- <div id="map11"></div>-->
 
       <script>
         var globalMap11;
 
-        var isForRent=0;
-        var isForSale=0;
-        var isNegociable=0;
-        var addressLat=0;
-        var addressLng=0;
+        var isForRent = 0;
+        var isForSale = 0;
+        var isNegociable = 0;
+        var addressLat = 0;
+        var addressLng = 0;
         var markersArray = [];
 
         function initMap11() {
@@ -320,11 +344,12 @@
             }
         }
 
-        function addPropertyPOST() {
-
+        function addPropertyPOST(event) {
+                event.preventDefault();
                console.log('addPropertyPOST');
-               var isValid = true;
-               var method = "POST";
+               var isValidLogin = true;
+               var methodLogin = "POST";
+               var urlLogin = "/add/property";
                var categoryInput = document.getElementById('category-select');
                var category = categoryInput.value;
                var roomsInput = document.getElementById('rooms-select');
@@ -345,110 +370,124 @@
                var email = emailInput.value;
                var phoneNumberInput = document.getElementById('phone-number');
                var phoneNumber = phoneNumberInput.value;
-
+               var divisionInput = document.getElementById('division-select');
+               var division = divisionInput.value;
                var rent_price;
                var buy_price;
 
+                if (division === "") {
+                    isValidLogin = false;
+                } else {
+                    if (division === 1) {
+                        division = "Semi-detached";
+                    } else {
+                        if (division === 2 ) {
+                            division = "Detached";
+                        } else {
+                            division = "Non-detached";
+                        }
+                    }
+                }
+
                if (category === "") {
-                      isValid = false;
+                       console.log("category null");
+                      isValidLogin = false;
                }
                if (rooms === "") {
-                      isValid = false;
+                      console.log("rooms null");
+                      isValidLogin = false;
                 }
                if (price === "") {
-                      isValid = false;
+                    console.log("price null");
+                    isValidLogin = false;
                 }
                if (surface === "") {
-                      isValid = false;
+                    console.log("surface null");
+                      isValidLogin = false;
                 }
                if (year === "") {
-                      isValid = false;
+                    console.log("year null");
+                      isValidLogin = false;
                 }
                if (furniture === "") {
-                      isValid = false;
+                    console.log("furniture null");
+                      isValidLogin = false;
                 }
                if (description === "") {
-                      isValid = false;
-                }
-               if (name === "") {
-                       isValid = false;
-                }
-               if (email === "") {
-                        isValid = false;
+                    console.log("description null");
+                      isValidLogin = false;
                 }
                if (phoneNumber === "") {
-                         isValid = false;
+                     console.log("phoneNumber null");
+                       isValidLogin = false;
                 }
-
-
-               if (isValid === true ){
-
-                 if(isForRent===1){
-                   rent_price=price;
-                   buy_price=0;
-                 }
-                 if(isForSale===1){
-                   buy_price=price;
-                   rent_price=0;
-                 }
-
-                 var postData = {
-                     "real-estate-type": category,
-                      "surface" : surface,
-                      "rooms_number" : rooms,
-                      "rent_price" : rent_price,
-                      "buy_price" : buy_price,
-                      "construction-year" : year,
-                      "description" : description,
-                      "addressLat" : addressLat,
-                      "addressLng" : addressLng
-                     };
-
-
-                 //console.log("category: "+category);
-                 //console.log(rooms);
-                 //console.log("rent: " + isForRent);
-                 //console.log("sale: " + isForSale);
-                 //console.log("rent price: " + rent_price);
-                 //console.log("buy price: " + buy_price);
-                 console.log("negociable: " + isNegociable); //UNDE PUNEM ASTA?
-                 //console.log("surface: " + surface);
-                 //console.log("year:" + year);
-                 console.log("furniture:" + furniture); //UNDE PUNEM ASTA?
-                 //console.log("description:" + description);
-                 console.log("name:" + name); // UNDE PUNEM ASTA?
-                 console.log("email:" + email);//UNDE PUNEM ASTA?
-                 console.log("phoneNumber:" + phoneNumber); //UNDE PUNEM ASTA?
-                 console.log("lat:" + addressLat);
-                 console.log("lng:" + addressLng);
-
-                   var async = true;
-                   var request = new XMLHttpRequest();
-                   request.onload = function () {
-                         var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-                      var data = request.responseText; // Returned data, e.g., an HTML document.
-                      console.log(data);
-                   }
-
-                   request.open(method, url,true);
-                   request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                   if (request.status == 403) {
-                         console.log ("DUPLICATE EMAIL");
-                   } else {
-                     document.getElementById('signupButton').style.display='none';
-                     document.getElementById('signInStatus').style.display='block';
-                   }
-                   request.send(JSON.stringify(postData));
-                   document.getElementById('signupButton').style.display='none';
-                    $("#email").val("");
-                    $("#passwordSignUp").val("");
-                    $("#first-name").val("");
-                    $("#last-name").val("");
-
+               if (email === "") {
+                    console.log("email null");
+                        isValidLogin = false;
+                }
+               if (phoneNumber === "") {
+                      console.log("phoneNumber null");
+                      isValidLogin = false;
                }
 
-        }
 
+               if (isValidLogin === true ){
+                     if(isForRent===1){
+                        rent_price = price;
+                         buy_price = "0";
+                     }
+                     if(isForSale===1){
+                        buy_price = price;
+                        rent_price = "0";
+                     }
+
+                     var addressLatString =  addressLat.toString();
+                     var addressLngString = addressLng.toString();
+
+
+                     var postDataProperty = {
+                         "real-estate-type": category,
+                          "surface" : surface,
+                          "rooms_number" : rooms,
+                          "rent_price" : rent_price,
+                          "buy_price" : buy_price,
+                          "construction-year" : year,
+                          "description" : description,
+                          "addressLat" : addressLatString,
+                          "addressLng" : addressLngString,
+                          "division" : division
+                    };
+                   var async = true;
+                   var requestAddProperty = new XMLHttpRequest();
+                   var data;
+                   var status;
+                   requestAddProperty.onload = function () {
+                         status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
+                         data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
+                         if (data === 'DUPLICATE PROPERTY') {
+                                document.getElementById('addPropertyFailedModal').style.display='block';
+                            } else {
+                              document.getElementById('addPropertySuccessfulModal').style.display='block';
+                            }
+                   }
+
+
+                   requestAddProperty.open(methodLogin, urlLogin,true);
+                   requestAddProperty.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                   requestAddProperty.send(JSON.stringify(postDataProperty));
+               }
+        }
+        var modalPropertyFailed = document.getElementById('addPropertyFailedModal');
+        var modalPropertySuccess = document.getElementById('addPropertySuccessfulModal');
+               window.onclick = function(event) {
+                      if(event.target == modalPropertyFailed ){
+                            modalPropertyFailed.style.display = "none";
+                      } else {
+                            if (event.target == modalPropertySuccess) {
+                                modalPropertySuccess.style.display = "none";
+                            }
+                      }
+               }
     </script>
 
       <script async defer

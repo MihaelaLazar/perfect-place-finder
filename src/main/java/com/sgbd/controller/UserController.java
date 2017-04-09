@@ -57,32 +57,12 @@ public class UserController {
         return"";
     }
 
+
+
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
-    public Object addUser(Response response){
-        try {
-            response.sendRedirect("/index.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return"";
-    }
-
-    @RequestMapping(path = "/create/user", method = RequestMethod.GET)
-    public Object addUserGET(Request request,Response response){
-        System.out.println(request.getAttributeNames().toString().charAt(0));
-        System.out.println("in addUserGet()");
-        try {
-            response.sendRedirect("/estateDetails.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return"";
-    }
-
-    @RequestMapping(path = "/addPerson", method = RequestMethod.POST)
     @ResponseBody
     public  ResponseEntity<String>  addPerson(Request request,Response response, @RequestBody String postData) {
-        System.out.println("ADD PERSON");
+        System.out.println("ADD USER");
         //System.out.println(request.getHttpFields());
         //System.out.println(postData);
         String postDataCopy = "";
@@ -94,12 +74,12 @@ public class UserController {
         try {
             oracleCon.addUser(fields);
         } catch (SQLException e) {
-            return new ResponseEntity<String>("DUPLICATE",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("DUPLICATE",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         response.setContentType("application/json");
-        return new ResponseEntity<String>("{'name': 'Mihaela', 'password':'asd'}",HttpStatus.OK);
+        return new ResponseEntity<>("Added in database",HttpStatus.OK);
     }
 
 

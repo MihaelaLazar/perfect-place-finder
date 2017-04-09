@@ -217,18 +217,18 @@ var array = [ 1, 2, 3, 4 ];
 	var json = JSON.stringify(array);
 
 
-	$.ajax({ url:"/create/user",
-          type:"POST",
-          data: json,
-          dataType:'json',
-         success:function(data){
-				$("#output").append( data );
+	//$.ajax({ url:"/",
+    //      type:"POST",
+    //      data: json,
+    //      dataType:'json',
+     //    success:function(data){
+	//			$("#output").append( data );
 			//	window.location = 'testArrFour.jsp';
-			},
-			error: function() {
-				 $("#output").html("fail");
-			}
-	});
+	//		},
+	//		error: function() {
+	//			 $("#output").html("fail");
+	//		}
+	//});
 
 	var data = new FormData();
     data.append('name', 'Bob');
@@ -251,7 +251,7 @@ var array = [ 1, 2, 3, 4 ];
                   $('#last-name-input-homePage').removeClass('error');
                   $('#email-input-homePage').removeClass('error');
                   console.log('signUpPOST');
-                  var url = "/addPerson";
+                  var url = "/create/user";
                   var method = "POST";
                   var firstNameInput = document.getElementById('first-name-homePage');
                   var firstName = firstNameInput.value;

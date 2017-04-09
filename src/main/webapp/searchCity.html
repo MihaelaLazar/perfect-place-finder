@@ -49,7 +49,7 @@
         <img class="ui medium image" style="margin-left: 70%;" src="images/logo.png">
       </a>
       <div id="addProperty">
-        <form method="GET" action="/addProperty">
+        <form method="GET" action="/add/property">
         <button class="ui inverted blue button" >Add property</button>
         </form>
       </div>
@@ -81,7 +81,7 @@
          </select>
         </form>
 
-        
+
 
          <form style="height:25%;width:105px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
         		<select name="square" id="square" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
@@ -996,49 +996,7 @@
                       }
                   }
 
-      var select = document.getElementById('input-select');
 
-           // Append the option elements
-           for ( var i = -20; i <= 40; i++ ){
-
-           	var option = document.createElement("option");
-           		option.text = i;
-           		option.value = i;
-
-           	select.appendChild(option);
-           }
-
-       var html5Slider = document.getElementById('html5');
-          html5Slider.style = "height:10px;width:25%;";
-
-          noUiSlider.create(html5Slider, {
-          	start: [ 10, 30 ],
-          	connect: true,
-          	range: {
-          		'min': -20,
-          		'max': 40
-          	}
-          });
-       var inputNumber = document.getElementById('input-number');
-
-           html5Slider.noUiSlider.on('update', function( values, handle ) {
-
-           	var value = values[handle];
-
-           	if ( handle ) {
-           		inputNumber.value = value;
-           	} else {
-           		select.value = Math.round(value);
-           	}
-           });
-
-           select.addEventListener('change', function(){
-           	html5Slider.noUiSlider.set([this.value, null]);
-           });
-
-           inputNumber.addEventListener('change', function(){
-           	html5Slider.noUiSlider.set([null, this.value]);
-           });
 
            function signUpPOST() {
                   $('#password-input').removeClass('error');
@@ -1046,7 +1004,7 @@
                   $('#last-name-input').removeClass('error');
                   $('#email-input').removeClass('error');
                   console.log('signUpPOST');
-                  var url = "/addPerson";
+                  var url = "/create/user";
                   var method = "POST";
                   var firstNameInput = document.getElementById('first-name');
                   var firstName = firstNameInput.value;
@@ -1112,8 +1070,7 @@
                             } else {
                               document.getElementById('signupButton').style.display='none';
                               document.getElementById('signInStatus').style.display='block';
-
-                          }
+                            }
                       }
 
                       request.open(method, url,true);

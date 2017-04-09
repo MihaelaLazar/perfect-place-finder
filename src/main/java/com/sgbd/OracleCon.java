@@ -177,9 +177,83 @@ public class OracleCon {
             currentEstate.setCity(rs.getString(13));
             estates.add(currentEstate);
         }
-        //step5 close the connection object
         con.close();
         return estates;
 
+    }
+
+    public void addProperty(String[] fields) throws SQLException,ClassNotFoundException {
+
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Connection con=DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
+        Statement stmt=con.createStatement();
+
+        String query = "insert into real_estate(id, real_estate_type,surface,rooms_number, rent_price,buy_price, construction_year, description,address,division,create_date,last_update) values( (select MAX(ID)+ 1 from real_estate), ";
+        String estate_type ="";
+        int surface;
+        int roomsNumber = 0;
+        int rentPrice = 0;
+        int buyPrice = 0;
+        int constructionYear = 0;
+        String description = "";
+        String address = "";
+        String division = "";
+        for (String field: fields) {
+            String postDataCopy = "";
+            for (int index = 1; index < field.length() -1; index++) {
+                postDataCopy += field.charAt(index);
+            }
+
+            String nameAndValue[] = postDataCopy.split("\":\"");
+            if(nameAndValue[0].equals("real-estate-type")){
+                estate_type = nameAndValue[1].toLowerCase();
+                query += "'"+ estate_type + "' ,";
+            }
+            if(nameAndValue[0].equals("surface")){
+                surface = Integer.parseInt(nameAndValue[1]);
+                query += surface + ", ";
+            }
+            if(nameAndValue[0].equals("rooms_number")){
+                roomsNumber = Integer.parseInt(nameAndValue[1]);
+                query += roomsNumber + ", ";
+            }
+
+            if(nameAndValue[0].equals("rent_price")){
+                rentPrice = Integer.parseInt(nameAndValue[1]);
+                query += rentPrice + ", ";
+            }
+            if(nameAndValue[0].equals("buy_price")){
+                buyPrice = Integer.parseInt(nameAndValue[1]);
+                query += buyPrice + ", ";
+            }
+            if(nameAndValue[0].equals("construction-year")){
+                constructionYear = Integer.parseInt(nameAndValue[1]);
+                query += constructionYear + ", ";
+            }
+            if(nameAndValue[0].equals("division")){
+                division = nameAndValue[1];
+                query += "'" + division + "', ";
+            }
+            if(nameAndValue[0].equals("description")){
+                description = nameAndValue[1];
+                query += "'" + description + "', ";
+            }
+
+            if(nameAndValue[0].equals("addressLat")){
+                address = nameAndValue[1] + ",";
+
+            }
+            if(nameAndValue[0].equals("addressLng")){
+                address += nameAndValue[1];
+                query += "'" + address + "', ";
+            }
+
+        }
+        query += "(select sysdate from dual),(select sysdate from dual))";
+
+        System.out.println(query);
+        ResultSet rs=stmt.executeQuery(query);
+        System.out.println("here");
     }
 }

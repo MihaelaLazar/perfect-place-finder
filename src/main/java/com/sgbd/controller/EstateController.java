@@ -20,18 +20,36 @@ import java.util.List;
 @RestController
 public class EstateController {
 
-    @RequestMapping(path = "/addProperty", method = RequestMethod.GET)
-    public @ResponseBody
-    String getAddProperty(Response response) {
-        System.out.println();
+    @RequestMapping(path = "/add/property", method = RequestMethod.GET)
+    public  ResponseEntity<String>  redirectToAddProperty(Response response,Request request) {
         response.setContentType("text/html");
-
         try {
             response.sendRedirect("/addPropertyRaluca.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return new ResponseEntity<>("Redirect to add property", HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/add/property", method = RequestMethod.POST)
+    @ResponseBody
+    public  ResponseEntity<String>  getAddProperty(Response response,Request request,@RequestBody String postData) {
+        System.out.println("ADD PROPERTY");
+        System.out.println(postData);
+        String postDataCopy = "";
+        for (int index = 1; index < postData.length() -1; index++) {
+            postDataCopy += postData.charAt(index);
+        }
+        String [] fields = postDataCopy.split(",");
+        OracleCon oracleCon = new OracleCon();
+        try {
+            oracleCon.addProperty(fields);
+        } catch (SQLException e) {
+            return new ResponseEntity<>("DUPLICATE PROPERTY",HttpStatus.FORBIDDEN);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Added property", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/paginate", method = RequestMethod.GET)
@@ -84,13 +102,6 @@ public class EstateController {
             postDataCopy += postData.charAt(index);
         }
         String [] filters = postDataCopy.split(",");
-//        try {
-//            estates = oracleCon.getEstates();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
         return new ResponseEntity<>(estates,HttpStatus.OK);
     }
 }
