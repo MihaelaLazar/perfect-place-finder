@@ -271,4 +271,35 @@ public class OracleCon {
         ResultSet rs=stmt.executeQuery(query);
         System.out.println("here");
     }
+
+    public void validateUser(String[] fields)  throws SQLException,ClassNotFoundException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        Connection con=DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
+        Statement stmt=con.createStatement();
+        String passwordWithCommas  = fields[0].split(":")[1];
+        String mailWithCommas = fields[1].split(":")[1];
+        String password = "";
+        for (int index = 1; index < passwordWithCommas.length() - 1; index ++){
+            password += passwordWithCommas.charAt(index);
+        }
+        String email = "";
+        for (int index = 1; index < mailWithCommas.length(); index ++){
+            email += mailWithCommas.charAt(index);
+        }
+        System.out.println("Pass: " + password + ", mail: " + email);
+        String query = "Select count(*) as total from users where email = ' "+ email +"' and user_password ='" + password + "'";
+        ResultSet rs = stmt.executeQuery(query);
+        int existsUser = -1;
+        while(rs.next()){
+
+            existsUser = rs.getInt("total");
+            System.out.println(existsUser);
+            System.out.println(rs.getString(0));
+        }
+        con.close();
+        if(existsUser == 0 ) {
+            throw  new SQLException();
+        }
+    }
 }

@@ -102,4 +102,27 @@ public class EstateController {
         String [] filters = postDataCopy.split(",");
         return new ResponseEntity<>(estates,HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
+    @ResponseBody
+    public  ResponseEntity<String>  validateUser(Response response,Request request,@RequestBody String postData) {
+        System.out.println("VALIDATE USER");
+        System.out.println(postData);
+        String postDataCopy = "";
+        for (int index = 2; index < postData.length() - 2; index++) {
+            postDataCopy += postData.charAt(index);
+        }
+        System.out.println(postDataCopy);
+        String [] fields = postDataCopy.split(",");
+
+        try {
+            OracleCon.getOracleCon().validateUser(fields);
+        } catch (SQLException e) {
+            return new ResponseEntity<>("INVALID USER/PASSWORD",HttpStatus.FORBIDDEN);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Login succeed", HttpStatus.OK);
+    }
+
 }
