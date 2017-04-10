@@ -58,7 +58,7 @@
     <div class="modal" id="logInStatusFailed-homePage">
       <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
         <form class="ui form">
-          <h2>Incorrect email</h2>
+          <h2>Incorrect email/password</h2>
         </form>
       </div>
     </div>
@@ -159,6 +159,7 @@ var modalSignUpHomePage= document.getElementById('signUphomePage');
     // When the user clicks anywhere outside of the modal, close it
     var modalLoginHomePage = document.getElementById('logInhomePage');
     var modalLoginStatusOk = document.getElementById('logInStatus-homePage');
+    var modalLoginStatusFailed = document.getElementById('logInStatusFailed-homePage');
     window.onclick = function(event) {
         if(event.target === modalSignUpHomePage )
         {
@@ -199,6 +200,10 @@ var modalSignUpHomePage= document.getElementById('signUphomePage');
                     } else {
                         if (event.target === modalLoginStatusOk)  {
                             document.getElementById('logInStatus-homePage').style.display='none';
+                        } else {
+                          if (event.target === modalLoginStatusFailed) {
+                             document.getElementById('logInStatusFailed-homePage').style.display='none';
+                          }
                         }
                     }
                 }
@@ -332,7 +337,7 @@ var array = [ 1, 2, 3, 4 ];
                       request.onload = function () {
                             status = request.status; // HTTP response status, e.g., 200 for "200 OK"
                             data = request.responseText; // Returned data, e.g., an HTML document.
-                            if (data === 'incorrect') {
+                            if (data === 'INVALID USER/PASSWORD') {
                                 console.log ("incorrect EMAIL");
                                 document.getElementById('logInhomePage').style.display='none';
                                 document.getElementById('logInStatusFailed-homePage').style.display='block';

@@ -270,6 +270,7 @@ public class OracleCon {
         System.out.println(query);
         ResultSet rs=stmt.executeQuery(query);
         System.out.println("here");
+        con.close();
     }
 
     public void validateUser(String[] fields)  throws SQLException,ClassNotFoundException {
