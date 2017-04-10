@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/semantic-ui-css/semantic.css">
     <link rel="stylesheet" href="css/estateDetails.css">
     <link rel="stylesheet" href="css/slideshow.css">
+    <link rel="stylesheet" href="css/automaticSlideshow.css">
 
     <link href="css/jquery-ui-1.10.1.css" rel="stylesheet">
   	<link href="css/nigran.datepicker.css" rel="stylesheet">
@@ -243,7 +244,10 @@
 
               </div>
           </div>
-          <div id="neighbourhood" class="ui segments" style="background-color: white;position:absolute; margin-left:0%;margin-top:60%; width: 97%;height: 25%;">
+
+
+
+      <div id="neighbourhood" class="ui segments" style="background-color: white;position:absolute; margin-left:0%;margin-top:60%; width: 97%;height: 25%;">
               <div class="ui blue segment">
                 <a href="#properties" style="font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Neighbourhood</a>
                 <a href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
@@ -252,8 +256,22 @@
 
               </div>
               <div id="map2" ></div>
+      </div>
+
+      <div class="slider" id="main-slider" style="display:none;"><!-- outermost container element -->
+          <div class="slider-wrapper"><!-- innermost wrapper element -->
+              <img src="http://lorempixel.com/1024/400/animals" alt="First" class="slide" /><!-- slides -->
+              <img src="http://lorempixel.com/1024/400/business" alt="Second" class="slide" />
+              <img src="http://lorempixel.com/1024/400/city" alt="Third" class="slide" />
           </div>
-        </div>
+      </div>
+
+  </div>
+
+
+
+
+
       </div>
       <div style="text-align:left; position:relative; margin-top:-7%; margin-left: 19%;">
         <span class="dot" onclick="currentSlide(1)"></span>
@@ -437,5 +455,7 @@
       <script async defer
        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzIgiHa5eWqPLvnoX7pS75GHTZffQo61k&callback=initMap2">
        </script>
+
+        <script src="js/automaticSlideshow.js"></script>
     </body>
   </html>
