@@ -240,29 +240,50 @@
   </div>
 </div>
 
-    <div id="loginButton" class="modal">
-      <span onclick="document.getElementById('loginButton').style.display='none'" class="close" title="Close Modal">×</span>
-      <div  class="modal-content animate" action="./searchCity.html" style="width:30%;">
-        <div class="container">
+<div class="modal" id="logInStatus">
+     <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+         <form class="ui form">
+             <h2>Successfully logged in</h2>
+         </form>
+     </div>
+ </div>
 
-          <form class="ui form">
-            <h4 class="ui dividing header">Login into your account</h4>
-            <div class="field">
-              <label>Email</label>
-              <input class="ui input" type="text" name="email" placeholder="Email"  required>
-            </div>
-            <div id="passwordContainerLogin" class="field">
-              <label>Password</label>
-              <input class="ui input" id="password" type="text" name="last-name" placeholder="Password" type="text" required>
-            </div>
-              <form method="POST" action="./searchCity.html">
-                  <button id="loginButtonSubmit" class="ui button" type="submit">Log In</button>
-              </form>
-          </form>
+ <div class="modal" id="logInStatusFailed">
+     <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+         <form class="ui form">
+             <h2>Username or password is incorrect.</h2>
+         </form>
+     </div>
+ </div>
 
-        </div>
-      </div>
-    </div>
+ <div id="loginButton" class="modal">
+   <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+     <div class="container">
+         <h4 class="ui dividing header">Log in to your account</h4>
+         <div class="field" style="width:100%;">
+             <div id="errorMessageContainer" style="display:none;">
+                 <ul>
+                     <li id="errorMessage"></li>
+                 </ul>
+             </div>
+             <label>Email</label>
+               <div id="email-input-login" class="ui fluid input">
+                   <input class="ui input" id="email-login" name="email" placeholder="Email" type="text">
+               </div>
+         </div>
+         <br>
+
+         <div class="field" style="width:100%;">
+           <label>Password</label>
+             <div id="password-input-login" class="ui fluid input">
+                 <input class="ui input" id="password-login" name="password" placeholder="Password" type="text">
+             </div>
+         </div>
+         <br>
+           <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOST()">Log In</button>
+           </div>
+ </div>
+ </div>
 
     <div class="modal" id="signInStatus">
         <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
@@ -997,6 +1018,62 @@
                   }
 
 
+                  function logInPOST() {
+                         $('#password-input-login').removeClass('error');
+                         $('#email-input-login').removeClass('error');
+                         console.log('logInPOST');
+                         var url = "/loginPerson";
+                         var method = "POST";
+                         var passInput = document.getElementById('password-login');
+                         var password = passInput.value;
+                         var emailInput = document.getElementById('email-login');
+                         var email = emailInput.value;
+                         var isValid = true;
+                         var atpos = email.indexOf("@");
+                         var dotpos = email.lastIndexOf(".");
+                         if (password === "") {
+                               $('#password-input-login').addClass('error');
+                               $('#password-login').attr("placeholder","Insert password");
+                                    $('#errorMessage').text("Insert password");
+                                    $('#errorMessageContainer').css("display", "block");
+                               isValid = false;
+                         }
+                         if (email === "" || atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
+                               $('#email-input-login').addClass('error');
+                               $('#email-login').attr("placeholder","Insert email");
+                                   $('#errorMessage').text("Insert email");
+                                   $('#errorMessageContainer').css("display", "block");
+                               isValid = false;
+                         }
+                         var postData = {
+                              "password" : password,
+                              "email" : email
+                             };
+                         if (isValid === true ){
+                             var async = true;
+                             var request = new XMLHttpRequest();
+                             var status;
+                             var data;
+                             request.onload = function () {
+                                   status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+                                   data = request.responseText; // Returned data, e.g., an HTML document.
+                                   if (data === 'Incorrect') {
+                                       console.log ("Incorrect email/password");
+                                       document.getElementById('loginButton').style.display='none';
+                                       document.getElementById('logInStatusFailed').style.display='block';
+                                   } else {
+                                     document.getElementById('loginButton').style.display='none';
+                                     document.getElementById('logInStatus').style.display='block';
+                                 }
+                             }
+                             request.open(method,url,true);
+                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                             request.send(JSON.stringify(postData));
+                             document.getElementById('loginButton').style.display='none';
+                              $("#email-login").val("");
+                              $("#password-login").val("");
+                         }
+                  }
 
            function signUpPOST() {
                   $('#password-input').removeClass('error');
