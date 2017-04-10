@@ -9,7 +9,16 @@ import java.util.List;
 
 public class OracleCon {
 
-    public OracleCon() {
+    private static OracleCon oracleCon;
+
+    public static OracleCon getOracleCon() {
+        if (oracleCon == null) {
+            oracleCon = new OracleCon();
+        }
+        return oracleCon;
+    }
+
+    private OracleCon() {
     }
 
     public void  connectToDB(){

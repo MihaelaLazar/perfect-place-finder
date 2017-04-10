@@ -41,9 +41,9 @@ public class EstateController {
             postDataCopy += postData.charAt(index);
         }
         String [] fields = postDataCopy.split(",");
-        OracleCon oracleCon = new OracleCon();
+
         try {
-            oracleCon.addProperty(fields);
+            OracleCon.getOracleCon().addProperty(fields);
         } catch (SQLException e) {
             return new ResponseEntity<>("DUPLICATE PROPERTY",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {
@@ -69,7 +69,6 @@ public class EstateController {
     public ResponseEntity<CitiesDTO> getPaginatedTableData(Request request, Response response) {
         System.out.println("Redirect in paginateTable POST");
         response.setContentType("application/json");
-        OracleCon oracleCon = new OracleCon();
         CitiesDTO estatesByCity = new CitiesDTO();
         String Uri = request.getQueryString();
         System.out.println(Uri);
@@ -81,7 +80,7 @@ public class EstateController {
             filters[index] = request.getParameter("columns["+ index+"][search][value]");
         }
         try {
-            estatesByCity = oracleCon.getEstates(Integer.parseInt(request.getParameter("start")), Integer.parseInt(request.getParameter("draw")),filters);
+            estatesByCity = OracleCon.getOracleCon().getEstates(Integer.parseInt(request.getParameter("start")), Integer.parseInt(request.getParameter("draw")),filters);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -95,7 +94,6 @@ public class EstateController {
         System.out.println("Redirect in paginateTable POST");
         response.setContentType("application/json");
         List<Estate> estates = new ArrayList<>(1000);
-        OracleCon oracleCon = new OracleCon();
         List<String> estatesCity = new ArrayList<>();
         String postDataCopy = "";
         for (int index = 1; index < postData.length() -1; index++) {

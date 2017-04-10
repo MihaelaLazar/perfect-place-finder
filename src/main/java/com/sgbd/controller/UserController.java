@@ -70,9 +70,8 @@ public class UserController {
             postDataCopy += postData.charAt(index);
         }
         String [] fields = postDataCopy.split(",");
-        OracleCon oracleCon = new OracleCon();
         try {
-            oracleCon.addUser(fields);
+            OracleCon.getOracleCon().addUser(fields);
         } catch (SQLException e) {
             return new ResponseEntity<>("DUPLICATE",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {
