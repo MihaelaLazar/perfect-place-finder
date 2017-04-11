@@ -289,18 +289,18 @@ public class OracleCon {
             email += mailWithCommas.charAt(index);
         }
         System.out.println("Pass: " + password + ", mail: " + email);
-        String query = "Select count(*) as total from users where email = ' "+ email +"' and user_password ='" + password + "'";
+        String query = "Select count(*) as total from users where email = '"+ email +"' and user_password ='" + password + "'";
+        //System.out.println(query);
         ResultSet rs = stmt.executeQuery(query);
         int existsUser = -1;
-        while(rs.next()){
+        System.out.println(query);
+        rs.next();
+        existsUser = Integer.parseInt(rs.getString(1));
+        System.out.println(existsUser);
 
-            existsUser = rs.getInt("total");
-            System.out.println(existsUser);
-            System.out.println(rs.getString(0));
-        }
         con.close();
         if(existsUser == 0 ) {
-            throw  new SQLException();
+          //  throw  new SQLException();
         }
     }
 }
