@@ -2,6 +2,7 @@ package com.sgbd;
 
 import com.sgbd.model.CitiesDTO;
 import com.sgbd.model.Estate;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -300,7 +301,7 @@ public class OracleCon {
 
         con.close();
         if(existsUser == 0 ) {
-          //  throw  new SQLException();
+            throw  new SQLException();
         }
     }
 }
