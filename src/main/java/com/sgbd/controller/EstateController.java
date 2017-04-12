@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -103,26 +104,6 @@ public class EstateController {
         return new ResponseEntity<>(estates,HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
-    @ResponseBody
-    public  ResponseEntity<String>  validateUser(Response response,Request request,@RequestBody String postData) {
-        System.out.println("VALIDATE USER");
-        System.out.println(postData);
-        String postDataCopy = "";
-        for (int index = 2; index < postData.length() - 2; index++) {
-            postDataCopy += postData.charAt(index);
-        }
-        System.out.println(postDataCopy);
-        String [] fields = postDataCopy.split(",");
 
-        try {
-            OracleCon.getOracleCon().validateUser(fields);
-        } catch (SQLException e) {
-            return new ResponseEntity<>("INVALID USER/PASSWORD",HttpStatus.FORBIDDEN);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("Login succeed", HttpStatus.OK);
-    }
 
 }

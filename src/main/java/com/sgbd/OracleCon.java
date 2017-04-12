@@ -274,7 +274,7 @@ public class OracleCon {
         con.close();
     }
 
-    public void validateUser(String[] fields)  throws SQLException,ClassNotFoundException {
+    public String[] validateUser(String[] fields)  throws SQLException,ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection con=DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
@@ -302,6 +302,9 @@ public class OracleCon {
         con.close();
         if(existsUser == 0 ) {
             throw  new SQLException();
+        }else {
+            String []emailAndPassword = {email,password};
+            return emailAndPassword;
         }
     }
 }
