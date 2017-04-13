@@ -2,6 +2,7 @@ package com.sgbd.controller;
 
 import com.sgbd.OracleCon;
 import com.sgbd.UserService;
+import com.sgbd.util.ContentType;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Created by mihae on 4/3/2017.
- */
+import static com.sgbd.util.ContentType.JSON;
+
 @RestController
 public class UserController {
 
@@ -79,7 +79,7 @@ public class UserController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        response.setContentType("application/json");
+        response.setContentType(JSON.getContentType());
         return new ResponseEntity<>("Added in database",HttpStatus.OK);
     }
 
@@ -88,13 +88,13 @@ public class UserController {
     public  ResponseEntity<String>  validateUser(Response response,Request request,@RequestBody String postData) {
         System.out.println("VALIDATE USER");
         System.out.println(postData);
-        String postDataCopy = "";
+        StringBuilder postDataCopy = new StringBuilder();
         for (int index = 2; index < postData.length() - 2; index++) {
-            postDataCopy += postData.charAt(index);
+            postDataCopy.append(postData.charAt(index));
         }
         System.out.println(postDataCopy);
-        String [] fields = postDataCopy.split(",");
-        String []emailAndPassword = new String[3];
+        String[] fields = postDataCopy.toString().split(",");
+        String[] emailAndPassword = new String[3];
         try {
             emailAndPassword =  OracleCon.getOracleCon().validateUser(fields);
         } catch (SQLException e) {
@@ -105,6 +105,7 @@ public class UserController {
         HttpSession session = request.getSession();
         session.setAttribute("Username", emailAndPassword[0]);
         session.setAttribute("Password", emailAndPassword[1]);
+
 //        Cookie []cookie = request.getCookies();
 //        System.out.println("Cookies: " + cookie[0].getName());
         System.out.println(session.getCreationTime() + " " + session.getAttribute("Username"));

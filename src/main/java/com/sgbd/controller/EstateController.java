@@ -21,6 +21,8 @@ import java.util.List;
 @RestController
 public class EstateController {
 
+    public static final int NUMBER_OF_COLUMNS = 13;
+
     @RequestMapping(path = "/add/property", method = RequestMethod.GET)
     public  ResponseEntity<String>  redirectToAddProperty(Response response,Request request) {
         response.setContentType("text/html");
@@ -77,7 +79,7 @@ public class EstateController {
         System.out.println(request.getParameter("columns[0][search][value]"));
         System.out.println(request.getParameter("columns[1][search][value]"));
         String[] filters = new String[14];
-        for(int index = 0; index < 13; index ++) {
+        for(int index = 0; index < NUMBER_OF_COLUMNS; index ++) {
             filters[index] = request.getParameter("columns["+ index+"][search][value]");
         }
         try {
