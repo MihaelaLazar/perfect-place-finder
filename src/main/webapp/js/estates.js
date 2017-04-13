@@ -11,7 +11,8 @@ var estates = [
       photo: "images/Iasi-estates/e1",
       typeOfEstate: "house",
       rooms: 3,
-      price: 1000
+      price: 1000,
+      coordinates: {lat:47.159842, lng: 27.5890153}
     },
     {
       id :"e2",
@@ -25,7 +26,8 @@ var estates = [
       photo: "images/Iasi-estates/e2",
       typeOfEstate: "house",
       rooms: 5,
-      price: 100000
+      price: 100000,
+      coordinates: {lat:47.15511 , lng: 27.5863357 }
     },
     {
       id :"e3",
@@ -39,7 +41,8 @@ var estates = [
       photo: "images/Iasi-estates/e3",
       typeOfEstate: "house",
       rooms: 5,
-      price: 220000
+      price: 220000,
+      coordinates: {lat: 47.1502871, lng: 27.5866785}
     },
     {
       id :"e4",
@@ -53,7 +56,8 @@ var estates = [
       photo: "images/Iasi-estates/e4",
       typeOfEstate: "house",
       rooms: 3,
-      price: 65000
+      price: 65000,
+      coordinates: {lat: 47.136373, lng: 27.5960554}
     },
     {
       id :"e5",
@@ -67,7 +71,8 @@ var estates = [
       photo: "images/Iasi-estates/e5",
       typeOfEstate: "house",
       rooms: 4,
-      price: 67000
+      price: 67000,
+      coordinates: {lat: 47.1369953, lng:  27.6040804}
     },
     {
       id :"e6",
@@ -81,7 +86,8 @@ var estates = [
       photo: "images/Iasi-estates/e4",
       typeOfEstate: "house",
       rooms: 3,
-      price: 65000
+      price: 65000,
+      coordinates: {lat: 47.1433629, lng:  27.5973609}
     },
     {
       id :"e7",
@@ -95,7 +101,8 @@ var estates = [
       photo: "images/Iasi-estates/e5",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.1503973, lng: 27.5886367 }
     },
     {
       id :"e8",
@@ -109,7 +116,8 @@ var estates = [
       photo: "images/Iasi-estates/e2",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.15023, lng: 27.5878581}
     },
     {
       id :"e9",
@@ -123,7 +131,8 @@ var estates = [
       photo: "images/Iasi-estates/e1",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.15028, lng: 27.5878581 }
     },
     {
       id :"e10",
@@ -137,7 +146,8 @@ var estates = [
       photo: "images/Iasi-estates/e3",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.1653452, lng: 27.5715171 }
     },
     {
       id :"e11",
@@ -151,7 +161,8 @@ var estates = [
       photo: "images/Iasi-estates/e4",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.166027, lng: 27.5714267}
     },
     {
       id :"e12",
@@ -165,7 +176,8 @@ var estates = [
       photo: "images/Iasi-estates/e2",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates: {lat: 47.1567927, lng: 27.5843999 }
     },
     {
       id :"e13",
@@ -179,6 +191,7 @@ var estates = [
       photo: "images/Iasi-estates/e5",
       typeOfEstate: "house",
       rooms: "3",
-      price: 200
+      price: 200,
+      coordinates:{lat: 47.1567927, lng: 27.5843999 }
     }
 ];

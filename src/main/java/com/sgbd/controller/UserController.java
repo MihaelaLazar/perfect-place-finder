@@ -52,7 +52,7 @@ public class UserController {
     @RequestMapping(path = "/error", method = RequestMethod.GET)
     public Object error(Response response){
         try {
-            response.sendRedirect("/index.html");
+            response.sendRedirect("/error.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
