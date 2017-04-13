@@ -161,53 +161,67 @@
                   </div>
               </div>
 
-              <div class="eight wide field">
+              <div class="sixteen wide field">
                   <div class="ui raised  very padded  segment" style="position:absolute;margin-top:0%; margin-left: 48%; width:50%; height: 17%;">
-                      <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
-                          <h3>Contact this property</h3>
-                          <div class="lead-form-contact-callout">Call
-                              <strong class="tel">(844) 563-8113</strong>
-                              or send an email
+                      <div class="field">
+                          <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
+                              <h3>Contact this property</h3>
+                              <div class="lead-form-contact-callout">Call
+                                  <strong class="tel">(844) 563-8113</strong>
+                                  or send an email
+                              </div>
                           </div>
                       </div>
-                      <div class="ui raised inverted segment" style="background-color: #c2e2e8;position:absolute; width: 90%;height: 70%;">
-                          <div class="ui inverted form">
-                              <div class="field">
-                                  <label>Move-in:</label>
-                                  <article>
-                                      <div class="ui mini input">
-                                          <input type="text" id="date-picker-input-1" style="width:100%;"/>
-                                      </div>
-                                  </article>
-                                  <script src="js/jquery-1.9.1.js"> </script>
-                                  <script src="js/jquery-ui-1.10.1.min.js"></script>
-                                  <script>
-                  $(function() {
-                    $( "#date-picker-input-1" ).datepicker({
-                      inline: true,
-                      showOtherMonths: true
-                    })
-                    .datepicker('widget').wrap('<div class="ll-skin-nigran"/>');
-                  });
-                </script>
-                              </div>
-                          </div>
-                          <label>From: </label>
-                          <div class="field">
-                              <div class="ui small fluid input field">
-                                  <input placeholder="Name" type="text">
-                              </div>
-                          </div>
 
-                          <div class="field" style="margin-top:1.5%;">
-                              <div class="ui small fluid input field">
-                                  <input placeholder="Email address" type="text">
+                      <div class="field">
+                          <div class="ui raised inverted segment" style="background-color: #c2e2e8;position:relative; width: 100%;height: 73%;">
+                              <div class="field">
+                              <div class="row">
+                                  <div class="ui inverted form">
+                                      <div class="field">
+                                          <label>Move-in:</label>
+                                          <article>
+                                              <div class="ui mini input">
+                                                  <input type="text" id="date-picker-input-1" style="width:100%;"/>
+                                              </div>
+                                          </article>
+                                          <script src="js/jquery-1.9.1.js"> </script>
+                                          <script src="js/jquery-ui-1.10.1.min.js"></script>
+                                          <script>
+                                              $(function() {
+                                                  $( "#date-picker-input-1" ).datepicker({
+                                                      inline: true,
+                                                      showOtherMonths: true
+                                                  })
+                                                      .datepicker('widget').wrap('<div class="ll-skin-nigran"/>');
+                                              });
+                                          </script>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <label>From: </label>
+                                  <div class="field">
+                                      <div class="ui small fluid input field">
+                                          <input placeholder="Name" type="text">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="field" style="margin-top:1.5%;">
+                                      <div class="ui small fluid input field">
+                                          <input placeholder="Email address" type="text">
+                                      </div>
+                                  </div>
+                                  <div class="ui small fluid input field" style="margin-top:1.5%;">
+                                      <input placeholder="Phone" type="text">
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="ui fluid primary submit button" style="margin-top:1.5%;">Send</div>
                               </div>
                           </div>
-                          <div class="ui small fluid input field" style="margin-top:1.5%;">
-                              <input placeholder="Phone" type="text">
                           </div>
-                          <div class="ui fluid primary submit button" style="margin-top:1.5%;">Send</div>
                       </div>
                   </div>
               </div>
