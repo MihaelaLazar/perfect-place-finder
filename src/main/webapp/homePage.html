@@ -6,12 +6,18 @@
     <link rel="stylesheet" href="css/myCustom.css">
     <link rel="stylesheet" href="css/singUpForm.css">
     <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
 
     <script src="node_modules/semantic-ui-css/semantic.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <link rel="icon" type="image/png" href="images/place-finder.png">
     <title>PerF</title>
   </head>
@@ -155,7 +161,20 @@
   </div>
 
   <script>
-var modalSignUpHomePage= document.getElementById('signUphomePage');
+
+      $( function() {
+    var availableTags = [
+      "Iasi",
+      "Bucuresti",
+      "London",
+      "New York"
+    ];
+    $( "#chosenCity" ).autocomplete({
+      source: availableTags
+    });
+  } );
+
+    var modalSignUpHomePage= document.getElementById('signUphomePage');
     // When the user clicks anywhere outside of the modal, close it
     var modalLoginHomePage = document.getElementById('logInhomePage');
     var modalLoginStatusOk = document.getElementById('logInStatus-homePage');
@@ -223,8 +242,10 @@ var modalSignUpHomePage= document.getElementById('signUphomePage');
     function checkCity(){
       var input = document.getElementById('chosenCity'),
         cityName = input.value;
-    if (cityName == "Iasi" || cityName == "Bucuresti" || cityName == "New York" || cityName == "London") {
-        window.location = "./searchCity.html?city=" + cityName;
+    if (cityName.toUpperCase() == "IASI" || cityName.toUpperCase() == "BUCURESTI" || cityName.toUpperCase() == "NEW YORK" || cityName.toUpperCase() == "LONDON") {
+        var cityNameCopy  = cityName[0].toUpperCase();
+        cityNameCopy = cityNameCopy.concat(cityName.substring(1).toLowerCase());
+        window.location = "./searchCity.html?city=" + cityNameCopy;
         var cityInputValue = document.getElementById('chosenCity').value;
         document.getElementById('city').value = cityInputValue;
     } else {
