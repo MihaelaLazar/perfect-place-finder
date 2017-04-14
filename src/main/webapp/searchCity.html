@@ -615,7 +615,7 @@
                         url: "images/Marker Filled-50.png",
                         scaledSize: new google.maps.Size(40, 40),
                         origin: new google.maps.Point(0,0),
-                        anchor: new google.maps.Point(0, 0)
+                        anchor: new google.maps.Point(0,0)
                     };
                      var latLong = new google.maps.LatLng(estates[i].coordinates[0], estates[i].coordinates[1]);
                      var marker = new google.maps.Marker({
@@ -671,38 +671,38 @@
                     initMap();
                     var i;
                     var firstChildPut = false;
-                    for (i = 0; i < estates.length; i ++) {
-                      var currentDiv;
-                      if (estates[i].city === city_id) {
-                        if (firstChildPut === false ) {
-                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
-                          firstChildPut = true;
-                        } else {
-                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate="+ estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
-                        }
-                        console.log(estates[i].coordinates);
-                        $("#estates").append(currentDiv);
-                        var icon = {
-                              url: "images/Marker Filled-50.png",
-                              scaledSize: new google.maps.Size(40, 40),
-                              origin: new google.maps.Point(0,0),
-                              anchor: new google.maps.Point(0, 0)
-                            };
-                         var marker = new google.maps.Marker({
-                          position: estates[i].coordinates,
-                          icon: icon,
-                          map:map
-                        });
-                        marker.addListener('click', function toggleBounce(){
-                            if (marker.getAnimation() !== null) {
-                               marker.setAnimation(null);
-                           } else {
-                             marker.setAnimation(google.maps.Animation.BOUNCE);
-                           }
-                        });
-                        estatesMarkers.push(estates[i].coordinates);
-                    }
-                  }
+//                    for (i = 0; i < estates.length; i ++) {
+//                      var currentDiv;
+//                      if (estates[i].city === city_id) {
+//                        if (firstChildPut === false ) {
+//                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+//                          firstChildPut = true;
+//                        } else {
+//                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate="+ estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
+//                        }
+//                        console.log(estates[i].coordinates);
+//                        $("#estates").append(currentDiv);
+//                        var icon = {
+//                              url: "images/Marker Filled-50.png",
+//                              scaledSize: new google.maps.Size(40, 40),
+//                              origin: new google.maps.Point(0,0),
+//                              anchor: new google.maps.Point(0, 0)
+//                            };
+//                         var marker = new google.maps.Marker({
+//                          position: estates[i].coordinates,
+//                          icon: icon,
+//                          map:map
+//                        });
+//                        marker.addListener('click', function toggleBounce(){
+//                            if (marker.getAnimation() !== null) {
+//                               marker.setAnimation(null);
+//                           } else {
+//                             marker.setAnimation(google.maps.Animation.BOUNCE);
+//                           }
+//                        });
+//                        estatesMarkers.push(estates[i].coordinates);
+//                    }
+//                  }
                };
 
 
@@ -720,7 +720,7 @@
                         var scrollPosition = $("#scrolling").innerHeight() + $("#scrolling").scrollTop() + 0.5;
                       //  console.log("elementHeight: " + elementHeight + ", scrollPosition: " + scrollPosition);
                         return (elementHeight <= scrollPosition);
-                    };
+                    }
 
                 function loadmore() {
                 }
@@ -793,6 +793,26 @@
                    pollutionLayerIasi = new google.maps.Data();
                    pollutionLayerBucuresti = new google.maps.Data();
                    pollutionLayerNewYork = new google.maps.Data();
+
+                  var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                  var icon = {
+                      url: "images/Marker Filled-50.png",
+                      scaledSize: new google.maps.Size(40, 40),
+                      origin: new google.maps.Point(0,0),
+                      anchor: new google.maps.Point(0, 0)
+                  };
+                  var markers = estatesMarkers.map(function(location,i) {
+                      return new google.maps.Marker({
+                          position: location,
+                          label: labels[i % labels.length],
+                          icon:  icon
+                      });
+                  });
+
+                  // Add a marker clusterer to manage the markers.
+                  var markerCluster = new MarkerClusterer(map, markers,
+                      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
               }
 
               function getCityCoordinates(city_id) {
@@ -1216,18 +1236,6 @@
 
             });
 
-              var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-         var markers = estatesMarkers.map(function(location,i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
-          });
-        });
-
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
