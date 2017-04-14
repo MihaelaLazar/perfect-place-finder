@@ -521,9 +521,9 @@
 
             var city_id = selectCity.options[selectCity.selectedIndex].value;
             cityCoordinates = getCityCoordinates(city_id);
-            if (globalMap.getCenter() != cityCoordinates) {
+            if (map.getCenter() != cityCoordinates) {
               console.log("CHANGING CITY TO: " + city_id);
-              globalMap.setCenter(cityCoordinates);
+              map.setCenter(cityCoordinates);
 
             }
             var selectType = document.getElementById('type');
@@ -622,8 +622,10 @@
                       position: latLong,
                       animation: google.maps.Animation.DROP,
                       icon:icon,
-                      map:globalMap
+                      map:map
                     });
+                    estatesMarkers.push(estates[i].coordinates);
+                    console.log(estatesMarkers);
                     marker.addListener('click', function toggleBounce() {
                         if (marker.getAnimation() !== null) {
                            marker.setAnimation(null);
@@ -633,6 +635,7 @@
                     });
                   }
             }
+
         }
 
          var scrollLoad = true;
@@ -688,7 +691,7 @@
                          var marker = new google.maps.Marker({
                           position: estates[i].coordinates,
                           icon: icon,
-                          map:globalMap
+                          map:map
                         });
                         marker.addListener('click', function toggleBounce(){
                             if (marker.getAnimation() !== null) {
@@ -697,6 +700,7 @@
                              marker.setAnimation(google.maps.Animation.BOUNCE);
                            }
                         });
+                        estatesMarkers.push(estates[i].coordinates);
                     }
                   }
                };
@@ -720,7 +724,7 @@
 
                 function loadmore() {
                 }
-              var globalMap  = null;
+              var map  = null;
               var markerGlobal;
               var trafficLayer;
               var transitLayer;
@@ -733,6 +737,7 @@
               var schoolsMarkersArray = [];
               var cityCoordinates;
               var heatmap;
+              var estatesMarkers = [];
 
               function initMap() {
                     console.log("initMap");
@@ -741,13 +746,13 @@
                     if (getQueryVariable('city') === null) {
                       cityCoordinates = getCityCoordinates('Iasi');
                     }
-                    globalMap  = null;
+                    map  = null;
                     geocoder = new google.maps.Geocoder();
-                    var map = new google.maps.Map(document.getElementById('map'), {
+                    var localMap = new google.maps.Map(document.getElementById('map'), {
                       zoom: 14,
                       center: cityCoordinates
                     });
-                    globalMap = map;
+                    map = localMap;
                     var image = 'images/pollution-marker.png';
                     var icon = {
                       url: "images/pollution-marker.png",
@@ -757,7 +762,7 @@
                     };
                     var marker = new google.maps.Marker({
                       position: cityCoordinates,
-                      map: globalMap,
+                      map: map,
                       title: "Click here to zoom",
                       icon: icon
                     });
@@ -772,11 +777,11 @@
 
                     marker.addListener('click',function(){
                       console.log('click'),
-                      globalMap.setCenter(marker.getPosition()),
+                      map.setCenter(marker.getPosition()),
                       document.getElementById('myButton').style.display = 'initial';
                    })
                     marker.addListener('mouseover',function(){
-                      globalMap.setCenter(marker.getPosition()),
+                      map.setCenter(marker.getPosition()),
                       infoWindowOnMouseover.open(map,marker)
 
                     })
@@ -858,10 +863,10 @@
              }
              function addOverlay(id) {
                if(id == 'trafficLayer'){
-                 trafficLayer.setMap(globalMap);
+                 trafficLayer.setMap(map);
                }else {
                  if (id == 'transitLayer'){
-                   transitLayer.setMap(globalMap);
+                   transitLayer.setMap(map);
                  } else {
                    if (id == 'smogLayer'){
                      var icon = {
@@ -874,7 +879,7 @@
                      for (i = 0; i < smogLocations.length; i++) {
                        marker = new google.maps.Marker({
                          position: new google.maps.LatLng(smogLocations[i][0], smogLocations[i][1]),
-                         map: globalMap,
+                         map: map,
                          icon: icon
                        });
                        var cityCircle = new google.maps.Circle({
@@ -883,7 +888,7 @@
                          strokeWeight: 2,
                          fillColor: '#808080',
                          fillOpacity: 0.35,
-                         map: globalMap,
+                         map: map,
                          center: marker.position,
                          radius: 100
                          });
@@ -902,7 +907,7 @@
                        for (i = 0; i < noiseLocations.length; i++) {
                          marker = new google.maps.Marker({
                            position: new google.maps.LatLng(noiseLocations[i][0], noiseLocations[i][1]),
-                          // map: globalMap,
+                          // map: map,
                            icon: icon
                          });
                          var cityCircle = new google.maps.Circle({
@@ -911,7 +916,7 @@
                            strokeWeight: 2,
                            fillColor: '#808080',
                            fillOpacity: 0.35,
-                           map: globalMap,
+                           map: map,
                            center: marker.position,
                            radius: 100
                            });
@@ -920,9 +925,9 @@
                          console.log(noiseMarkersArray);
                      } else {
                        if (id == "schools"){
-                         var service = new google.maps.places.PlacesService(globalMap);
+                         var service = new google.maps.places.PlacesService(map);
                          service.nearbySearch({
-                           location: globalMap.getCenter(),
+                           location: map.getCenter(),
                            radius: 1000,
                            type: ['school']
                          }, callback);
@@ -937,7 +942,7 @@
                                   fillOpacity: feature.getProperty('fillOpacity')
                                 });
                               });
-                              pollutionLayerIasi.setMap(globalMap);
+                              pollutionLayerIasi.setMap(map);
                               pollutionLayerBucuresti.addGeoJson(bucurestiPollution);
                               pollutionLayerBucuresti.setStyle(function(feature) {
                                   return ({
@@ -947,7 +952,7 @@
                                     fillOpacity: feature.getProperty('fillOpacity')
                                   });
                               });
-                              pollutionLayerBucuresti.setMap(globalMap);
+                              pollutionLayerBucuresti.setMap(map);
                               pollutionLayerNewYork.addGeoJson(newyorkPollution);
                               pollutionLayerNewYork.setStyle(function(feature) {
                                   return ({
@@ -957,12 +962,12 @@
                                     fillOpacity: feature.getProperty('fillOpacity')
                                   });
                               });
-                              pollutionLayerNewYork.setMap(globalMap);
+                              pollutionLayerNewYork.setMap(map);
                                    } else {
                              if (id === "congestionLayer"){
                                heatmap = new google.maps.visualization.HeatmapLayer({
                                    data: getPoints(),
-                                   map: globalMap
+                                   map: map
                                });
                               changeGradient();
                              }
@@ -983,7 +988,7 @@
                 function createMarker(place) {
                     var placeLoc = place.geometry.location;
                     var marker = new google.maps.Marker({
-                      map: globalMap,
+                      map: map,
                       position: place.geometry.location
                     });
                     schoolsMarkersArray.push(marker);
@@ -992,9 +997,9 @@
                   var address = document.getElementById('address').value;
                   geocoder.geocode( { 'address': address}, function(results, status) {
                     if (status == 'OK') {
-                      globalMap.setCenter(results[0].geometry.location);
+                      map.setCenter(results[0].geometry.location);
                       var marker = new google.maps.Marker({
-                        map: globalMap,
+                        map: map,
                         position: results[0].geometry.location
                       });
                     } else {
@@ -1211,6 +1216,21 @@
 
             });
 
+              var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+         var markers = estatesMarkers.map(function(location,i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiF0Un_CZtZJXb_az1JsfXQaejuF6iCXk&libraries=places,visualization&callback=initMap">
