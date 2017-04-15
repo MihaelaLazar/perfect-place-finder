@@ -1,8 +1,8 @@
 package com.sgbd.controller;
 
-import com.sgbd.DTO.EstateDTO;
 import com.sgbd.OracleCon;
-import com.sgbd.DTO.CitiesDTO;
+import com.sgbd.dto.CitiesDTO;
+import com.sgbd.dto.EstateDTO;
 import com.sgbd.model.Estate;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -15,16 +15,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mihaela Lazar on 4/8/2017.
- */
 @RestController
 public class EstateController {
 
     public static final int NUMBER_OF_COLUMNS = 13;
 
     @RequestMapping(path = "/add/property", method = RequestMethod.GET)
-    public  ResponseEntity<String>  redirectToAddProperty(Response response,Request request) {
+    public ResponseEntity<String> redirectToAddProperty(Response response, Request request) {
         response.setContentType("text/html");
         try {
             response.sendRedirect("/addPropertyRaluca.html");
@@ -34,9 +31,9 @@ public class EstateController {
         return new ResponseEntity<>("Redirect to add property", HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/add/property", headers="Accept=application/json",method = RequestMethod.POST)
+    @RequestMapping(path = "/add/property", headers = "Accept=application/json", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String>  getAddProperty(Response response,Request request,@RequestBody EstateDTO estateDTO) {
+    public ResponseEntity<String> getAddProperty(Response response, Request request, @RequestBody EstateDTO estateDTO) {
         System.out.println("ADD PROPERTY");
         System.out.println(estateDTO);
 //        String postDataCopy = "";
@@ -48,7 +45,7 @@ public class EstateController {
         try {
             OracleCon.getOracleCon().addProperty(estateDTO);
         } catch (SQLException e) {
-            return new ResponseEntity<>("DUPLICATE PROPERTY",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("DUPLICATE PROPERTY", HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,11 +76,11 @@ public class EstateController {
         System.out.println(request.getParameter("columns[0][search][value]"));
         System.out.println(request.getParameter("columns[1][search][value]"));
         String[] filters = new String[14];
-        for(int index = 0; index < NUMBER_OF_COLUMNS; index ++) {
-            filters[index] = request.getParameter("columns["+ index+"][search][value]");
+        for (int index = 0; index < NUMBER_OF_COLUMNS; index++) {
+            filters[index] = request.getParameter("columns[" + index + "][search][value]");
         }
         try {
-            estatesByCity = OracleCon.getOracleCon().getEstates(Integer.parseInt(request.getParameter("start")), Integer.parseInt(request.getParameter("draw")),filters);
+            estatesByCity = OracleCon.getOracleCon().getEstates(Integer.parseInt(request.getParameter("start")), Integer.parseInt(request.getParameter("draw")), filters);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -99,13 +96,12 @@ public class EstateController {
         List<Estate> estates = new ArrayList<>(1000);
         List<String> estatesCity = new ArrayList<>();
         String postDataCopy = "";
-        for (int index = 1; index < postData.length() -1; index++) {
+        for (int index = 1; index < postData.length() - 1; index++) {
             postDataCopy += postData.charAt(index);
         }
-        String [] filters = postDataCopy.split(",");
-        return new ResponseEntity<>(estates,HttpStatus.OK);
+        String[] filters = postDataCopy.split(",");
+        return new ResponseEntity<>(estates, HttpStatus.OK);
     }
-
 
 
 }

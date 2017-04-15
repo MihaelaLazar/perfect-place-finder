@@ -1,4 +1,4 @@
-package com.sgbd.DTO;
+package com.sgbd.dto;
 
 public class SignUpDTO {
 
@@ -8,7 +8,8 @@ public class SignUpDTO {
     private String password;
     private String email;
 
-    public SignUpDTO() {}
+    public SignUpDTO() {
+    }
 
     public String getFirstName() {
         return firstName;

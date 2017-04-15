@@ -1,4 +1,4 @@
-package com.sgbd.DTO;
+package com.sgbd.dto;
 
 import java.io.Serializable;
 
@@ -16,7 +16,8 @@ public class EstateDTO implements Serializable {
     private String division;
     private String city;
 
-    public EstateDTO() {}
+    public EstateDTO() {
+    }
 
     public String getRealEstateType() {
         return realEstateType;

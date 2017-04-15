@@ -1,4 +1,4 @@
-package com.sgbd.DTO;
+package com.sgbd.dto;
 
 public class CitiesDTO {
 
@@ -14,7 +14,8 @@ public class CitiesDTO {
         this.data = data;
     }
 
-    public CitiesDTO(){}
+    public CitiesDTO() {
+    }
 
     public int getDraw() {
         return draw;

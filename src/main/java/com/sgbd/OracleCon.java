@@ -1,9 +1,9 @@
 package com.sgbd;
 
-import com.sgbd.DTO.CitiesDTO;
-import com.sgbd.DTO.EstateDTO;
-import com.sgbd.DTO.LoginDTO;
-import com.sgbd.DTO.SignUpDTO;
+import com.sgbd.dto.CitiesDTO;
+import com.sgbd.dto.EstateDTO;
+import com.sgbd.dto.LoginDTO;
+import com.sgbd.dto.SignUpDTO;
 import com.sgbd.model.Estate;
 
 import java.sql.*;
@@ -24,48 +24,50 @@ public class OracleCon {
     private OracleCon() {
     }
 
-    public void  connectToDB(){
-        try{
+    public void connectToDB() {
+        try {
             //step1 load the driver class
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
             //step2 create  the connection object
-            Connection con=DriverManager.getConnection(
-                    "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
 
             //step3 create the statement object
-            Statement stmt=con.createStatement();
+            Statement stmt = con.createStatement();
 
             //step4 execute query
-            ResultSet rs=stmt.executeQuery("select * from userdfgs");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
+            ResultSet rs = stmt.executeQuery("select * from userdfgs");
+            while (rs.next())
+                System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
 
             //step5 close the connection object
             con.close();
 
-        }catch(Exception e){ System.out.println(e);}
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
 
     public void addUser(SignUpDTO user) throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
-        Statement stmt=con.createStatement();
+        Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
+        Statement stmt = con.createStatement();
 
         String query = "insert into users(id, first_name, last_name, user_password,email, username, user_role) values( (select MAX(ID)+ 1 from users), ";
         user.setUsername(user.getFirstName() + "." + user.getLastName());
-        query += "'" + user.getFirstName() + "', '"+ user.getLastName()+"', '"+ user.getPassword() + "', '"+user.getEmail()+ "', '"+user.getUsername()  +"','user')";
+        query += "'" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', '" + user.getUsername() + "','user')";
         System.out.println(query);
-        ResultSet rs=stmt.executeQuery(query);
+        ResultSet rs = stmt.executeQuery(query);
     }
 
-    public CitiesDTO getEstates(int startPosition, int draw,String[] filters) throws SQLException, ClassNotFoundException {
+    public CitiesDTO getEstates(int startPosition, int draw, String[] filters) throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
-        Statement stmt=con.createStatement();
+        Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
+        Statement stmt = con.createStatement();
         String queryFilters = " ";
         filters[0] = filters[0].trim();
         filters[1] = filters[1].trim();
@@ -121,11 +123,11 @@ public class OracleCon {
         }
         System.out.println("Query filters: " + queryFilters + "!!!");
 
-        ResultSet rs=stmt.executeQuery("select * from real_estate where "+ queryFilters + "id >= " + startPosition + " and id <= " + (startPosition + 10) + "order by id");
+        ResultSet rs = stmt.executeQuery("select * from real_estate where " + queryFilters + "id >= " + startPosition + " and id <= " + (startPosition + 10) + "order by id");
         List<Estate> estates = new ArrayList<>();
-        String [][] estatesString = new String[12][14];
+        String[][] estatesString = new String[12][14];
         int index = 0;
-        while(rs.next()){
+        while (rs.next()) {
             String currentEstateString[] = new String[13];
             currentEstateString[0] = String.valueOf(rs.getInt(1));
             currentEstateString[1] = rs.getString(2);
@@ -141,27 +143,27 @@ public class OracleCon {
             currentEstateString[11] = rs.getDate(12).toString();
             currentEstateString[12] = rs.getString(13);
             estatesString[index] = currentEstateString;
-            index ++;
+            index++;
         }
-        rs=stmt.executeQuery("select count(*) from real_estate");
+        rs = stmt.executeQuery("select count(*) from real_estate");
         int totalCount = 0;
-        while (rs.next()){
-           totalCount = rs.getInt(1);
+        while (rs.next()) {
+            totalCount = rs.getInt(1);
         }
 
-        CitiesDTO citiesDTO = new CitiesDTO(draw,totalCount,totalCount, estatesString);
+        CitiesDTO citiesDTO = new CitiesDTO(draw, totalCount, totalCount, estatesString);
         con.close();
         return citiesDTO;
     }
 
-    public List<Estate> getEstatesWithFilters(String [] filters) throws SQLException, ClassNotFoundException  {
+    public List<Estate> getEstatesWithFilters(String[] filters) throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
-        Statement stmt=con.createStatement();
-        ResultSet rs=stmt.executeQuery("select * from real_estate");
+        Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from real_estate");
         List<Estate> estates = new ArrayList<>();
-        while(rs.next()){
+        while (rs.next()) {
             Estate currentEstate = new Estate();
             currentEstate.setID(rs.getInt(1));
             currentEstate.setType(rs.getString(2));
@@ -183,12 +185,12 @@ public class OracleCon {
 
     }
 
-    public void addProperty(EstateDTO estateDTO) throws SQLException,ClassNotFoundException {
+    public void addProperty(EstateDTO estateDTO) throws SQLException, ClassNotFoundException {
 
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
-        Statement stmt=con.createStatement();
+        Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
+        Statement stmt = con.createStatement();
         String query = "insert into real_estate(id, real_estate_type,surface,rooms_number, rent_price,buy_price, construction_year, description,address,division,city,create_date,last_update) values( (select MAX(ID)+ 1 from real_estate), ";
         query += "'" + estateDTO.getRealEstateType() +
                 "', " + estateDTO.getSurface() + ", " + estateDTO.getRoomsNumber() +
@@ -199,19 +201,19 @@ public class OracleCon {
                 "', ";
         query += "(select sysdate from dual),(select sysdate from dual))";
 
-       // System.out.println(query);
-        ResultSet rs=stmt.executeQuery(query);
+        // System.out.println(query);
+        ResultSet rs = stmt.executeQuery(query);
         System.out.println("here");
         con.close();
     }
 
-    public String[] validateUser(LoginDTO loginDTO)  throws SQLException,ClassNotFoundException {
+    public String[] validateUser(LoginDTO loginDTO) throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
-        Statement stmt=con.createStatement();
+        Connection con = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:xe", "raluca", "raluca");
+        Statement stmt = con.createStatement();
 
-        String query = "Select count(*) as total from users where email = '"+ loginDTO.getEmail() +"' and user_password ='" + loginDTO.getPassword() + "'";
+        String query = "Select count(*) as total from users where email = '" + loginDTO.getEmail() + "' and user_password ='" + loginDTO.getPassword() + "'";
         //System.out.println(query);
         ResultSet rs = stmt.executeQuery(query);
         int existsUser;
@@ -221,10 +223,10 @@ public class OracleCon {
         System.out.println(existsUser);
 
         con.close();
-        if(existsUser == 0 ) {
-            throw  new SQLException();
-        }else {
-            String []emailAndPassword = {loginDTO.getEmail(),loginDTO.getPassword()};
+        if (existsUser == 0) {
+            throw new SQLException();
+        } else {
+            String[] emailAndPassword = {loginDTO.getEmail(), loginDTO.getPassword()};
             return emailAndPassword;
         }
     }

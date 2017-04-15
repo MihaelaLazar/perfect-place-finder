@@ -1,11 +1,12 @@
-package com.sgbd.DTO;
+package com.sgbd.dto;
 
 public class LoginDTO {
 
     private String password;
     private String email;
 
-    public LoginDTO() {}
+    public LoginDTO() {
+    }
 
     public String getPassword() {
         return password;
