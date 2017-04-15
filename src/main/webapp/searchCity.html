@@ -66,10 +66,10 @@
         <form style="height:25%;width:120px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
           <select  name="city" id="city" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
             <option value="0" disabled selected>City</option>
-            <option value="London">London</option>
-            <option value="Bucuresti">Bucuresti</option>
-            <option value="New York">New York</option>
-            <option value="Iasi">Iasi</option>
+            <option value="london">London</option>
+            <option value="bucuresti">Bucuresti</option>
+            <option value="new york">New York</option>
+            <option value="iasi">Iasi</option>
           </select>
          </form>
 
@@ -603,7 +603,7 @@
                   if (square_id != 0 && estates[i].surface < square_id && square_id >= 30 ){
                     respectsFilters = false;
                   }
-                  if (estates[i].city === city_id && respectsFilters === true) {
+                  if (estates[i].city.toLowerCase() === city_id && respectsFilters === true) {
                     if (firstChildPut === false) {
                       currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
                       firstChildPut = true;
@@ -649,7 +649,7 @@
                       document.getElementById('city').value = getQueryVariable('city');
 
                     }else {
-                      document.getElementById('city').value = 'Iasi';
+                      document.getElementById('city').value = 'iasi';
                     }
                     if (getQueryVariable('maxPrice') != null) {
                       document.getElementById('maxPrice').value = getQueryVariable('maxPrice');
@@ -673,7 +673,7 @@
                     var firstChildPut = false;
 //                    for (i = 0; i < estates.length; i ++) {
 //                      var currentDiv;
-//                      if (estates[i].city === city_id) {
+//                      if (estates[i].city.toLowerCase() === city_id) {
 //                        if (firstChildPut === false ) {
 //                          currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
 //                          firstChildPut = true;
@@ -744,7 +744,7 @@
                     cityCoordinates = getCityCoordinates(getQueryVariable('city'));
                     console.log("cityyyyy: " + getQueryVariable('city'));
                     if (getQueryVariable('city') === null) {
-                      cityCoordinates = getCityCoordinates('Iasi');
+                      cityCoordinates = getCityCoordinates('iasi');
                     }
                     map  = null;
                     geocoder = new google.maps.Geocoder();
@@ -820,7 +820,7 @@
                 var currentCityCoordinates = {};
                 console.log("hei, city_id: " + city_id);
                 for (i = 0; i < citiesCenterCoordinates.length; i++){
-                  if (city_id == citiesCenterCoordinates[i].name){
+                  if (city_id == citiesCenterCoordinates[i].name.toLowerCase()){
                     currentCityCoordinates.lat = citiesCenterCoordinates[i].lat;
                     currentCityCoordinates.lng = citiesCenterCoordinates[i].lng;
                   }

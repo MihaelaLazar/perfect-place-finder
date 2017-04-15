@@ -242,12 +242,11 @@
     function checkCity(){
       var input = document.getElementById('chosenCity'),
         cityName = input.value;
-    if (cityName.toUpperCase() == "IASI" || cityName.toUpperCase() == "BUCURESTI" || cityName.toUpperCase() == "NEW YORK" || cityName.toUpperCase() == "LONDON") {
-        var cityNameCopy  = cityName[0].toUpperCase();
-        cityNameCopy = cityNameCopy.concat(cityName.substring(1).toLowerCase());
-        window.location = "./searchCity.html?city=" + cityNameCopy;
-        var cityInputValue = document.getElementById('chosenCity').value;
-        document.getElementById('city').value = cityInputValue;
+        if (cityName.toUpperCase() == "IASI" || cityName.toUpperCase() == "BUCURESTI" || cityName.toUpperCase() == "NEW YORK" || cityName.toUpperCase() == "LONDON") {
+            var cityNameCopy  = cityName.toLowerCase();
+            window.location = "./searchCity.html?city=" + cityNameCopy;
+            var cityInputValue = document.getElementById('chosenCity').value;
+            document.getElementById('city').value = cityInputValue;
     } else {
         document.getElementsByName('chosenCity')[0].placeholder='Pleace specify a valid city';
         document.getElementById('chosenCity').value = null;
