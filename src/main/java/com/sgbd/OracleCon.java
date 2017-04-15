@@ -2,6 +2,7 @@ package com.sgbd;
 
 import com.sgbd.DTO.CitiesDTO;
 import com.sgbd.DTO.EstateDTO;
+import com.sgbd.DTO.LoginDTO;
 import com.sgbd.DTO.SignUpDTO;
 import com.sgbd.model.Estate;
 
@@ -204,26 +205,16 @@ public class OracleCon {
         con.close();
     }
 
-    public String[] validateUser(String[] fields)  throws SQLException,ClassNotFoundException {
+    public String[] validateUser(LoginDTO loginDTO)  throws SQLException,ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection con=DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
         Statement stmt=con.createStatement();
-        String passwordWithCommas  = fields[0].split(":")[1];
-        String mailWithCommas = fields[1].split(":")[1];
-        String password = "";
-        for (int index = 1; index < passwordWithCommas.length() - 1; index ++){
-            password += passwordWithCommas.charAt(index);
-        }
-        String email = "";
-        for (int index = 1; index < mailWithCommas.length(); index ++){
-            email += mailWithCommas.charAt(index);
-        }
-        System.out.println("Pass: " + password + ", mail: " + email);
-        String query = "Select count(*) as total from users where email = '"+ email +"' and user_password ='" + password + "'";
+
+        String query = "Select count(*) as total from users where email = '"+ loginDTO.getEmail() +"' and user_password ='" + loginDTO.getPassword() + "'";
         //System.out.println(query);
         ResultSet rs = stmt.executeQuery(query);
-        int existsUser = -1;
+        int existsUser;
         System.out.println(query);
         rs.next();
         existsUser = Integer.parseInt(rs.getString(1));
@@ -233,7 +224,7 @@ public class OracleCon {
         if(existsUser == 0 ) {
             throw  new SQLException();
         }else {
-            String []emailAndPassword = {email,password};
+            String []emailAndPassword = {loginDTO.getEmail(),loginDTO.getPassword()};
             return emailAndPassword;
         }
     }

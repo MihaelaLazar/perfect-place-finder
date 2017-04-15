@@ -1,5 +1,6 @@
 package com.sgbd.controller;
 
+import com.sgbd.DTO.LoginDTO;
 import com.sgbd.DTO.SignUpDTO;
 import com.sgbd.OracleCon;
 import com.sgbd.UserService;
@@ -68,18 +69,12 @@ public class UserController {
 
     @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String>  validateUser(Response response,Request request,@RequestBody String postData) {
+    public  ResponseEntity<String>  validateUser(Response response,Request request,@RequestBody LoginDTO loginDTO) {
         System.out.println("VALIDATE USER");
-        System.out.println(postData);
-        StringBuilder postDataCopy = new StringBuilder();
-        for (int index = 2; index < postData.length() - 2; index++) {
-            postDataCopy.append(postData.charAt(index));
-        }
-        System.out.println(postDataCopy);
-        String[] fields = postDataCopy.toString().split(",");
+        System.out.println(loginDTO.toString());
         String[] emailAndPassword = new String[3];
         try {
-            emailAndPassword =  OracleCon.getOracleCon().validateUser(fields);
+            emailAndPassword =  OracleCon.getOracleCon().validateUser(loginDTO);
         } catch (SQLException e) {
             return new ResponseEntity<>("INVALID USER/PASSWORD",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {
