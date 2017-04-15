@@ -1,8 +1,9 @@
 package com.sgbd;
 
-import com.sgbd.model.CitiesDTO;
+import com.sgbd.DTO.CitiesDTO;
+import com.sgbd.DTO.EstateDTO;
+import com.sgbd.DTO.SignUpDTO;
 import com.sgbd.model.Estate;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -46,27 +47,16 @@ public class OracleCon {
 
     }
 
-    public void addUser(String[] fields) throws SQLException, ClassNotFoundException {
+    public void addUser(SignUpDTO user) throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection con=DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
         Statement stmt=con.createStatement();
 
         String query = "insert into users(id, first_name, last_name, user_password,email, username, user_role) values( (select MAX(ID)+ 1 from users), ";
-        String username ="";
-        for (String field: fields) {
-            String postDataCopy = "";
-            for (int index = 1; index < field.length() -1; index++) {
-                postDataCopy += field.charAt(index);
-            }
-
-            String nameAndValue[] = postDataCopy.split("\":\"");
-            if(nameAndValue[0].equals("first-name")){
-                username = nameAndValue[1].toLowerCase();
-            }
-            query += "'"+ nameAndValue[1] + "' ,";
-        }
-        query += "'" + username + "','user')";
+        user.setUsername(user.getFirstName() + "." + user.getLastName());
+        query += "'" + user.getFirstName() + "', '"+ user.getLastName()+"', '"+ user.getPassword() + "', '"+user.getEmail()+ "', '"+user.getUsername()  +"','user')";
+        System.out.println(query);
         ResultSet rs=stmt.executeQuery(query);
     }
 
@@ -192,83 +182,23 @@ public class OracleCon {
 
     }
 
-    public void addProperty(String[] fields) throws SQLException,ClassNotFoundException {
+    public void addProperty(EstateDTO estateDTO) throws SQLException,ClassNotFoundException {
 
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection con=DriverManager.getConnection(
                 "jdbc:oracle:thin:@localhost:1521:xe","raluca","raluca");
         Statement stmt=con.createStatement();
-
         String query = "insert into real_estate(id, real_estate_type,surface,rooms_number, rent_price,buy_price, construction_year, description,address,division,city,create_date,last_update) values( (select MAX(ID)+ 1 from real_estate), ";
-        String estate_type ="";
-        int surface;
-        int roomsNumber = 0;
-        int rentPrice = 0;
-        int buyPrice = 0;
-        int constructionYear = 0;
-        String description = "";
-        String address = "";
-        String division = "";
-        String city="";
-        for (String field: fields) {
-            String postDataCopy = "";
-            for (int index = 1; index < field.length() -1; index++) {
-                postDataCopy += field.charAt(index);
-            }
-
-            String nameAndValue[] = postDataCopy.split("\":\"");
-            if(nameAndValue[0].equals("real-estate-type")){
-                estate_type = nameAndValue[1].toLowerCase();
-                query += "'"+ estate_type + "' ,";
-            }
-            if(nameAndValue[0].equals("surface")){
-                surface = Integer.parseInt(nameAndValue[1]);
-                query += surface + ", ";
-            }
-            if(nameAndValue[0].equals("rooms_number")){
-                roomsNumber = Integer.parseInt(nameAndValue[1]);
-                query += roomsNumber + ", ";
-            }
-
-            if(nameAndValue[0].equals("rent_price")){
-                rentPrice = Integer.parseInt(nameAndValue[1]);
-                query += rentPrice + ", ";
-            }
-            if(nameAndValue[0].equals("buy_price")){
-                buyPrice = Integer.parseInt(nameAndValue[1]);
-                query += buyPrice + ", ";
-            }
-            if(nameAndValue[0].equals("construction-year")){
-                constructionYear = Integer.parseInt(nameAndValue[1]);
-                query += constructionYear + ", ";
-            }
-            if(nameAndValue[0].equals("division")){
-                division = nameAndValue[1];
-                query += "'" + division + "', ";
-            }
-            if(nameAndValue[0].equals("description")){
-                description = nameAndValue[1];
-                query += "'" + description + "', ";
-            }
-
-            if(nameAndValue[0].equals("addressLat")){
-                address = nameAndValue[1] + ",";
-
-            }
-            if(nameAndValue[0].equals("addressLng")){
-                address += nameAndValue[1];
-                query += "'" + address + "', ";
-            }
-
-            if(nameAndValue[0].equals("city")){
-                city += nameAndValue[1];
-                query += "'" + city + "', ";
-            }
-
-        }
+        query += "'" + estateDTO.getRealEstateType() +
+                "', " + estateDTO.getSurface() + ", " + estateDTO.getRoomsNumber() +
+                ", " + estateDTO.getRentPrice() + ", " + estateDTO.getBuyPrice() +
+                ", " + estateDTO.getConstructionYear() + ", '" + estateDTO.getDescription() +
+                "', '" + estateDTO.getAddressLat() + "," + estateDTO.getAddressLng() +
+                "', '" + estateDTO.getDivision() + "', '" + estateDTO.getCity() +
+                "', ";
         query += "(select sysdate from dual),(select sysdate from dual))";
 
-        System.out.println(query);
+       // System.out.println(query);
         ResultSet rs=stmt.executeQuery(query);
         System.out.println("here");
         con.close();

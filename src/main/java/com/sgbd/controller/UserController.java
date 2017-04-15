@@ -1,5 +1,6 @@
 package com.sgbd.controller;
 
+import com.sgbd.DTO.SignUpDTO;
 import com.sgbd.OracleCon;
 import com.sgbd.UserService;
 import com.sgbd.util.ContentType;
@@ -22,19 +23,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @RequestMapping(path = "/user/register", method = RequestMethod.GET)
-    public Object register(Request request,Response response) {
-        System.out.println("register");
-        String[] myJsonData = request.getParameterValues("json");
-        System.out.println(myJsonData);
-        try {
-            response.sendRedirect("/homePage.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return"";
-    }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public Object apasa(Request request, Response response) {
@@ -63,17 +51,12 @@ public class UserController {
 
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String>  addPerson(Request request,Response response, @RequestBody String postData) {
+    public  ResponseEntity<String>  addPerson(Request request,Response response, @RequestBody SignUpDTO user) {
         System.out.println("ADD USER");
         //System.out.println(request.getHttpFields());
-        //System.out.println(postData);
-        String postDataCopy = "";
-        for (int index = 1; index < postData.length() -1; index++) {
-            postDataCopy += postData.charAt(index);
-        }
-        String [] fields = postDataCopy.split(",");
+        System.out.println(user);
         try {
-            OracleCon.getOracleCon().addUser(fields);
+            OracleCon.getOracleCon().addUser(user);
         } catch (SQLException e) {
             return new ResponseEntity<>("DUPLICATE",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {

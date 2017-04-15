@@ -1,7 +1,8 @@
 package com.sgbd.controller;
 
+import com.sgbd.DTO.EstateDTO;
 import com.sgbd.OracleCon;
-import com.sgbd.model.CitiesDTO;
+import com.sgbd.DTO.CitiesDTO;
 import com.sgbd.model.Estate;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,19 +34,19 @@ public class EstateController {
         return new ResponseEntity<>("Redirect to add property", HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/add/property", method = RequestMethod.POST)
+    @RequestMapping(path = "/add/property", headers="Accept=application/json",method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String>  getAddProperty(Response response,Request request,@RequestBody String postData) {
+    public  ResponseEntity<String>  getAddProperty(Response response,Request request,@RequestBody EstateDTO estateDTO) {
         System.out.println("ADD PROPERTY");
-        System.out.println(postData);
-        String postDataCopy = "";
-        for (int index = 1; index < postData.length() -1; index++) {
-            postDataCopy += postData.charAt(index);
-        }
-        String [] fields = postDataCopy.split(",");
-
+        System.out.println(estateDTO);
+//        String postDataCopy = "";
+//        for (int index = 1; index < postData.length() -1; index++) {
+//            postDataCopy += postData.charAt(index);
+//        }
+//        String [] fields = postDataCopy.split(",");
+//
         try {
-            OracleCon.getOracleCon().addProperty(fields);
+            OracleCon.getOracleCon().addProperty(estateDTO);
         } catch (SQLException e) {
             return new ResponseEntity<>("DUPLICATE PROPERTY",HttpStatus.FORBIDDEN);
         } catch (ClassNotFoundException e) {

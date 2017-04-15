@@ -1,10 +1,5 @@
-package com.sgbd.model;
+package com.sgbd.DTO;
 
-import java.util.List;
-
-/**
- * Created by mihae on 4/8/2017.
- */
 public class CitiesDTO {
 
     private int draw;

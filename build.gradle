@@ -33,6 +33,7 @@ dependencies {
 	compile 'com.google.guava:guava:14.0'
 	compile("org.springframework.boot:spring-boot-starter-jetty")
 	compile("org.springframework.boot:spring-boot-starter-actuator")
+	compile('com.fasterxml.jackson.core:jackson-databind:2.8.8')
 	compile project (':domain')
 	compile project (':repository')
 	testCompile("junit:junit")
