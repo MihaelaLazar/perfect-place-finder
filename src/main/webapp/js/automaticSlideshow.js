@@ -1,5 +1,4 @@
 (function() {
-
 	function Slideshow( element ) {
 		this.el = document.querySelector( element );
 		this.init();
@@ -52,14 +51,10 @@
 
 			}, false);
 		}
-
-
 	};
 
 	document.addEventListener( "DOMContentLoaded", function() {
-
 		var slider = new Slideshow( "#main-slider" );
-
 	});
 
 
