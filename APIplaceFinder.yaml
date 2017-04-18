@@ -1,0 +1,189 @@
+swagger: "2.0"
+info:
+  version: "1.1.0"
+  title: Perfect place finder
+  description: >
+    This is a sample API for managing a database of users.  User accounts can be created, deleted, edited, and retrieved.
+    Users can also log-in, which will create a session cookie. Logging out will delete the cookie.
+host: localhost:9000
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /user/register/:
+    post:
+      summary: Creates a new user
+      description: Only the "admin" user can create users.
+      parameters:
+        - name: first name
+          in: body
+          required: true
+          description: The user first name account to create
+        
+        - name: last name
+          in: body
+          required: true
+          description: The user last name account to create
+          
+        - name: email
+          in: body
+          required: true
+          description: The user email account to create
+          
+        - name: password
+          in: body
+          required: true
+          description: The user password account to create
+      responses:
+        201:
+          description: New user was created successfully
+          headers:
+            Location:
+              type: string
+              description: The Server returns the URL of the new user
+        400:
+          description: Bad JSON formatting in the request
+
+  /user/login:
+    post:
+      summary: Logs in
+      description: |
+        Try logging in with username "jdoe" and password "jdoe".
+        Then try logging in with username "admin" and password "admin".
+      parameters:
+        - name: email
+          in: body
+          required: true
+          description: The login credentials
+        - name: password
+          in: body
+          required: true
+          description: The login credentials
+      responses:
+        200:
+          description: Login was successful
+          headers:
+            Set-Cookie:
+              type: string
+              description: The session cookie
+              default: demo-session-id=123456789012345678901234567890
+
+
+  /user/logout:
+    post:
+      summary: Logs out the given user
+      description: >
+        Users can only log themselves out, not other users. Except the "admin" user, who can log-out anyone.
+      responses:
+        204:
+          description: Logout was successful
+          headers:
+            Set-Cookie:
+              type: string
+              description: Deletes the session cookie (by making expire in the past)
+              default: demo-session-id=deleted; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/
+        401:
+          description: You tried to log someone else out, and you're not the "admin" user.
+        404:
+          description: The {username} was not found
+          
+  /estates:
+    get:
+      summary: Get estates by filters
+      description: >
+        Get the estates by filters written in query string.
+      parameters:
+      
+        - name: city
+          in: query
+          required: true
+          description: The announcements/estates in the given city.
+          
+        - name : transactionType
+          in: query
+          description: The type of announcement - for rent or for sale.
+          required: false
+        - name: square
+          in: query
+          description: The square ft of  estate.
+          required: false
+        - name: typeOfEstate
+          in: query
+          description: The type of  estate - appartment, house or commercial space.
+          required: false
+        - name: min price
+          in: query
+          description: The min price of  estate.
+          required: false
+        - name: max price
+          in: query
+          description: The max price of  estate.
+          required: false
+        - name: year
+          in: query
+          description: The year of construction of  estate.
+          required: false
+          
+      responses:
+        204:
+          description: Request was successful
+        401:
+          description: You tried to log someone else out, and you're not the "admin" user.
+          
+  /estates/add:
+    post:
+      summary: Adds an annoucement.
+      description: >
+        Adds a new property/announcement into database.
+      parameters:
+         - name: category
+           in: body
+           description: The type of  estate - appartment, house or commercial space.
+           required: true
+         - name: rooms
+           in: body
+           description: The number of rooms of  estate.
+           required: true
+         - name: transactionType
+           in: body
+           description: The type of announcement - for rent or for sale.
+           required: true
+         - name: price
+           in: body
+           description: The price of  estate.
+           required: true
+         - name: surface
+           in: body
+           description: The surface of  estate.
+           required: true
+         - name: year
+           in: body
+           description: The year of construction of  estate.
+           required: true
+         - name: utilities
+           in: body
+           description: Type of utlities (detached/semi-detached) of  estate.
+           required: true
+         - name: description
+           in: body
+           description: A short description of  estate.
+           required: true
+         - name: contactTelephone
+           in: body
+           description: The cellphone number of users who posted the announcement.
+           required: true
+          
+      responses:
+        204:
+          description: Request was successful, announcement added.
+        401:
+          description: You tried to add an announcement that already exists(address).
+      
+
+          
+  
+          
+          
+  
