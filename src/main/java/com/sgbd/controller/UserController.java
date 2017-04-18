@@ -24,7 +24,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public Object apasa(Request request, Response response) {
+    public Object redirectToHomePage(Request request, Response response) {
         response.setContentType("text/html");
 
         try {

@@ -25,7 +25,7 @@ public class EstateController {
         response.setContentType("text/html");
 
         try {
-            response.sendRedirect("/addPropertyRaluca.html");
+            response.sendRedirect("/addProperty.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
