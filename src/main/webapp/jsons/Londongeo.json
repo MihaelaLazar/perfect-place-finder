@@ -37,7 +37,7 @@ var LondonPollution = {
 "type": "Feature",
 "properties": {
 "color": "yellow",
-"fillOpacity":0.5,
+"fillOpacity":0.4,
 "strokeColor" : "yellow"
 },
 "geometry": {
@@ -65,7 +65,7 @@ var LondonPollution = {
 "type": "Feature",
 "properties": {
 "color": "orange",
-"fillOpacity":0.6,
+"fillOpacity":0.5,
 "strokeColor" : "orange"
 },
 "geometry": {
@@ -91,7 +91,7 @@ var LondonPollution = {
 "type": "Feature",
 "properties": {
 "color": "red",
-"fillOpacity":0.8,
+"fillOpacity":0.6,
 "strokeColor" : "red"
 },
 "geometry": {
@@ -115,7 +115,7 @@ var LondonPollution = {
 "type": "Feature",
 "properties": {
 "color": "#961876",
-"fillOpacity":0.8,
+"fillOpacity":0.6,
 "strokeColor" : "#961876"
 },
 "geometry": {
@@ -139,7 +139,7 @@ var LondonPollution = {
 "type": "Feature",
 "properties": {
 "color": "#6A0A52",
-"fillOpacity":0.8,
+"fillOpacity":0.7,
 "strokeColor" : "#6A0A52"
 },
 "geometry": {

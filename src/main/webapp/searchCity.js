@@ -556,7 +556,7 @@
                               pollutionLayerLondon.setStyle(function(feature) {
                                   return ({
                                     fillColor: feature.getProperty('color'),
-                                    strokeWeight: 1,
+                                    strokeWeight: 0.5,
                                     strokeColor: feature.getProperty('strokeColor'),
                                     fillOpacity: feature.getProperty('fillOpacity')
                                   });
