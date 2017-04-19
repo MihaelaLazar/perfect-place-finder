@@ -349,11 +349,80 @@ paths:
             
   /user/get/messages:
       get:
-        summary: get received messages of user
+        summary: Get received messages of user.
         description: >
           This endpoint sends a request to server to receive messages of the user logged in.
-        
-          
+        parameters:
+           - name: id_user
+             in: body
+             required: true
+             description: id of user
+           - name: Cookie
+             in: header
+             required: true
+             type: string
+             description: The session cookie 
+        responses:
+          301:
+            description: Get messages was successful
+          401:
+            description: Session cookie inexistent 
+            
+  /user/delete/message:
+      post:
+        summary: Delete a message
+        description: >
+          The endpoint sends a request to server to delete a given message of the logged in user(in the specified session).
+        parameters:
+          - name: id_user
+            in: body
+            required: true
+            description: id of user
+          - name: id_message
+            in: body
+            required: true
+            description: id of message to be deleted
+          - name: Cookie
+            in: header
+            required: true
+            type: string
+            description: The session cookie 
+        responses:
+          301:
+            description: Deleting message was successful
+          401:
+            description: Session cookie inexistent  
+            
+  /user/reply/message:
+       post:
+        summary: Reply to a message
+        description: >
+          The endpoint sends a request to server to send a reply message to  a received message of the logged in user(in the specified session).
+        parameters:
+          - name: id_user
+            in: body
+            required: true
+            description: id of user
+          - name: id_message
+            in: body
+            required: true
+            description: id of message to be sent
+          - name: email_receiver
+            in: body
+            required: true
+            description: email of user to receive the message
+          - name: Cookie
+            in: header
+            required: true
+            type: string
+            description: The session cookie 
+        responses:
+          301:
+            description: Sending message was successful
+          401:
+            description: Session cookie inexistent 
+          403:
+            description: User email inexistent
   
           
           
