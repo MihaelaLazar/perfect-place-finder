@@ -212,3 +212,38 @@
                              }
                        }
          }
+
+
+  function setCheckbox(id) {
+  				isForRent=0;
+  				isForSale=0;
+                  if(document.getElementById(id).checked) {
+                    if(id==="transaction-type-sale-input")
+                      isForSale=1;
+                    if(id==="transaction-type-rent-input")
+                        isForRent=1;
+                  }
+                }
+
+  			  function setNegociable(id) {
+  				isNegociable=0;
+                  if(document.getElementById(id).checked) {
+                    if(id==="is-negociable-input")
+                      isNegociable=1;
+                  }
+                }
+
+   $(function(){
+                var stickyHeaderTopAddProperty = $('#topAddProperty').offset().top;
+
+                $(window).scroll(function(){
+                            if( $(window).scrollTop() > stickyHeaderTopAddProperty ) {
+                                    $('#topAddProperty').css({position: 'fixed', top: '0px'});
+                                    $('#topAddProperty').css('width','100%');
+                                    $('#topAddProperty').css('display', 'block');
+                                    $('#topAddProperty').css('z-index','999999');
+                            } else {
+                                    $('#topAddProperty').css({position: 'static', top: '0px'});
+                            }
+                    });
+          });

@@ -88,6 +88,24 @@ paths:
           description: You tried to log someone else out, and you're not the "admin" user.
         404:
           description: The {username} was not found
+  
+  /user/announcements:
+    get:
+      summary: Returns user's announcements.
+      description: >
+      parameters:
+        - sessionCookie: &sessionCookie
+          name: Cookie
+          in: header
+          required: true
+          type: string
+          description: The session cookie
+      responses:
+        204: 
+          description: Request was successful
+        404: 
+          description: Session inexistent
+        
           
   /estates:
     get:
@@ -180,8 +198,161 @@ paths:
           description: Request was successful, announcement added.
         401:
           description: You tried to add an announcement that already exists(address).
-      
+          
+          
+  /estates/details{id}:
+    get:
+      summary: Details about estate.
+      description: >
+          This endpoint returns a json response with details about given announcement(estate).
+      parameters:
+        - name: idEstate
+          in: query
+          description: The id of estate(announcement)
+          required: true
+         
+      responses:
+        204:
+          description: Request was successful
+        
+        404:
+          description: Announcement not found.
+  
+  /user/estate{id}:
+    get:
+      summary: Details about user's announcement(estate).
+      description: >
+          This endpoint returns a json response with details about user's announcement(estate), given by its id.
+          
+      parameters:
+          - name: id
+            in: query
+            required: true
+            description: id of given announcement
+          - sessionCookie: &sessionCookie
+            name: Cookie
+            in: header
+            required: true
+            type: string
+            description: The session cookie
+      responses:
+        204:
+          description: Request was successful
+        404: 
+          description: Session cookie inexistent
+  
+  /user/estate/update:
+    post:
+      summary: Updates details about an anouncement.
+      description: >
+        This endpoint updates a given announcement of the user logged in.
+        
+      parameters:
+          - name: id
+            in: body
+            description: The id of estate(announcement)
+            required: true
+          - name: category
+            in: body
+            description: The type of  estate - appartment, house or commercial space.
+            required: false
+          - name: rooms
+            in: body
+            description: The number of rooms of  estate.
+            required: false
+          - name: transactionType
+            in: body
+            description: The type of announcement - for rent or for sale.
+            required: false
+          - name: price
+            in: body
+            description: The price of  estate.
+            required: false
+          - name: surface
+            in: body
+            description: The surface of  estate.
+            required: false
+          - name: year
+            in: body
+            description: The year of construction of  estate.
+            required: false
+          - name: utilities
+            in: body
+            description: Type of utlities (full/none) of  estate.
+            required: false
+          - name: division
+            in: body
+            description: Type of division (dettached/semi-detached) of  estate.
+            required: false
+          - name: description
+            in: body
+            description: A short description of  estate.
+            required: false
+      responses:
+          301:
+            description: Update was successful
+          401:
+            description: Session cookie inexistent
 
+  /user/estate/delete:
+    post:
+      summary: Deletes an announcement.
+      description: >
+        This endpoint deletes a given announcement of the user logged in.
+        
+      parameters:
+        - name: id
+          in: body
+          required: true
+          description: id of given announcement
+        - sessionCookie: &sessionCookie
+          name: Cookie
+          in: header
+          required: true
+          type: string
+          description: The session cookie
+      responses:
+          301:
+            description: Deleteion was successful
+          401:
+            description: Session cookie inexistent  
+            
+  /user/send/message:
+    post:
+      summary: Sending a message to an user who posted the announcement.
+      description: >
+        This endpoint sends a request to server with a message for the user who posted the announcement.
+      parameters:
+        - name: id_user
+          in: body
+          required: true
+          description: id of sender
+        - name: id_receiver
+          in: body
+          required: true
+          description: id of receiver(the user who posted the announcement)
+        - name: id_announcement
+          in: body
+          required: true
+          description: id of given announcement
+        - sessionCookie: &sessionCookie
+          name: Cookie
+          in: header
+          required: true
+          type: string
+          description: The session cookie
+      responses:
+          301:
+            description: Sending message was successful
+          401:
+            description: Session cookie inexistent 
+            
+  /user/get/messages:
+      get:
+        summary: get received messages of user
+        description: >
+          This endpoint sends a request to server to receive messages of the user logged in.
+        
           
   
           
