@@ -297,6 +297,7 @@
               var pollutionLayerIasi;
               var pollutionLayerBucuresti;
               var pollutionLayerNewYork;
+              var pollutionLayerLondon;
               var geocoder;
               var smogMarkersArray = [];
               var noiseMarkersArray = [];
@@ -359,6 +360,7 @@
                    pollutionLayerIasi = new google.maps.Data();
                    pollutionLayerBucuresti = new google.maps.Data();
                    pollutionLayerNewYork = new google.maps.Data();
+                   pollutionLayerLondon = new google.maps.Data();
 
                   var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                   var icon = {
@@ -435,6 +437,7 @@
                               pollutionLayerIasi.setMap(null);
                               pollutionLayerBucuresti.setMap(null);
                               pollutionLayerNewYork.setMap(null);
+                              pollutionLayerLondon.setMap(null);
                           } else {
                             if (id === "congestionLayer"){
                               heatmap.setMap(null);
@@ -549,6 +552,17 @@
                                   });
                               });
                               pollutionLayerNewYork.setMap(map);
+                              pollutionLayerLondon.addGeoJson(LondonPollution);
+                              pollutionLayerLondon.setStyle(function(feature) {
+                                  return ({
+                                    fillColor: feature.getProperty('color'),
+                                    strokeWeight: 1,
+                                    strokeColor: feature.getProperty('strokeColor'),
+                                    fillOpacity: feature.getProperty('fillOpacity')
+                                  });
+                              });
+                              pollutionLayerLondon.setMap(map);
+
                                    } else {
                              if (id === "congestionLayer"){
                                heatmap = new google.maps.visualization.HeatmapLayer({
