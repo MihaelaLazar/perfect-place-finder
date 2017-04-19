@@ -3716,4 +3716,7 @@ function changeGradient() {
           'rgba(255, 0, 0, 1)'
         ];
         heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+        heatmap.set('opacity', heatmap.get('opacity') ? null : 1);
+        heatmap.set('radius', heatmap.get('radius') ? null : 10);
+        heatmap.set('maxIntensity', heatmap.get('maxIntensity') ? null : 15);
  }
