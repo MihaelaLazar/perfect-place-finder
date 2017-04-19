@@ -56,7 +56,11 @@
     <div class="modal" id="logInStatus-homePage">
       <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
         <form class="ui form">
-          <h2>Successfully logged in</h2>
+            <br>
+            <center>
+                <h2>Successfully logged in</h2>
+            </center>
+            <br>
         </form>
       </div>
     </div>
@@ -64,7 +68,9 @@
     <div class="modal" id="logInStatusFailed-homePage">
       <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
         <form class="ui form">
-          <h2>Incorrect email/password</h2>
+            <br>
+            <center><h2>Incorrect email/password</h2></center>
+            <br>
         </form>
       </div>
     </div>
@@ -73,7 +79,7 @@
   <span onclick="document.getElementById('logInhomePage').style.display='none'" class="close" title="Close Modal">×</span>
   <div class="modal-content animate"  style="width:30%;">
     <div class="container">
-      <h4 class="ui dividing header">Log in</h4>
+      <h3 class="ui dividing header">Log in to your account</h3>
       <div class="field" style="width:100%;">
         <div id="errorMessageContainer-login-homePage" style="display:none;">
           <ul>
@@ -96,6 +102,7 @@
       <br>
       <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOSThomePage()">Log in</button>
     </div>
+      <center><h3>Don't have a placeFinder account? <a href="#" onclick="document.getElementById('logInhomePage').style.display='none'; document.getElementById('signUphomePage').style.display='block';" >Create one.</a></h3></center> <br>
   </div>
 </div>
 
@@ -119,8 +126,7 @@
   <div id="signUphomePage" class="modal">
     <span onclick="document.getElementById('signUphomePage').style.display='none'" class="close" title="Close Modal">×</span>
     <div class="modal-content animate"  style="width:30%;">
-      <div class="container">
-        <h4 class="ui dividing header">Sign up</h4>
+      <div class="container"><h3>Create an Account</h3>
         <div class="field" style="width:100%;">
           <div id="errorMessageContainer-homePage" style="display:none;">
             <ul>
@@ -158,6 +164,7 @@
         <button class="ui fluid blue button" type="submit" value="Submit" onclick="signUpPOSThomePage()">Sign Up</button>
       </div>
     </div>
+
   </div>
 
   <script src="homePage.js"></script>

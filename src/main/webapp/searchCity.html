@@ -87,14 +87,14 @@
          <form style="height:25%;width:105px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
         		<select name="square" id="square" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
         			<option value="0" disabled selected>Square ft.</option>
-        		  <option value="29"> < 30 mp</option>
-        		  <option value="30"> 30 mp - 50 mp</option>
-              <option value="50"> 50 mp - 70 mp</option>
-        		  <option value="70"> 70 mp - 90 mp</option>
-              <option value="90"> 90 mp - 120 mp</option>
-        		  <option value="120"> 120 mp - 150 mp</option>
-              <option value="150"> 150 mp - 200 mp</option>
-              <option value="200"> > 200 mp</option>
+        		    <option value="29"> < 30 mp</option>
+        		    <option value="30"> 30 mp - 50 mp</option>
+                    <option value="50"> 50 mp - 70 mp</option>
+                    <option value="70"> 70 mp - 90 mp</option>
+                    <option value="90"> 90 mp - 120 mp</option>
+        		    <option value="120"> 120 mp - 150 mp</option>
+                    <option value="150"> 150 mp - 200 mp</option>
+                    <option value="200"> > 200 mp</option>
         		</select>
           </form>
 
@@ -169,7 +169,7 @@
     			</select>
         </form>
 
-        <div class="item" style=" margin-left:20%;">
+        <div class="item" style=" margin-left:20%;display:none;">
             <button class="ui inverted white button" onclick="goToPagination()">Visualise real_estate pagination</button>
         </div>
         <script>
@@ -244,7 +244,11 @@
 <div class="modal" id="logInStatus">
      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
          <form class="ui form">
-             <h2>Successfully logged in</h2>
+             <br>
+             <center>
+                 <h2>Successfully logged in</h2>
+             </center>
+             <br>
          </form>
      </div>
  </div>
@@ -252,7 +256,9 @@
  <div class="modal" id="logInStatusFailed">
      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
          <form class="ui form">
-             <h2>Username or password is incorrect.</h2>
+             <br>
+             <center><h2>Incorrect email/password</h2></center>
+             <br>
          </form>
      </div>
  </div>
@@ -260,7 +266,7 @@
  <div id="loginButton" class="modal">
    <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
      <div class="container">
-         <h4 class="ui dividing header">Log in to your account</h4>
+         <h3 class="ui dividing header">Log in to your account</h3>
          <div class="field" style="width:100%;">
              <div id="errorMessageContainer-login" style="display:none;">
                  <ul>
@@ -282,8 +288,9 @@
          </div>
          <br>
            <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOST()">Log In</button>
-           </div>
- </div>
+     </div>
+       <center><h3>Don't have a placeFinder account? <a href="#" onclick="document.getElementById('loginButton').style.display='none'; document.getElementById('signupButton').style.display='block';" >Create one.</a></h3></center> <br>
+   </div>
  </div>
 
     <div class="modal" id="signInStatus">

@@ -1,27 +1,48 @@
- var globalMap2;
-        var markerGlobal;
-        var trafficLayer;
-        var transitLayer;
-        var geocoder;
-        var smogMarkersArray = [];
+function getQueryVariableEstateDetails(variable) {
+     var query = window.location.search.substring(1);
+     var vars = query.split("&");
+     for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable) {
+           return pair[1].replace('%20',' ');
+        }
+     }
+     return null;
+ }
+
+var globalMap2;
+var markerGlobal;
+var trafficLayer;
+var transitLayer;
+var geocoder;
+var estatePosition;
+var smogMarkersArray = [];
         function initMap2() {
           console.log("initMap2");
-          var iasi = {lat: 47.133134, lng: 27.567465};
+          var idEstate = getQueryVariableEstateDetails('estate');
+          console.log('estate id(query): ' + idEstate );
+          for (var i = 0; i < estates.length; i ++) {
+                if (estates[i].id == idEstate) {
+                    estatePosition = new google.maps.LatLng(estates[i].coordinates.lat, estates[i].coordinates.lng);
+                    console.log('found ' + estates[i].coordinates.lat);
+                }
+          }
+          console.log('estate id: ' + estatePosition.lat() );
           geocoder = new google.maps.Geocoder();
           var map2 = new google.maps.Map(document.getElementById('map2'), {
-            zoom: 6,
-            center: iasi
+            zoom: 14,
+            center: estatePosition
           });
           globalMap2 = map2;
           var image = 'images/pollution-marker.png';
           var icon = {
-            url: "images/pollution-marker.png", // url
+            url: "images/Marker Filled-50.png", // url
             scaledSize: new google.maps.Size(40, 40), // scaled size
             origin: new google.maps.Point(0,0), // origin
             anchor: new google.maps.Point(0, 0) // anchor
           };
           var marker = new google.maps.Marker({
-            position: iasi,
+            position: estatePosition,
             map: map2,
             title: "Click here to zoom",
             icon: icon
@@ -40,7 +61,7 @@
          })
           marker.addListener('mouseover',function(){
             map2.setCenter(marker.getPosition()),
-            infoWindowOnMouseover.open(map,marker)
+            infoWindowOnMouseover.open(globalMap2,marker)
           })
           google.maps.event.addListener(marker, 'mouseout', function () {
               infoWindowOnMouseover.close();
