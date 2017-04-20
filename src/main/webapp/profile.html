@@ -37,7 +37,7 @@
         </a>
 
         <a> <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png"></a>
-        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'" style="position:absolute;margin-left:75.5%; margin-top:5px;">Log-in</button>
+        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'" style="position:absolute;margin-left:75%; margin-top:5px;">Log out</button>
     </div>
 
     <div id="backToTopProfilePage" class="ui raised container segment" style="position:absolute;width:60%;height: 90%; left:10%; right:10%; background: #f1f1f2;z-index: 9; ">
@@ -63,13 +63,15 @@
                         <button class="ui inverted blue fluid button" onclick="getField('messages')"> <i class="mail icon"></i>Messages </button>
                         <br>
                         <button class="ui inverted blue fluid button" onclick="getField('accountSettings')"> <i class="settings icon"></i> Account settings</button>
+                        <br>
+                        <button class="ui inverted blue fluid button" onclick="getField('favouritesEstates')"> <i class="heart icon"></i> Favorites</button>
                     </div>
                 </div>
             </div>
 
             <div class="sixteen wide field">
                 <div class="ui raised  very padded  segment"
-                     style="position:absolute;margin-top:0%; margin-left: 30%; width:60%; height: 65%;">
+                     style="position:absolute;margin-top:0%; margin-left: 30%; width:60%; height: 80%;">
                     <div id="accountSettings" class="field" style="display:none;">
                         <div class="ui huge header" style="color:#1C7CD7;">Account Settings</div>
                         <div class="ui top attached tabular menu">
@@ -120,8 +122,8 @@
                         </div>
                     </div>
 
-                    <div id="announcements" class="field" style="display:none;">
-                        <div class="ui huge header" style="color:#1C7CD7;">Your announcements</div>
+                    <div id="announcements" class="field" style="display:block;">
+                        <div class="ui huge header" style="color:#1C7CD7;">Your announcement</div>
                         <div class="column" id="scrolling" onscroll="loadmore()" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
                             <div id="estatesProfile" class="ui left aligned grid" style="width:544px;float: left">
                             </div>
@@ -129,16 +131,60 @@
                         <script>
                             var currentDiv;
                             for (i = 0; i < estates.length; i ++) {
-                                currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>Update</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Delete</button></form></div></div></div></div></div>");
+                                currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + estates[i].id + ")'>Update</button><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Delete</button></form></div></div></div></div></div>");
                                 $("#estatesProfile").append(currentDiv);
                             }
 
+                            function updateEstate(id) {
+                                $('#updateAnnouncement').css("display", "block");
+                                $('#announcements').css("display", "none");
+
+                            }
                         </script>
                     </div>
 
                     <div id="messages" class="field" style="display:none;">
                         <div class="ui huge header" style="color:#1C7CD7;">Your messages</div>
                     </div>
+
+                    <div id="favouritesEstates" class="field" style="display:none;">
+                        <div class="ui huge header" style="color:#1C7CD7;">Your favorite announcements</div>
+                    </div>
+
+                    <div id="updateAnnouncement" class="field" style="display:none;">
+                        <div class="ui huge header" style="color:#1C7CD7;">Update your announcement</div>
+                        <div class="two wide fields">
+                            <div class="eight wide field" style="width:50%;">
+                                <label>Price</label>
+                                <div  class="ui fluid input">
+                                    <input placeholder="Price" type="text">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="eight wide field" style="width:50%;">
+                                <label>Furniture/Utilities</label>
+                                <div  class="ui fluid input">
+                                    <input placeholder="Furniture/Utilities" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="field" style="width:100%;">
+                            <label>Description</label>
+                            <div id="description-textarea" class="ui form">
+                                <textarea id="description" placeholder="Add a drescription here.." required></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="field" style="width:100%;">
+                            <label>Photos</label>
+                            <br>
+                            <div class="ui inverted blue button">Browse</div>
+                        </div>
+
+
+                    </div>
+
 
                 </div>
             </div>

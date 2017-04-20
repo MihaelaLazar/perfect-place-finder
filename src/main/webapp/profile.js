@@ -15,25 +15,33 @@ function changeTab() {
 }
 
 function getField(id) {
+    $('#updateAnnouncement').css("display", "none");
     if (id === 'accountSettings') {
         $('#accountSettings').css("display", "block");
         $('#messages').css("display", "none");
         $('#announcements').css("display", "none");
+        $('#favouritesEstates').css("display", "none");
     } else {
         $('#accountSettings').css("display", "none");
         if (id === 'announcements') {
             $('#announcements').css("display", "block");
             $('#messages').css("display", "none");
+            $('#favouritesEstates').css("display", "none");
 
         } else {
             $('#announcements').css("display", "none");
             if (id === 'messages') {
                 $('#messages').css("display", "block");
+                $('#favouritesEstates').css("display", "none");
             } else {
                 $('#messages').css("display", "none");
+                if (id === 'favouritesEstates') {
+                      $('#favouritesEstates').css("display", "block");
+                }
             }
         }
     }
+
 }
 
 $(function(){
