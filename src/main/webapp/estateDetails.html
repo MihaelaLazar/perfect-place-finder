@@ -472,7 +472,11 @@
                         <div class="one column row">
                             <div class="column">
                                 <div class="ui tertiary segment">
-                                    <a href="#"> <h4 style="color:gray;" >MARKETS NEARBY</h4></a>
+                                    <div class="ui checkbox">
+                                        <input id='parkingLayer' name="parkingLayer" type="checkbox" onChange={changeOverlayEstate('parkingLayer')} unchecked={}/>
+                                        <label>PARKINGS NEARBY</label>
+                                    </div>
+                                    <!--<a href="#" onclick="changeOverlayEstate('parkingLayer')"> <h4 style="color:gray;" >PARKINGS NEARBY</h4></a>-->
                                 </div>
                             </div>
                             <div class="column"></div>
@@ -538,7 +542,7 @@
 
 <script src="estateDetails.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzIgiHa5eWqPLvnoX7pS75GHTZffQo61k&callback=initMap2">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzIgiHa5eWqPLvnoX7pS75GHTZffQo61k&libraries=places,visualization&callback=initMap2">
 </script>
 <script src="js/slideshow.js"></script>
 <script src="js/automaticSlideshow.js"></script>
