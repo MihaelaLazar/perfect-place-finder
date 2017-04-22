@@ -456,7 +456,10 @@
                         <div class="one column row">
                             <div class="column">
                                 <div class="ui tertiary segment">
-                                    <a href="#"><h4 style="color:gray;" >SCHOOLS NEARBY</h4></a>
+                                    <div class="ui checkbox">
+                                        <input id='schoolsLayerEstate' name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('schoolsLayerEstate')} unchecked={}/>
+                                        <label>SCHOOLS NEARBY</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="column"></div>

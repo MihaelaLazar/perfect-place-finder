@@ -17,6 +17,7 @@ var transitLayer;
 var geocoder;
 var estatePosition;
 var parkingLayerArray = [];
+var schoolsNearbyArray = [];
 function initMap2() {
       console.log("initMap2");
       var idEstate = getQueryVariableEstateDetails('estate');
@@ -62,23 +63,45 @@ function removeOverlay(id) {
         parkingLayerArray[i].setMap(null);
         delete parkingLayerArray[i];
      }
+  } else {
+        if (id === 'schoolsLayerEstate'){
+        for (i in schoolsNearbyArray) {
+            schoolsNearbyArray[i].setMap(null);
+            delete schoolsNearbyArray[i];
+         }
+        }
   }
 }
 
-function callback(results, status) {
+function callbackParking(results, status) {
    if (status === google.maps.places.PlacesServiceStatus.OK) {
      for (var i = 0; i < results.length; i++) {
-         createMarker(results[i]);
+         createMarker(results[i], 'parking');
      }
    }
 }
-function createMarker(place) {
+
+function callbackSchools(results, status) {
+   if (status === google.maps.places.PlacesServiceStatus.OK) {
+     for (var i = 0; i < results.length; i++) {
+         createMarker(results[i],'schools');
+     }
+   }
+}
+function createMarker(place, type) {
    var placeLoc = place.geometry.location;
    var marker = new google.maps.Marker({
      map: globalMap2,
      position: place.geometry.location
    });
-   parkingLayerArray.push(marker);
+   if (type === 'parking') {
+        parkingLayerArray.push(marker);
+   } else {
+        if (type === 'schools'){
+            schoolsNearbyArray.push(marker);
+        }
+   }
+
 }
 
 function addOverlay(id) {
@@ -88,10 +111,15 @@ function addOverlay(id) {
       location: globalMap2.getCenter(),
       radius: 1000,
       type: ['parking']
-    }, callback);
+    }, callbackParking);
  }else {
-   if (id == 'transitLayer'){
-     transitLayer.setMap(globalMap);
+   if (id == 'schoolsLayerEstate'){
+     var schools = new google.maps.places.PlacesService(globalMap2);
+         schools.nearbySearch({
+           location: globalMap2.getCenter(),
+           radius: 1000,
+           type: ['school']
+         }, callbackSchools);
    }
  }
 }
