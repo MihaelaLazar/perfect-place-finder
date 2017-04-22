@@ -6,14 +6,7 @@
   width: 60%;
 }
 
-
-#signupAddProperty {
-	position: fixed;
-    left: 70%;
-		top: 5px;
-}
-
-#loginAddProperty {
+#logoutAddProperty {
 	position: fixed;
     left: 75.5%;
 		top:5px;
@@ -27,6 +20,6 @@
 
 #addPropertyInAddProperty{
 	position: fixed;
-    left: 62.5%;
+    left: 67%;
 		top:5px;
 }
