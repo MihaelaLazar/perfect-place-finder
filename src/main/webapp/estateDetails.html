@@ -55,10 +55,10 @@
         <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
     </div>
     <div id="signup">
-        <button class="ui inverted blue button" onclick="document.getElementById('id01').style.display='block'">Sign up</button>
+        <button class="ui inverted blue button" onclick="document.getElementById('signUpEstateDetails').style.display='block'">Sign up</button>
     </div>
     <div id="login">
-        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'">Log in</button>
+        <button class="ui inverted blue button" onclick="document.getElementById('logInEstateDetails').style.display='block'">Log in</button>
     </div>
 </div>
 
@@ -96,6 +96,119 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="logInStatus-EstateDetails">
+      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+        <form class="ui form">
+            <br>
+            <center>
+                <h2>Successfully logged in</h2>
+            </center>
+            <br>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="logInStatusFailed-EstateDetails">
+      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+        <form class="ui form">
+            <br>
+            <center><h2>Incorrect email/password</h2></center>
+            <br>
+        </form>
+      </div>
+    </div>
+
+<div id="logInEstateDetails" class="modal">
+  <span onclick="document.getElementById('logInEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
+  <div class="modal-content animate"  style="width:30%;">
+    <div class="container">
+      <h3 class="ui dividing header">Log in to your account</h3>
+      <div class="field" style="width:100%;">
+        <div id="errorMessageContainer-login-EstateDetails" style="display:none;">
+          <ul>
+            <li id="errorMessage-login-EstateDetails"></li>
+          </ul>
+        </div>
+        <label>Email</label>
+        <div id="email-input-login-EstateDetails" class="ui fluid input">
+          <input class="ui input" id="email-login-EstateDetails" name="email" placeholder="Email" type="text">
+        </div>
+      </div>
+      <br>
+
+      <div class="field" style="width:100%;">
+        <label>Password</label>
+        <div id="password-input-login-EstateDetails" class="ui fluid input">
+          <input class="ui input" id="password-login-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
+        </div>
+      </div>
+      <br>
+      <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOSTEstateDetails()">Log in</button>
+    </div>
+      <center><h3>Don't have a placeFinder account? <a href="#" onclick="document.getElementById('logInEstateDetails').style.display='none'; document.getElementById('signUpEstateDetails').style.display='block';" >Create one.</a></h3></center> <br>
+  </div>
+</div>
+
+      <div class="modal" id="signInStatus-EstateDetails">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+          <form class="ui form">
+            <h2>Successfully signed in</h2>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal" id="signInStatusFailed-EstateDetails">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+          <form class="ui form">
+            <h2>Email already existent in data base</h2>
+          </form>
+        </div>
+      </div>
+
+
+  <div id="signUpEstateDetails" class="modal">
+    <span onclick="document.getElementById('signUpEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
+    <div class="modal-content animate"  style="width:30%;">
+      <div class="container"><h3>Create an Account</h3>
+        <div class="field" style="width:100%;">
+          <div id="errorMessageContainer-EstateDetails" style="display:none;">
+            <ul>
+              <li id="errorMessage-EstateDetails"></li>
+            </ul>
+          </div>
+          <label>First Name</label>
+          <div id="first-name-input-EstateDetails" class="ui fluid input">
+            <input  id="first-name-EstateDetails" name="first-name-EstateDetails" placeholder="First Name" type="text">
+          </div>
+        </div>
+
+        <br>
+        <div class="field" style="width:100%;">
+          <label>Last Name</label>
+          <div id="last-name-input-EstateDetails" class="ui fluid input">
+            <input id="last-name-EstateDetails" name="last-name-EstateDetails" placeholder="Last Name" type="text">
+          </div>
+        </div>
+        <br>
+        <div class="field" style="width:100%;">
+          <label>Email</label>
+          <div id="email-input-EstateDetails" class="ui fluid input">
+            <input class="ui input" id="email-EstateDetails" name="email" placeholder="Email" type="text">
+          </div>
+        </div>
+        <br>
+        <div class="field" style="width:100%;">
+          <label>Password</label>
+          <div id="password-input-EstateDetails" class="ui fluid input">
+            <input class="ui input" id="passwordSignUp-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
+          </div>
+        </div>
+        <br>
+        <button class="ui fluid blue button" type="submit" value="Submit" onclick="signUpPOSTEstateDetails()">Sign Up</button>
+      </div>
+    </div>
+  </div>    
 
     <div class="ui grid">
 
