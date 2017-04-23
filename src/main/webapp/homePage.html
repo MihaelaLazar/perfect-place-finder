@@ -25,10 +25,10 @@
 
     <div class="ui massive blue menu">
       <a >
-          <img class="ui mini image" style="left: 550%;top:5px;" src="images/place-finder.png">
+          <img class="ui mini image" style="left: 550%;top:5px;" src="images/place-finder.png" alt="">
       </a>
       <a>
-        <img class="ui medium image" style="left: 70%;" src="images/logo.png">
+        <img class="ui medium image" style="left: 70%;" src="images/logo.png" alt="">
       </a>
       <div id="signup">
         <button class="ui inverted blue button" onclick="document.getElementById('signUphomePage').style.display='block'">Sign up</button>
@@ -40,19 +40,17 @@
     </div>
 
     <div style="margin-top:200px; z-index:9;">
-    <center>
-      <h1 style="font-size:70px;font-weight:bolder;color: #fff;line-height: 1;">Get your perfect place </h1>
-      <br></br>
-      <div id="myInput" class="ui massive left icon input" style="width:35%;">
-        <i class="marker icon"></i>
-        <input id="chosenCity" name="chosenCity" placeholder="City" type="text" formaction="checkCity()" style="width:75%;">
-  <!--      <form method="get" action="./searchCity.html"> -->
-          <button  class=" ui large  black button" onclick="checkCity()" type="submit" style="width:50%;"><span>Let's Go   </span><span><i class="ui large search icon"></i></span> </button>
-  <!--      </form>-->
-      </div>
+      <center>
+        <h1 style="font-size:70px;font-weight:bolder;color: #fff;line-height: 1;">Get your perfect place </h1>
+        <br></br>
+        <div id="myInput" class="ui massive left icon input" style="width:35%;">
+          <i class="marker icon"></i>
+          <input id="chosenCity" name="chosenCity" placeholder="City" type="text" formaction="checkCity()" style="width:75%;">
+            <button  class=" ui large  black button" onclick="checkCity()" type="submit" style="width:50%;"><span>Let's Go   </span><span><i class="ui large search icon"></i></span> </button>
+        </div>
 
 
-    </center>
+      </center>
 
     <div class="modal" id="logInStatus-homePage">
       <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
