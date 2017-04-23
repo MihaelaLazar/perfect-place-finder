@@ -467,7 +467,10 @@
                         <div class="one column row">
                             <div class="column">
                                 <div class="ui tertiary segment">
-                                    <a href="#"> <h4 style="color:gray;" >TRANSIT OPTIONS NEARBY</h4></a>
+                                    <div class="ui checkbox">
+                                        <input id="storesLayer" name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('storesLayer')} unchecked={}/>
+                                        <label>STORES NEARBY</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="column"></div>

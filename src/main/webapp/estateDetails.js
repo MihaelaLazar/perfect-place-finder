@@ -18,6 +18,7 @@ var geocoder;
 var estatePosition;
 var parkingLayerArray = [];
 var schoolsNearbyArray = [];
+var storesNearbyArray = [];
 function initMap2() {
       console.log("initMap2");
       var idEstate = getQueryVariableEstateDetails('estate');
@@ -65,10 +66,17 @@ function removeOverlay(id) {
      }
   } else {
         if (id === 'schoolsLayerEstate'){
-        for (i in schoolsNearbyArray) {
-            schoolsNearbyArray[i].setMap(null);
-            delete schoolsNearbyArray[i];
-         }
+            for (i in schoolsNearbyArray) {
+                schoolsNearbyArray[i].setMap(null);
+                delete schoolsNearbyArray[i];
+             }
+        } else {
+            if (id === 'storesLayer'){
+                for (i in storesNearbyArray) {
+                    storesNearbyArray[i].setMap(null);
+                    delete storesNearbyArray[i];
+                }
+            }
         }
   }
 }
@@ -77,6 +85,14 @@ function callbackParking(results, status) {
    if (status === google.maps.places.PlacesServiceStatus.OK) {
      for (var i = 0; i < results.length; i++) {
          createMarker(results[i], 'parking');
+     }
+   }
+}
+
+function callbackStores(results, status) {
+   if (status === google.maps.places.PlacesServiceStatus.OK) {
+     for (var i = 0; i < results.length; i++) {
+         createMarker(results[i], 'store');
      }
    }
 }
@@ -90,15 +106,48 @@ function callbackSchools(results, status) {
 }
 function createMarker(place, type) {
    var placeLoc = place.geometry.location;
-   var marker = new google.maps.Marker({
-     map: globalMap2,
-     position: place.geometry.location
-   });
    if (type === 'parking') {
+        var icon = {
+           url: "images/parking.png",
+           scaledSize: new google.maps.Size(40, 40),
+           origin: new google.maps.Point(0,0),
+           anchor: new google.maps.Point(0, 0)
+        }
+        var marker = new google.maps.Marker({
+             map: globalMap2,
+             position: place.geometry.location,
+             icon: icon
+           });
         parkingLayerArray.push(marker);
    } else {
         if (type === 'schools'){
+            var icon = {
+               url: "images/school.png",
+               scaledSize: new google.maps.Size(50, 50),
+               origin: new google.maps.Point(0,0),
+               anchor: new google.maps.Point(0, 0)
+            }
+            var marker = new google.maps.Marker({
+                 map: globalMap2,
+                 position: place.geometry.location,
+                 icon : icon
+               });
             schoolsNearbyArray.push(marker);
+        } else {
+            if (type === 'store'){
+                var icon = {
+                       url: "images/store.png",
+                       scaledSize: new google.maps.Size(40, 40),
+                       origin: new google.maps.Point(0,0),
+                       anchor: new google.maps.Point(0, 0)
+                    };
+                   var markerStore = new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: globalMap2,
+                        icon: icon
+                   });
+                storesNearbyArray.push(markerStore);
+            }
         }
    }
 
@@ -120,6 +169,15 @@ function addOverlay(id) {
            radius: 1000,
            type: ['school']
          }, callbackSchools);
+   } else {
+        if (id == 'storesLayer'){
+         var schools = new google.maps.places.PlacesService(globalMap2);
+             schools.nearbySearch({
+               location: globalMap2.getCenter(),
+               radius: 1000,
+               type: ['store']
+             }, callbackStores);
+       }
    }
  }
 }

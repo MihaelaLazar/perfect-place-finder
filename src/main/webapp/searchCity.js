@@ -680,12 +680,6 @@ function addOption(transType, typeOfPrice) {
                           delete noiseMarkersArray[i];
                         }
                       } else {
-                        if (id=="schools"){
-                          for (i in schoolsMarkersArray) {
-                            schoolsMarkersArray[i].setMap(null);
-                            delete schoolsMarkersArray[i];
-                          }
-                        } else {
                           if ( id === "pollutionLayer"){
                               pollutionLayerIasi.setMap(null);
                               pollutionLayerBucuresti.setMap(null);
@@ -697,7 +691,7 @@ function addOption(transType, typeOfPrice) {
 
                             }
                           }
-                        }
+
                       }
                     }
                   }
