@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="semantic-ui-css/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="semantic-ui-css/semantic.css">
-    <link rel="stylesheet" href="css/searchCity.css">
-    <link rel="stylesheet" href="css/indexCustom.css">
-    <!--<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">-->
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="semantic-ui-css/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="semantic-ui-css/semantic.css">
+        <link rel="stylesheet" href="css/searchCity.css">
+        <link rel="stylesheet" href="css/indexCustom.css">
+        <link rel="stylesheet" href="css/multirange.css">
+      <link rel="stylesheet" href="css/nouislider.min.css">
+      <link rel="stylesheet" href="css/multiRangeIndex.css">
+
 
     <!-- Ignite UI Required Combined CSS Files -->
     <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
@@ -23,7 +26,8 @@
     <script src="js/estates.js"></script>
     <script src="js/cityLocations.js"></script>
     <script src="js/heatmapLocations.js"></script>
-
+    <script src="js/multirange.js"></script>
+      <script src="js/nouislider.min.js"></script>
 
 
     <script src="js/nouislider.min.js"></script>
@@ -108,56 +112,36 @@
       </form>
 
 
-         <form style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
-    			<select name="price" id="minPrice" class="ui icon dropdown button" required onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
-            <option value="0" disabled selected>Min price</option>
-    			  <option value="100">€100</option>
-            <option value="200">€200</option>
-            <option value="300">€300</option>
-            <option value="400">€400</option>
-            <option value="500">€500</option>
-            <option value="600">€600</option>
-            <option value="700">€700</option>
-            <option value="800">€800</option>
-            <option value="900">€900</option>
-            <option value="1000">€1000</option>
-            <option value="1100">€1100</option>
-            <option value="1200">€1200</option>
-            <option value="1300">€1300</option>
-            <option value="1400">€1400</option>
-            <option value="1500">€1500</option>
-            <option value="1700">€1700</option>
-            <option value="1900">€1900</option>
-            <option value="2000">€2000</option>
-            <option value="2500">€2500</option>
-            <option value="3000">€3000</option>
-    			</select>
-        </form>
+         <form id="minPriceSaleForm" style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+    			<select name="price" id="minPriceSale" class="ui icon dropdown button" required onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+                    <option value="0" disabled selected>Min price</option>
+                    <option value="20">€20 000</option>
+                    <option value="25">€25 000</option>
+                    <option value="35">€35 000</option>
+                    <option value="40">€40 000</option>
+                    <option value="50">€50 000</option>
+                    <option value="65">€65 000</option>
+                    <option value="80">€80 000</option>
+                    <option value="100">€100 000</option>
+                    <option value="150">€150 000</option>
+                    <option value="200">€200 000</option>
+                    <option value="300">€300 000</option>
+                </select>
+         </form>
 
-        <form style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
-         <select name="price" id="maxPrice" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
-           <option value="0" disabled selected>Max price</option>
-           <option value="300">€300</option>
-           <option value="400">€400</option>
-           <option value="500">€500</option>
-           <option value="600">€600</option>
-           <option value="700">€700</option>
-           <option value="800">€800</option>
-           <option value="900">€900</option>
-           <option value="1000">€1000</option>
-           <option value="1100">€1100</option>
-           <option value="1200">€1200</option>
-           <option value="1300">€1300</option>
-           <option value="1400">€1400</option>
-           <option value="1500">€1500</option>
-           <option value="1700">€1700</option>
-           <option value="1900">€1900</option>
-           <option value="2000">€2000</option>
-           <option value="2500">€2500</option>
-           <option value="3000">€3000</option>
-           <option value="3100">€3000 +</option>
-         </select>
-       </form>
+        <form id="maxPriceSaleForm" style="height:25%;width:110px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
+             <select name="price" id="maxPriceSale" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
+               <option value="0" disabled selected>Max price</option>
+               <option value="50">€50 000</option>
+               <option value="60">€60 000</option>
+               <option value="75">€75 000</option>
+               <option value="100">€100 000</option>
+               <option value="150">€150 000</option>
+               <option value="200">€200 000</option>
+               <option value="300">€300 000</option>
+               <option value="310">€300 000 +</option>
+             </select>
+        </form>
 
          <form style="height:25%;width:175px; margin-top:0.5%;margin-bottom:0.5%; margin-left:0.5%;">
     			<select name="year" id="year" class="ui icon dropdown button" onchange="getEstatesByFilter()" style="width:100%;height:80%; background-color:white;">
@@ -168,6 +152,10 @@
             <option value="2000">2000 - 2017</option>
     			</select>
         </form>
+        <div class="ui slider">
+            <div class="handle"></div>
+            <div class="value"></div>
+        </div>
 
         <div class="item" style=" margin-left:20%;display:none;">
             <button class="ui inverted white button" onclick="goToPagination()">Visualise real_estate pagination</button>
@@ -353,57 +341,9 @@
          </div>
     </div>
 
-    <div id="addPropModal" class="modal">
-      <span onclick="document.getElementById('addPropModal').style.display='none'" class="close" title="Close Modal">×</span>
-      <form class="modal-content animate" action="./searchCity.html" style="width:30%;">
-        <div class="container">
-          <form class="ui form">
-            <div class="field">
-              <label>Name</label>
-              <input name="first-name" placeholder="First Name" type="text" >
-            </div>
-            <div class="field">
-              <label>Address</label>
-              <input name="address" placeholder="Address" type="text">
-            </div>
-            <div class="field">
-              <label>Description</label>
-              <input name="description" placeholder="Description" type="text">
-            </div>
-            <div class="field">
-              <label>Price</label>
-              <input name="price" placeholder="Price" type="text">
-            </div>
-            <div class="field">
-              <label>Square ft.</label>
-              <input name="sqft" placeholder="Square ft." type="text">
-            </div><br>
-            <div class="field">
-              <label>Rooms</label>
-              <input type="number" name="Rooms" min="1" max="5">
-            </div><br>
-            <form>
-              <label>Amenities:</label><br><br>
-              <input type="checkbox" name="amenities1" value="Bike"> Water/Sewage <br>
-              <input type="checkbox" name="amenities2" value="Bike"> Parking <br>
-              <input type="checkbox" name="amenities3" value="Bike"> Stove <br>
-              <input type="checkbox" name="amenities4" value="Bike"> Washer/Dryer<br>
-              <input type="checkbox" name="amenities5" value="Bike"> Cable TV <br>
-              <input type="checkbox" name="amenities6" value="Bike"> Refrigerator <br>
-            </form>
 
 
-            <form method="get" action="./searchCity.html">
-              <button class="ui button" type="submit">Submit</button>
-            </form>
-
-          </form>
-        </div>
-      </form>
-    </div>
-
-
-   <!--<div class="example" style="display:none;">-->
+   <!--<div class="example" style="display:block;">-->
      <!--<div id="html5" class="noUi-target noUi-ltr noUi-horizontal" style="width:25%;">-->
        <!--</div>-->
      <!--</div>-->
@@ -438,7 +378,7 @@
        <!--<option value="40">40</option>-->
      <!--</select>-->
      <!--<input min="-20" max="40" step="1" id="input-number" type="number">-->
-     </div>
+     <!--</div>-->
 
 
     <script src="searchCity.js">

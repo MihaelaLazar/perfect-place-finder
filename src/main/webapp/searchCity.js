@@ -1,85 +1,89 @@
  function goToAddProperty(){
          window.location = "/addPropertyRaluca.html";
-      }
-         var myCurrentCityInPage = getQueryVariable('city');
-         function insertParam(key, value) {
-           var myURL = document.location.toString();
-           var newURL;
-           var foundQueryString = false;
-           var index;
-           for (index = 0; index < myURL.length; index ++){
-             if (myURL[index] === "?"){
-               foundQueryString = true;
-             }
-           }
-           if (foundQueryString === false) {
-             newURL = myURL + "?"+ key + "="+value;
-           } else {
-             newURL = myURL + "&"+ key + "="+value;
-           }
-           window.history.pushState({}, null, newURL);
+ }
+
+ var myCurrentCityInPage = getQueryVariable('city');
+ function insertParam(key, value) {
+   var myURL = document.location.toString();
+   var newURL;
+   var foundQueryString = false;
+   var index;
+   for (index = 0; index < myURL.length; index ++){
+     if (myURL[index] === "?"){
+       foundQueryString = true;
+     }
+}
+
+   if (foundQueryString === false) {
+     newURL = myURL + "?"+ key + "="+value;
+   } else {
+     newURL = myURL + "&"+ key + "="+value;
+   }
+   window.history.pushState({}, null, newURL);
+  }
+
+function removeURLParameter(url, parameter) {
+    //prefer to use l.search if you have a location/link object
+    var urlparts= url.split('?');
+    if (urlparts.length >= 2) {
+
+        var prefix= encodeURIComponent(parameter)+'=';
+        var pars= urlparts[1].split(/[&;]/g);
+        if (pars.length === 1 ){
+          var copyOfPars = "=" + pars;
+          var firstPartOrPars = copyOfPars.split(/[=;]/g);
+          if (parameter === firstPartOrPars[1]) {
+            var uri = window.location.toString();
+            var clean_uri = uri.substring(0, uri.indexOf("?"));
+            window.history.replaceState({}, document.title, clean_uri);
+            return url.split("?")[0];
+          }
+        } else {
+          //reverse iteration as may be destructive
+          for (var i = pars.length; i-- > 0;) {
+              //idiom for string.startsWith
+              if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                  pars.splice(i, 1);
+              }
           }
 
-          function removeURLParameter(url, parameter) {
-                //prefer to use l.search if you have a location/link object
-                var urlparts= url.split('?');
-                if (urlparts.length >= 2) {
-
-                    var prefix= encodeURIComponent(parameter)+'=';
-                    var pars= urlparts[1].split(/[&;]/g);
-                    if (pars.length === 1 ){
-                      var copyOfPars = "=" + pars;
-                      var firstPartOrPars = copyOfPars.split(/[=;]/g);
-                      if (parameter === firstPartOrPars[1]) {
-                        var uri = window.location.toString();
-                        var clean_uri = uri.substring(0, uri.indexOf("?"));
-                        window.history.replaceState({}, document.title, clean_uri);
-                        return url.split("?")[0];
-                      }
-                    } else {
-                      //reverse iteration as may be destructive
-                      for (var i = pars.length; i-- > 0;) {
-                          //idiom for string.startsWith
-                          if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-                              pars.splice(i, 1);
-                          }
-                      }
-
-                      url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
-                      return url;
-                    }
-
-                } else {
-                    return url;
-                }
-          }
-         function getQueryVariable(variable) {
-             var query = window.location.search.substring(1);
-             var vars = query.split("&");
-             for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if(pair[0] == variable) {
-                   return pair[1].replace('%20',' ');
-                }
-             }
-             return null;
-          }
-         var selectCity ;
-
-          selectCity = document.getElementById('city');
-
-        var city_id;
-
-        if(selectCity.value === '0') {
-            selectCity.value = getQueryVariable('city');
-             city_id =  getQueryVariable('city');
+          url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+          return url;
         }
-        console.log("SELECTCITY: " + selectCity.value);
 
-        if(city_id != "") {
-          console.log("my city value is: " + city_id);
-        }
-         function getEstatesByFilter() {
+    } else {
+        return url;
+    }
+}
+
+function getQueryVariable(variable) {
+ var query = window.location.search.substring(1);
+ var vars = query.split("&");
+ for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if(pair[0] == variable) {
+       return pair[1].replace('%20',' ');
+    }
+ }
+ return null;
+}
+var selectCity ;
+selectCity = document.getElementById('city');
+var city_id;
+
+if(selectCity.value === '0') {
+    selectCity.value = getQueryVariable('city');
+     city_id =  getQueryVariable('city');
+}
+console.log("SELECTCITY: " + selectCity.value);
+
+if(city_id != "") {
+  console.log("my city value is: " + city_id);
+}
+
+var transTypeVisible = 0;
+
+        function getEstatesByFilter() {
            var myNode = document.getElementById("estates");
            while (myNode.firstChild) {
              myNode.removeChild(myNode.firstChild);
@@ -96,10 +100,10 @@
             var type_id = selectType.options[selectType.selectedIndex].value;
             var selectSquare = document.getElementById('square');
             var square_id = selectSquare.options[selectSquare.selectedIndex].value;
-            var selectMinPrice = document.getElementById('minPrice');
-            var min_price_id = selectMinPrice.options[selectMinPrice.selectedIndex].value;
-            var selectMaxPrice = document.getElementById('maxPrice');
-            var max_price_id = selectMaxPrice.options[selectMaxPrice.selectedIndex].value;
+            var selectMinPriceSale = document.getElementById('minPriceSale');
+            var min_price_sale_id = selectMinPriceSale.options[selectMinPriceSale.selectedIndex].value;
+            var selectMaxPriceSale = document.getElementById('maxPriceSale');
+            var max_price_sale_id = selectMaxPriceSale.options[selectMaxPriceSale.selectedIndex].value;
             var selectYear = document.getElementById('year');
             var year_id = selectYear.options[selectYear.selectedIndex].value;
             var selectTransType = document.getElementById('transType');
@@ -113,11 +117,11 @@
             if (getQueryVariable('square') != null) {
               window.history.pushState({}, null, removeURLParameter(window.location.search,'square'));
             }
-            if (getQueryVariable('minPrice') != null) {
-              window.history.pushState({}, null, removeURLParameter(window.location.search,'minPrice'));
+            if (getQueryVariable('minPriceSale') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
             }
-            if (getQueryVariable('maxPrice') != null) {
-              window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPrice'));
+            if (getQueryVariable('maxPriceSale') != null) {
+              window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
             }
             if (getQueryVariable('year') != null) {
               window.history.pushState({}, null, removeURLParameter(window.location.search,'year'));
@@ -134,18 +138,62 @@
             if (square_id != 0){
               insertParam('square', square_id);
             }
-            if(min_price_id != 0 ){
-                insertParam('minPrice',min_price_id);
+            if(min_price_sale_id != 0 ){
+                insertParam('minPriceSale',min_price_sale_id);
             }
-            if (max_price_id != 0){
-                insertParam('maxPrice', max_price_id);
+            if (max_price_sale_id != 0){
+                insertParam('maxPriceSale', max_price_sale_id);
             }
             if (year_id != 0){
                 insertParam('year', year_id);
             }
             if (trans_type_id != 0){
-                insertParam('transType',trans_type_id);
+                  insertParam('transType',trans_type_id);
+                  if (document.getElementById('transType').value === 'sale' && transTypeVisible === 1){
+                           var i;
+                           var selectboxMin = document.getElementById("minPriceSale");
+                           for(i = selectboxMin.options.length - 1 ; i >= 0 ; i--) {
+                               selectboxMin.remove(i);
+                           }
+                           var selectboxMax = document.getElementById("maxPriceSale");
+                           for(i = selectboxMax.options.length - 1 ; i >= 0 ; i--) {
+                              selectboxMax.remove(i);
+                           }
+                           addOption('sale', 'min');
+                           addOption('sale', 'max');
+                           transTypeVisible = 0;
+                          if (getQueryVariable('minPriceSale') != null) {
+                            window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
+                          }
+                          if (getQueryVariable('maxPriceSale') != null) {
+                            window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
+                          }
+                  } else {
+                       if (document.getElementById('transType').value === 'rent' && transTypeVisible === 0){
+                               console.log('TRANS TYPE IS RENT');
+                               var i;
+                               var selectboxMin = document.getElementById("minPriceSale");
+                               for(i = selectboxMin.options.length - 1 ; i >= 0 ; i--) {
+                                   selectboxMin.remove(i);
+                               }
+                               var selectboxMax = document.getElementById("maxPriceSale");
+                               for(i = selectboxMax.options.length - 1 ; i >= 0 ; i--) {
+                                  selectboxMax.remove(i);
+                               }
+                               addOption('rent', 'min');
+                               addOption('rent', 'max');
+                               transTypeVisible = 1;
+                               if (getQueryVariable('minPriceSale') != null) {
+                                    window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
+                               }
+                               if (getQueryVariable('maxPriceSale') != null) {
+                                    window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
+                               }
+                        }
+                  }
             }
+
+
             var i;
             var firstChildPut = false;
             for (i = 0; i < estates.length; i ++) {
@@ -160,10 +208,10 @@
                   if (type_id != 0 && estates[i].typeOfEstate != type_id){
                     respectsFilters = false;
                   }
-                  if (min_price_id != 0 && estates[i].price < min_price_id){
+                  if (min_price_sale_id != 0 && estates[i].price < min_price_sale_id){
                     respectsFilters = false;
                   }
-                  if (max_price_id != 0 && estates[i].price > max_price_id && max_price_id < 3100 ){
+                  if (max_price_sale_id != 0 && estates[i].price > max_price_sale_id && max_price_sale_id < 300 ){
                     respectsFilters = false;
                   }
                   if (square_id != 0 && estates[i].surface < square_id && square_id >= 30 ){
@@ -191,7 +239,7 @@
                       map:map
                     });
                     estatesMarkers.push(estates[i].coordinates);
-                    console.log(estatesMarkers);
+                    //console.log(estatesMarkers);
                     marker.addListener('click', function toggleBounce() {
                         if (marker.getAnimation() !== null) {
                            marker.setAnimation(null);
@@ -203,6 +251,211 @@
             }
 
         }
+
+function addOption(transType, typeOfPrice) {
+    if (transType === 'sale' && typeOfPrice === 'min') {
+           var opt = document.createElement("option");
+           opt.value = "0";
+           opt.text = "Min price";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "20";
+           opt.text = "€20 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "25";
+           opt.text = "€25 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "35";
+           opt.text = "€35 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "40";
+           opt.text = "€40 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "50";
+           opt.text = "€50 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "65";
+           opt.text = "€65 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "80";
+           opt.text = "€80 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "100";
+           opt.text = "€100 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "150";
+           opt.text = "€150 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "200";
+           opt.text = "€200 000";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "300";
+           opt.text = "€300 000";
+           document.getElementById('minPriceSale').add(opt);
+           document.getElementById("minPriceSale").options[0].disabled = true;
+    }
+
+    if (transType === 'sale' && typeOfPrice === 'max') {
+        var opt = document.createElement("option");
+        opt.value = "0";
+        opt.text = "Max price";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "50";
+        opt.text = "€50 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "60";
+        opt.text = "€60 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "75";
+        opt.text = "€75 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "100";
+        opt.text = "€100 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "150";
+        opt.text = "€150 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "200";
+        opt.text = "€200 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "300";
+        opt.text = "€300 000";
+        document.getElementById('maxPriceSale').add(opt);
+        opt = document.createElement("option");
+        opt.value = "310";
+        opt.text = "€300 000 +";
+        document.getElementById('maxPriceSale').add(opt);
+        document.getElementById("maxPriceSale").options[0].disabled = true;
+    }
+    if (transType === 'rent' && typeOfPrice === 'min') {
+           var opt = document.createElement("option");
+           opt.value = "0";
+           opt.text = "Min price";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "100";
+           opt.text = "€100";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "200";
+           opt.text = "€200";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "300";
+           opt.text = "€300";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "400";
+           opt.text = "€400";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "500";
+           opt.text = "€500";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "600";
+           opt.text = "€600";
+           opt = document.createElement("option");
+           document.getElementById('minPriceSale').add(opt);
+           opt.value = "700";
+           opt.text = "€700";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "800";
+           opt.text = "€800";
+           opt = document.createElement("option");
+           opt.value = "900";
+           opt.text = "€900";
+           document.getElementById('minPriceSale').add(opt);
+           opt = document.createElement("option");
+           opt.value = "1000";
+           opt.text = "€1000";
+           document.getElementById('minPriceSale').add(opt);
+           document.getElementById("minPriceSale").options[0].disabled = true;
+    }
+
+        if (transType === 'rent' && typeOfPrice === 'max') {
+            var opt = document.createElement("option");
+            opt.value = "0";
+            opt.text = "Max price";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "300";
+            opt.text = "€300";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "400";
+            opt.text = "€400";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "500";
+            opt.text = "€500";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "600";
+            opt.text = "€600";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "700";
+            opt.text = "€700";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "800";
+            opt.text = "€800";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "900";
+            opt.text = "€900";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1000";
+            opt.text = "€1000";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1100";
+            opt.text = "€1100";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1200";
+            opt.text = "€1200";
+            document.getElementById('maxPriceSale').add(opt);
+
+            opt = document.createElement("option");
+            opt.value = "1300";
+            opt.text = "€1300";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1400";
+            opt.text = "€1400";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1500";
+            opt.text = "€1500";
+            document.getElementById('maxPriceSale').add(opt);
+            opt = document.createElement("option");
+            opt.value = "1500";
+            opt.text = "€1500 +";
+            document.getElementById('maxPriceSale').add(opt);;
+            document.getElementById("maxPriceSale").options[0].disabled = true;
+        }
+}
 
          var scrollLoad = true;
          var myScroll = document.getElementById('scrolling');
