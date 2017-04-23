@@ -1,3 +1,4 @@
+/* This function gets the value of given key in the query string from  url*/
 function getQueryVariableEstateDetails(variable) {
      var query = window.location.search.substring(1);
      var vars = query.split("&");
@@ -19,6 +20,8 @@ var estatePosition;
 var parkingLayerArray = [];
 var schoolsNearbyArray = [];
 var storesNearbyArray = [];
+
+/* This function initializes the map */
 function initMap2() {
       console.log("initMap2");
       var idEstate = getQueryVariableEstateDetails('estate');
@@ -50,6 +53,8 @@ function initMap2() {
       });
 }
 
+
+/* This function changes the state of overlays on checking/unchecking the checkbox: add/ remove overlay. */
 function changeOverlayEstate(id){
     console.log('in changeOverlayEstate');
   if(document.getElementById(id).checked) {
@@ -58,6 +63,8 @@ function changeOverlayEstate(id){
     removeOverlay(id);
   }
 }
+
+/* This function removes the given overlay from the map */
 function removeOverlay(id) {
   if(id == 'parkingLayer'){
     for (i in parkingLayerArray) {
@@ -80,7 +87,7 @@ function removeOverlay(id) {
         }
   }
 }
-
+/* This function is a callback and creates an array of markers(nearby parking) from the result given*/
 function callbackParking(results, status) {
    if (status === google.maps.places.PlacesServiceStatus.OK) {
      for (var i = 0; i < results.length; i++) {
@@ -89,6 +96,7 @@ function callbackParking(results, status) {
    }
 }
 
+/* This function is a callback and creates an array of markers(nearby stores) from the result given. */
 function callbackStores(results, status) {
    if (status === google.maps.places.PlacesServiceStatus.OK) {
      for (var i = 0; i < results.length; i++) {
@@ -97,6 +105,7 @@ function callbackStores(results, status) {
    }
 }
 
+/* This function is a callback and creates an array of markers(nearby schools) from the result given. */
 function callbackSchools(results, status) {
    if (status === google.maps.places.PlacesServiceStatus.OK) {
      for (var i = 0; i < results.length; i++) {
@@ -104,6 +113,11 @@ function callbackSchools(results, status) {
      }
    }
 }
+
+/* This function creates a marker
+   - type: type of marker(school, parking, store)
+   - place: the location on the map to place the marker
+ */
 function createMarker(place, type) {
    var placeLoc = place.geometry.location;
    if (type === 'parking') {
@@ -153,6 +167,9 @@ function createMarker(place, type) {
 
 }
 
+/* This function adds an overlay on the map
+    - id: the overlay identified from its corresponding html element id
+*/
 function addOverlay(id) {
  if(id == 'parkingLayer'){
    var parkings = new google.maps.places.PlacesService(globalMap2);
@@ -196,30 +213,38 @@ function codeAddress() {
     }
   });
 }
+
+
 function addLayerOnPadding() {
   var selectLayer = document.getElementById('layer');
   var layer_id = selectLayer.options[selectLayer.selectedIndex].value;
 }
 
-
+/* When element clicked, scrolls back to the top of page */
 $('#propertiesA').click(function(){
     $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
     }, 500);
     return false;
 });
+
+/* When element clicked, scrolls back to the top of page */
 $('#neighbourhoodA').click(function(){
     $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
     }, 500);
     return false;
 });
+
+/* When element clicked, scrolls back to the top of page */
 $('#utilitiesA').click(function(){
     $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
     }, 500);
     return false;
 });
+
+/* When element clicked, scrolls back to the top of page */
 $('#backToTheTop').click(function(){
     $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
@@ -232,6 +257,12 @@ var modalSignUpEstateDetails = document.getElementById('signUpEstateDetails');
 var modalLoginEstateDetails = document.getElementById('logInEstateDetails');
 var modalLoginStatusEstateDetails = document.getElementById('logInStatus-EstateDetails');
 var modalLoginStatusFailedEstateDetails = document.getElementById('logInStatusFailed-EstateDetails');
+
+/* Event listener on clicking outside modals:
+    - login modal
+    - sign up modal
+    - status message modal
+*/
 window.onclick = function(event) {
     if(event.target === modalSignUpEstateDetails )
     {
@@ -283,6 +314,7 @@ window.onclick = function(event) {
     }
 }
 
+/* POST request to server for user login.  */
 function logInPOSTEstateDetails() {
       $('#password-input-login-EstateDetails').removeClass('error');
       $('#email-input-login-EstateDetails').removeClass('error');
@@ -343,6 +375,7 @@ function logInPOSTEstateDetails() {
 
 }
 
+/* POST request to server for user sign up. */
 function signUpPOSTEstateDetails() {
           $('#password-input-EstateDetails').removeClass('error');
           $('#first-name-input-EstateDetails').removeClass('error');
