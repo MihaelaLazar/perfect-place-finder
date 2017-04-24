@@ -215,25 +215,25 @@ function getEstatesByFilter() {
                 respectsFilters = false;
               }
               if (estates[i].city.toLowerCase() === city_id && respectsFilters === true) {
-                if (firstChildPut === false) {
-                  currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
-                  firstChildPut = true;
-                } else {
-                  currentDiv = $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate= " + estates[i].id +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
-            }
+                    if (firstChildPut === false) {
+                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button class='ui inverted blue button'><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                          firstChildPut = true;
+                        } else {
+                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button class='ui inverted blue button'><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                    }
             $("#estates").append(currentDiv);
-            var icon = {
-                url: "images/Marker Filled-50.png",
-                scaledSize: new google.maps.Size(40, 40),
-                origin: new google.maps.Point(0,0),
-                anchor: new google.maps.Point(0,0)
+            var iconMarker = {
+                  url: "images/Marker Filled-50.png",
+                  scaledSize: new google.maps.Size(40, 40),
+                  origin: new google.maps.Point(0,0),
+                  anchor: new google.maps.Point(0,0)
             };
-             var latLong = new google.maps.LatLng(estates[i].coordinates[0], estates[i].coordinates[1]);
-             var marker = new google.maps.Marker({
-              position: latLong,
-              animation: google.maps.Animation.DROP,
-              icon:icon,
-              map:map
+            var latLong = new google.maps.LatLng(estates[i].coordinates[0], estates[i].coordinates[1]);
+            var marker = new google.maps.Marker({
+                  position: latLong,
+                  animation: google.maps.Animation.DROP,
+                  icon: iconMarker,
+                  map:map
             });
             estatesMarkers.push(estates[i].coordinates);
             marker.addListener('click', function toggleBounce() {
