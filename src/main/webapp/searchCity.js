@@ -216,10 +216,10 @@ function getEstatesByFilter() {
               }
               if (estates[i].city.toLowerCase() === city_id && respectsFilters === true) {
                     if (firstChildPut === false) {
-                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
                           firstChildPut = true;
                         } else {
-                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart" + estates[i].id+"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id +"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart" + estates[i].id+"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id +"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
                     }
             $("#estates").append(currentDiv);
             var iconMarker = {
@@ -231,7 +231,6 @@ function getEstatesByFilter() {
             var latLong = new google.maps.LatLng(estates[i].coordinates[0], estates[i].coordinates[1]);
             var marker = new google.maps.Marker({
                   position: latLong,
-                  animation: google.maps.Animation.DROP,
                   icon: iconMarker,
                   map:map,
                   draggable: true,
@@ -256,7 +255,6 @@ function getEstatesByFilter() {
     - blue otherwise (default)
 */
 function changeLikeState (id) {
-    console.log("changeLikeState: " + id);
     if ( $('#' + id).hasClass('blue') ){
         $('#' + id).removeClass('blue');
         $('#' + id).addClass('orange');
@@ -267,26 +265,14 @@ function changeLikeState (id) {
 }
 
 function raiseMarker(estateId) {
-    //console.log(estatesMarkers[estateId]);
-    var latLong = new google.maps.LatLng(estates[estateId].coordinates[0], estates[estateId].coordinates[1]);
-    var iconMarker = {
-          url: "images/Marker Filled-50.png",
-          scaledSize: new google.maps.Size(40, 40),
-          origin: new google.maps.Point(0,0),
-          anchor: new google.maps.Point(0,0),
-          draggable: true,
-          animation: google.maps.Animation.DROP,
-
-    };
-    var marker = new google.maps.Marker({
-          position: latLong,
-          animation: google.maps.Animation.DROP,
-       //   icon: iconMarker,
-          map:map
-    });
-    estatesMarkers[estateId].setAnimation(google.maps.Animation.BOUNCE);
+        estatesMarkers[estateId].setAnimation(google.maps.Animation.BOUNCE);
 }
 
+
+function unraiseMarker(estateId){
+    console.log('unraise animation');
+    estatesMarkers[estateId].setAnimation(null);
+}
 
 /* This function is called when type of transaction is changed.
     - when transaction is 'sale', adds different prices on dropdown,
@@ -638,14 +624,18 @@ function initMap() {
           return new google.maps.Marker({
               position: location,
               label: labels[i % labels.length],
-              icon:  icon
+              icon:  icon,
+              draggable: true,
+              animation: google.maps.Animation.DROP
           });
-          //return estatesMarkers[i];
         });
+        console.log(markers);
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
           {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
+        for(var i = 0; i < markers.length; i ++) {
+            estatesMarkers[i] = markers[i];
+        }
 }
 
 /* This function gets chosen city coordinates to place the center of map on the center of the city. */
