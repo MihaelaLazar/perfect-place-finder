@@ -21,17 +21,17 @@ paths:
           in: body
           required: true
           description: The user first name account to create
-        
+
         - name: last name
           in: body
           required: true
           description: The user last name account to create
-          
+
         - name: email
           in: body
           required: true
           description: The user email account to create
-          
+
         - name: password
           in: body
           required: true
@@ -88,7 +88,7 @@ paths:
           description: You tried to log someone else out, and you're not the "admin" user.
         404:
           description: The {username} was not found
-  
+
   /user/announcements:
     get:
       summary: Returns user's announcements.
@@ -101,24 +101,24 @@ paths:
           type: string
           description: The session cookie
       responses:
-        204: 
+        204:
           description: Request was successful
-        404: 
+        404:
           description: Session inexistent
-        
-          
+
+
   /estates:
     get:
       summary: Get estates by filters
       description: >
         Get the estates by filters written in query string.
       parameters:
-      
+
         - name: city
           in: query
           required: true
           description: The announcements/estates in the given city.
-          
+
         - name : transactionType
           in: query
           description: The type of announcement - for rent or for sale.
@@ -143,13 +143,13 @@ paths:
           in: query
           description: The year of construction of  estate.
           required: false
-          
+
       responses:
         204:
           description: Request was successful
         401:
           description: You tried to log someone else out, and you're not the "admin" user.
-          
+
   /estates/add:
     post:
       summary: Adds an annoucement.
@@ -192,14 +192,14 @@ paths:
            in: body
            description: The cellphone number of users who posted the announcement.
            required: true
-          
+
       responses:
         204:
           description: Request was successful, announcement added.
         401:
           description: You tried to add an announcement that already exists(address).
-          
-          
+
+
   /estates/details{id}:
     get:
       summary: Details about estate.
@@ -210,20 +210,20 @@ paths:
           in: query
           description: The id of estate(announcement)
           required: true
-         
+
       responses:
         204:
           description: Request was successful
-        
+
         404:
           description: Announcement not found.
-  
+
   /user/estate{id}:
     get:
       summary: Details about user's announcement(estate).
       description: >
           This endpoint returns a json response with details about user's announcement(estate), given by its id.
-          
+
       parameters:
           - name: id
             in: query
@@ -238,15 +238,15 @@ paths:
       responses:
         204:
           description: Request was successful
-        404: 
+        404:
           description: Session cookie inexistent
-  
+
   /user/estate/update:
     post:
       summary: Updates details about an anouncement.
       description: >
         This endpoint updates a given announcement of the user logged in.
-        
+
       parameters:
           - name: id
             in: body
@@ -299,7 +299,7 @@ paths:
       summary: Deletes an announcement.
       description: >
         This endpoint deletes a given announcement of the user logged in.
-        
+
       parameters:
         - name: id
           in: body
@@ -315,8 +315,8 @@ paths:
           301:
             description: Deleteion was successful
           401:
-            description: Session cookie inexistent  
-            
+            description: Session cookie inexistent
+
   /user/send/message:
     post:
       summary: Sending a message to an user who posted the announcement.
@@ -345,8 +345,8 @@ paths:
           301:
             description: Sending message was successful
           401:
-            description: Session cookie inexistent 
-            
+            description: Session cookie inexistent
+
   /user/get/messages:
       get:
         summary: Get received messages of user.
@@ -361,13 +361,13 @@ paths:
              in: header
              required: true
              type: string
-             description: The session cookie 
+             description: The session cookie
         responses:
           301:
             description: Get messages was successful
           401:
-            description: Session cookie inexistent 
-            
+            description: Session cookie inexistent
+
   /user/delete/message:
       post:
         summary: Delete a message
@@ -386,13 +386,13 @@ paths:
             in: header
             required: true
             type: string
-            description: The session cookie 
+            description: The session cookie
         responses:
           301:
             description: Deleting message was successful
           401:
-            description: Session cookie inexistent  
-            
+            description: Session cookie inexistent
+
   /user/reply/message:
        post:
         summary: Reply to a message
@@ -415,15 +415,59 @@ paths:
             in: header
             required: true
             type: string
-            description: The session cookie 
+            description: The session cookie
         responses:
           301:
             description: Sending message was successful
           401:
-            description: Session cookie inexistent 
+            description: Session cookie inexistent
           403:
             description: User email inexistent
-  
-          
-          
-  
+
+  /user/update/password:
+    post:
+      summary: Update user password
+      description: >
+          The endpoint sends a request to server to change password if user is logged in.
+      parameters:
+        - name: newPassword
+          in: body
+          required: true
+          type: string
+          description: new user's password
+        - name: confirmPassword
+          in: body
+          type: string
+          required: true
+        - name: Cookie
+          in: header
+          required: true
+          type: string
+          description: The session cookie
+      responses:
+          301:
+            description: Update password succeeded
+          401:
+            description: Session cookie inexistent
+          403:
+            description: Invalid user passsword
+
+  /user/favorites/announcements:
+    get:
+      summary: Get favorite announcements
+      description: >
+        This endpoint sends a request to server to get user's favorite announcements.
+      parameters:
+        - name: Cookie
+          in: header
+          required: true
+          type: string
+          description: The session cookie
+      responses:
+        301:
+          description: Get announcements was successful
+        401:
+            description: Session cookie inexistent
+
+
+
