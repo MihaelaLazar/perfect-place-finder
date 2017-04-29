@@ -165,18 +165,18 @@ public class OracleCon {
         List<Estate> estates = new ArrayList<>();
         while (rs.next()) {
             Estate currentEstate = new Estate();
-            currentEstate.setID(rs.getInt(1));
+            currentEstate.setID(Long.parseLong(String.valueOf(rs.getInt(1))));
             currentEstate.setType(rs.getString(2));
             currentEstate.setAddress(rs.getString(3));
-            currentEstate.setSurface(rs.getInt(4));
-            currentEstate.setRooms(rs.getInt(5));
-            currentEstate.setRentPrice(rs.getInt(6));
-            currentEstate.setBuyPrice(rs.getInt(7));
+            currentEstate.setSurface(Long.parseLong(String.valueOf(rs.getInt(4))));
+            currentEstate.setRooms(Long.parseLong(String.valueOf(rs.getInt(5))));
+            currentEstate.setRentPrice(Long.parseLong(String.valueOf(rs.getInt(6))));
+            currentEstate.setBuyPrice(Long.parseLong(String.valueOf(rs.getInt(7))));
             currentEstate.setDivision(rs.getString(8));
             currentEstate.setConstructionYear(rs.getInt(9));
             currentEstate.setDescription(rs.getString(10));
-            currentEstate.setCreationDate(rs.getDate(11).toString());
-            currentEstate.setLastUpdate(rs.getDate(12).toString());
+            currentEstate.setCreationDate(rs.getDate(11));
+            currentEstate.setLastUpdate(rs.getDate(12));
             currentEstate.setCity(rs.getString(13));
             estates.add(currentEstate);
         }

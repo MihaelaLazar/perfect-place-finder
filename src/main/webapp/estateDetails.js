@@ -319,7 +319,7 @@ function logInPOSTEstateDetails() {
       $('#password-input-login-EstateDetails').removeClass('error');
       $('#email-input-login-EstateDetails').removeClass('error');
       console.log('logInPOST');
-      var url = "/verify/user";
+      var url = "/user/verify";
       var method = "POST";
       var passInput = document.getElementById('password-login-EstateDetails');
       var password = passInput.value;
@@ -382,7 +382,7 @@ function signUpPOSTEstateDetails() {
           $('#last-name-input-EstateDetails').removeClass('error');
           $('#email-input-EstateDetails').removeClass('error');
           console.log('signUpPOST');
-          var url = "/create/user";
+          var url = "/user/create";
           var method = "POST";
           var firstNameInput = document.getElementById('first-name-EstateDetails');
           var firstName = firstNameInput.value;

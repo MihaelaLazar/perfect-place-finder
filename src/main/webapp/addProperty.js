@@ -67,13 +67,13 @@
      markersArray.length = 0;
      }
  }
-/* POST request to server for adding property/announcement */
+
  function addPropertyPOST(event) {
          event.preventDefault();
         console.log('addPropertyPOST');
         var isValidLogin = true;
         var methodLogin = "POST";
-        var urlLogin = "/add/property";
+        var urlLogin = "/estate/add/property";
         var categoryInput = document.getElementById('category-select');
         var category = categoryInput.value;
         var roomsInput = document.getElementById('rooms-select');

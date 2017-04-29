@@ -1,37 +1,49 @@
 package com.sgbd.model;
 
+import org.springframework.data.annotation.Transient;
+
+import javax.persistence.*;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * Created by mihae on 4/3/2017.
+ * @author Lazarm
+ * Creation Date: 4/3/2017.
  */
-
-public class User  implements Serializable {
+@Entity
+@Table(name = "PF_USERS", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "EMAIL")
+})
+public class User implements Serializable {
 
     public static final String USER_EMAIL_COLUMN_NAME = "email";
     public static final String USER_ID_COLUMN_NAME = "id";
 
+    @Id
+    @GeneratedValue
+    @Column(name = "ID", nullable = false)
     private Long id;
 
-
+    @Column(name="EMAIL",nullable = false)
     private String email;
 
+    @Column(name="FIRSTNAME", nullable = false)
     private String firstName;
 
-
+    @Column(name="LASTNAME" , nullable = false)
     private String lastName;
 
-
+    @Column(name="PASSWORD", nullable = false)
     private String password;
 
-
+    @Transient
     private boolean enabled;
 
+    @Transient
     private boolean locked;
 
 
     public User() {
-
     }
 
     public User(String email, String firstName, String lastName, String password) {
@@ -107,64 +119,6 @@ public class User  implements Serializable {
         return "User [id=" + id + ", email=" + email + ", firstName="
                 + firstName + ", lastName=" + lastName + ", password="
                 + password + "]";
-    }
-
-    public static Builder getBuilder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-
-        private User user;
-
-        public Builder() {
-            user = new User();
-        }
-
-        public Builder email(String email) {
-            user.email = email;
-            return this;
-        }
-
-        public Builder firstName(String firstName) {
-            user.firstName = firstName;
-            return this;
-        }
-
-        public Builder lastName(String lastName) {
-            user.lastName = lastName;
-            return this;
-        }
-
-        public Builder password(String password) {
-            user.password = password;
-            return this;
-        }
-
-//        public Builder role(Role role) {
-//            user.userRoles.add(new UserRole(this.user, role));
-//            return this;
-//        }
-
-        public Builder enabled(boolean enabled) {
-            user.enabled = enabled;
-            return this;
-        }
-
-        public Builder locked(boolean locked) {
-            user.locked = locked;
-            return this;
-        }
-
-
-        public User build() {
-            return user;
-        }
-
-        public Builder id(Long id) {
-            user.id = id;
-            return this;
-        }
     }
 
     public String getUsername() {

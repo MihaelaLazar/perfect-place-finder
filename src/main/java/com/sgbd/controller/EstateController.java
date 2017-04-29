@@ -1,11 +1,14 @@
 package com.sgbd.controller;
 
+import com.sgbd.EstateService;
 import com.sgbd.OracleCon;
 import com.sgbd.dto.CitiesDTO;
 import com.sgbd.dto.EstateDTO;
+import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping(path="/estate")
 public class EstateController {
+
+    @Autowired
+    private EstateService estateService;
 
     private static final int NUMBER_OF_COLUMNS = 13;
 
@@ -86,6 +93,16 @@ public class EstateController {
         List<Estate> estates = new ArrayList<>(1000);
 
         return new ResponseEntity<>(estates, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/getByFilters", method = RequestMethod.GET)
+    public ResponseEntity<PaginatedEstatesDetails> getEstates(Request request, Response response){
+        System.out.println(request.getQueryString());
+        response.setContentType("application/json");
+        PaginatedEstatesDetails paginatedEstatesDetails;
+        paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
+        return new ResponseEntity<>(paginatedEstatesDetails, HttpStatus.OK);
+
     }
 
 

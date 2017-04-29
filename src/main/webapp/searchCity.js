@@ -128,6 +128,9 @@ function getEstatesByFilter() {
         if (getQueryVariable('transType') != null) {
           window.history.pushState({}, null, removeURLParameter(window.location.search,'transType'));
         }
+        if (getQueryVariable('offset') != null) {
+                window.history.pushState({}, null, removeURLParameter(window.location.search,'offset'));
+            }
         if (city_id != 0) {
           insertParam('city', city_id);
         }
@@ -191,62 +194,65 @@ function getEstatesByFilter() {
                    }
               }
         }
+        offset = 0;
+        insertParam('offset', offset);
         var i;
         var firstChildPut = false;
-        for (i = 0; i < estates.length; i ++) {
-              var currentDiv;
-              var respectsFilters = true;
-              if (year_id != 0 && estates[i].year < year_id){
-                respectsFilters = false;
-              }
-              if (trans_type_id != 0 && estates[i].typeOfTransaction != trans_type_id){
-                respectsFilters = false;
-              }
-              if (type_id != 0 && estates[i].typeOfEstate != type_id){
-                respectsFilters = false;
-              }
-              if (min_price_sale_id != 0 && estates[i].price < min_price_sale_id){
-                respectsFilters = false;
-              }
-              if (max_price_sale_id != 0 && estates[i].price > max_price_sale_id && max_price_sale_id < 300 ){
-                respectsFilters = false;
-              }
-              if (square_id != 0 && estates[i].surface < square_id && square_id >= 30 ){
-                respectsFilters = false;
-              }
-              if (estates[i].city.toLowerCase() === city_id && respectsFilters === true) {
-                    if (firstChildPut === false) {
-                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
-                          firstChildPut = true;
-                        } else {
-                          currentDiv =  $("<div id='"+ estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-2%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[i].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estates[i].name + "</div><div class='meta'>" + estates[i].city + "</div><div class='description'>" + estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estates[i].id +"'><input type='hidden' name='estate' value='" + estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart" + estates[i].id+"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estates[i].id +"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+        var myURL = document.location.toString().split("?");
+        var queryString =  myURL[1];
+        var url = "/estate/getByFilters?" + queryString;
+        var method = "GET";
+        var async = true;
+        var request = new XMLHttpRequest();
+        var status;
+        var data;
+        request.onload = function () {
+            status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+            data = request.responseText; // Returned data, e.g., an HTML document.
+            var estatesByFilters = JSON.parse(data);
+            for(var i = 0; i < estatesByFilters.estates.length; i ++ ) {
+                var currentDiv;
+                currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[0].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estatesByFilters.estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                $("#estates").append(currentDiv);
+                var address = estatesByFilters.estates[i].address.split(" ");
+                var latLong = new google.maps.LatLng(address[0], address[1]);
+                var icon = {
+                    url: "images/Marker Filled-50.png",
+                    scaledSize: new google.maps.Size(40, 40),
+                    origin: new google.maps.Point(0,0),
+                    anchor: new google.maps.Point(0,0)
+                };
+                estatesMarkersCoordinates.push(latLong);
+                var marker = new google.maps.Marker({
+                    position: latLong,
+                   // draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    icon:icon,
+                    map:map
+                });
+                marker.addListener('click', function toggleBounce() {
+                    if (marker.getAnimation() !== null) {
+                        marker.setAnimation(null);
+                    } else {
+                        marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
-            $("#estates").append(currentDiv);
-            var iconMarker = {
-                  url: "images/Marker Filled-50.png",
-                  scaledSize: new google.maps.Size(40, 40),
-                  origin: new google.maps.Point(0,0),
-                  anchor: new google.maps.Point(0,0)
-            };
-            var latLong = new google.maps.LatLng(estates[i].coordinates[0], estates[i].coordinates[1]);
-            var marker = new google.maps.Marker({
-                  position: latLong,
-                  icon: iconMarker,
-                  map:map,
-                  draggable: true,
-                  animation: google.maps.Animation.DROP,
-            });
-            estatesMarkersCoordinates.push(estates[i].coordinates);
-            marker.addListener('click', function toggleBounce() {
-                if (marker.getAnimation() !== null) {
-                   marker.setAnimation(null);
-               } else {
-                 marker.setAnimation(google.maps.Animation.BOUNCE);
-               }
-            });
-            estatesMarkers[i] = marker;
-          }
-    }
+                });
+                estatesMarkers[i] = marker;
+            }
+            var totalCountOfProperties = estatesByFilters.totalCount;
+            currentCountOfProperties =   estatesByFilters.estates.length;
+            numberOfPropertiesReturned = estatesByFilters.estates.length;
+            var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
+            $( "#number-of-properties" ).empty();
+            $('#number-of-properties').append(numberOfProperties);
+
+        }
+        request.open(method, url,true);
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send();
+
+        // request.send(JSON.stringify(getData));
+        initMap();
 
 }
 
@@ -524,8 +530,10 @@ window.onload = function() {
 /* This function is for lazy loading the announcements from  database*/
 $("#scrolling").scroll(function () {
     if (isScrollBottom()) {
-        var div = $("<div class='only row'><div class='column'><div class='ui card' style='width:91%;margin-top:-7%;margin-left:2%;'><div class='content'> <img class='right floated tiny ui image' src='images/house-example.png' style='width:120px;'><div class='header'> Morningside Park </div><div class='meta'>New York</div><div class='description'> Villa with 3 rooms, 2 floors situated in a residential area. </div></div><div class='extra content'><div class='ui two buttons'><form method='get' action='estateDetails.html'><button class='ui blue button' type='submit'>See details</button></form><form method='get' action='estateDetails.html' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div></div></div></div>");
-      //  $("#estates").append(div);
+        console.log("reached the bottom");
+        if (numberOfPropertiesReturned > 0 ) {
+            loadMore();
+        }
     }
 });
 
@@ -537,8 +545,67 @@ function isScrollBottom() {
 }
 
 /* This function (will) load more data from database.*/
-function loadmore() {}
+function loadMore() {
+    offset = offset + 10;
+ //   console.log('offset increased by 10');
+    if (getQueryVariable('offset') != null) {
+        window.history.pushState({}, null, removeURLParameter(window.location.search,'offset'));
+    }
+    insertParam('offset',offset);
+    var myURL = document.location.toString().split("?");
+    var queryString =  myURL[1];
+    var url = "/estate/getByFilters?" + queryString;
+    var request = new XMLHttpRequest();
+    var status;
+    var data;
+    var method = "GET";
+    request.onload = function () {
+        status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+        data = request.responseText; // Returned data, e.g., an HTML document.
+        var estatesByFilters = JSON.parse(data);
+        for(var i = 0; i < estatesByFilters.estates.length; i ++ ) {
+            var currentDiv;
+            currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estates[0].photo+"/profile.jpg' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estatesByFilters.estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+            $("#estates").append(currentDiv);
+            var address = estatesByFilters.estates[i].address.split(" ");
+            var latLong = new google.maps.LatLng(address[0], address[1]);
+            var icon = {
+                url: "images/Marker Filled-50.png",
+                scaledSize: new google.maps.Size(40, 40),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(0,0)
+            };
+            estatesMarkersCoordinates.push(latLong);
+            var marker = new google.maps.Marker({
+                position: latLong,
+                // draggable: true,
+                animation: google.maps.Animation.DROP,
+                icon:icon,
+                map:map
+            });
+            marker.addListener('click', function toggleBounce() {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            });
+            estatesMarkers[i] = marker;
+        }
+        var totalCountOfProperties = estatesByFilters.totalCount;
+        currentCountOfProperties = currentCountOfProperties + estatesByFilters.estates.length;
+        numberOfPropertiesReturned = estatesByFilters.estates.length;
+        var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
+        $( "#number-of-properties" ).empty();
+        $('#number-of-properties').append(numberOfProperties);
+    }
+    request.open(method, url,true);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send();
 
+    // request.send(JSON.stringify(getData));
+    //initMap();
+}
 
 var map  = null;
 var markerGlobal;
@@ -556,6 +623,7 @@ var cityCoordinates;
 var heatmap;
 var estatesMarkersCoordinates = [];
 var estatesMarkers= [];
+var  waqiMapOverlay
 /* This function initializes the map on the page and adds cluster to markers(of announcements). */
 function initMap() {
         console.log("initMap");
@@ -606,6 +674,18 @@ function initMap() {
         google.maps.event.addListener(marker, 'mouseout', function () {
             infoWindowOnMouseover.close();
         });
+
+        /* air pollution (quality) API */
+//        var  waqiMapOverlay  =  new  google.maps.ImageMapType({
+//              getTileUrl:  function(coord,  zoom)  {
+//                        return  'https://tiles.waqi.info/tiles/usepa-aqi/'  +  zoom  +  "/"  +  coord.x  +  "/"  +  coord.y  +  ".png?token=_TOKEN_ID_";
+//              },
+//              name:  "Air  Quality",
+//        });
+//
+//        map.overlayMapTypes.insertAt(0,waqiMapOverlay);
+        /* air pollution (quality) API (below) */
+
         trafficLayer = new google.maps.TrafficLayer();
         transitLayer = new google.maps.TransitLayer();
         pollutionLayerIasi = new google.maps.Data();
@@ -613,7 +693,6 @@ function initMap() {
         pollutionLayerNewYork = new google.maps.Data();
         pollutionLayerLondon = new google.maps.Data();
 
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         var icon = {
           url: "images/Marker Filled-50.png",
           scaledSize: new google.maps.Size(40, 40),
@@ -623,15 +702,14 @@ function initMap() {
         var markers = estatesMarkersCoordinates.map(function(location,i) {
           return new google.maps.Marker({
               position: location,
-              label: labels[i % labels.length],
               icon:  icon,
-              draggable: true,
+             // draggable: true,
               animation: google.maps.Animation.DROP
           });
         });
         console.log(markers);
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
+        var markerCluster = new MarkerClusterer(map, estatesMarkers,
           {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
         for(var i = 0; i < markers.length; i ++) {
             estatesMarkers[i] = markers[i];
@@ -686,10 +764,11 @@ function removeOverlay(id) {
                     }
               } else {
                   if ( id === "pollutionLayer"){
-                      pollutionLayerIasi.setMap(null);
-                      pollutionLayerBucuresti.setMap(null);
-                      pollutionLayerNewYork.setMap(null);
-                      pollutionLayerLondon.setMap(null);
+//                      pollutionLayerIasi.setMap(null);
+//                      pollutionLayerBucuresti.setMap(null);
+//                      pollutionLayerNewYork.setMap(null);
+//                      pollutionLayerLondon.setMap(null);
+                        map.overlayMapTypes.removeAt(0,waqiMapOverlay);
                   } else {
                         if (id === "congestionLayer"){
                             heatmap.setMap(null);
@@ -777,48 +856,56 @@ function addOverlay(id) {
                  }, callback);
                } else {
                  if (id === "pollutionLayer") {
-                     pollutionLayerIasi.addGeoJson(iasiPollution);
-                     pollutionLayerIasi.setStyle(function(feature) {
-                        return ({
-                          fillColor: feature.getProperty('color'),
-                          strokeWeight: 1,
-                          strokeColor: feature.getProperty('strokeColor'),
-                          fillOpacity: feature.getProperty('fillOpacity')
-                        });
-                      });
-                      pollutionLayerIasi.setMap(map);
-                      pollutionLayerBucuresti.addGeoJson(bucurestiPollution);
-                      pollutionLayerBucuresti.setStyle(function(feature) {
-                          return ({
-                            fillColor: feature.getProperty('color'),
-                            strokeWeight: 1,
-                            strokeColor: feature.getProperty('strokeColor'),
-                            fillOpacity: feature.getProperty('fillOpacity')
-                          });
-                      });
-                      pollutionLayerBucuresti.setMap(map);
-                      pollutionLayerNewYork.addGeoJson(newyorkPollution);
-                      pollutionLayerNewYork.setStyle(function(feature) {
-                          return ({
-                            fillColor: feature.getProperty('color'),
-                            strokeWeight: 1,
-                            strokeColor: feature.getProperty('strokeColor'),
-                            fillOpacity: feature.getProperty('fillOpacity')
-                          });
-                      });
-                      pollutionLayerNewYork.setMap(map);
-                      pollutionLayerLondon.addGeoJson(LondonPollution);
-                      pollutionLayerLondon.setStyle(function(feature) {
-                          return ({
-                            fillColor: feature.getProperty('color'),
-                            strokeWeight: 0.5,
-                            strokeColor: feature.getProperty('strokeColor'),
-                            fillOpacity: feature.getProperty('fillOpacity')
-                          });
-                      });
-                      pollutionLayerLondon.setMap(map);
+//                     pollutionLayerIasi.addGeoJson(iasiPollution);
+//                     pollutionLayerIasi.setStyle(function(feature) {
+//                        return ({
+//                          fillColor: feature.getProperty('color'),
+//                          strokeWeight: 1,
+//                          strokeColor: feature.getProperty('strokeColor'),
+//                          fillOpacity: feature.getProperty('fillOpacity')
+//                        });
+//                      });
+//                      pollutionLayerIasi.setMap(map);
+//                      pollutionLayerBucuresti.addGeoJson(bucurestiPollution);
+//                      pollutionLayerBucuresti.setStyle(function(feature) {
+//                          return ({
+//                            fillColor: feature.getProperty('color'),
+//                            strokeWeight: 1,
+//                            strokeColor: feature.getProperty('strokeColor'),
+//                            fillOpacity: feature.getProperty('fillOpacity')
+//                          });
+//                      });
+//                      pollutionLayerBucuresti.setMap(map);
+//                      pollutionLayerNewYork.addGeoJson(newyorkPollution);
+//                      pollutionLayerNewYork.setStyle(function(feature) {
+//                          return ({
+//                            fillColor: feature.getProperty('color'),
+//                            strokeWeight: 1,
+//                            strokeColor: feature.getProperty('strokeColor'),
+//                            fillOpacity: feature.getProperty('fillOpacity')
+//                          });
+//                      });
+//                      pollutionLayerNewYork.setMap(map);
+//                      pollutionLayerLondon.addGeoJson(LondonPollution);
+//                      pollutionLayerLondon.setStyle(function(feature) {
+//                          return ({
+//                            fillColor: feature.getProperty('color'),
+//                            strokeWeight: 0.5,
+//                            strokeColor: feature.getProperty('strokeColor'),
+//                            fillOpacity: feature.getProperty('fillOpacity')
+//                          });
+//                      });
+//                      pollutionLayerLondon.setMap(map);
+                         waqiMapOverlay  =  new  google.maps.ImageMapType({
+                                      getTileUrl:  function(coord,  zoom)  {
+                                                return  'https://tiles.waqi.info/tiles/usepa-aqi/'  +  zoom  +  "/"  +  coord.x  +  "/"  +  coord.y  +  ".png?token=_TOKEN_ID_";
+                                      },
+                                      name:  "Air  Quality",
+                                });
 
-                           } else {
+                                map.overlayMapTypes.insertAt(0,waqiMapOverlay);
+
+                 } else {
                      if (id === "congestionLayer"){
                        heatmap = new google.maps.visualization.HeatmapLayer({
                            data: getPoints(),
@@ -917,7 +1004,7 @@ function logInPOST() {
      $('#password-input-login').removeClass('error');
      $('#email-input-login').removeClass('error');
      console.log('logInPOST');
-     var url = "/loginPerson";
+     var url = "/user/verify";
      var method = "POST";
      var passInput = document.getElementById('password-login');
      var password = passInput.value;
@@ -976,7 +1063,7 @@ function signUpPOST() {
       $('#last-name-input').removeClass('error');
       $('#email-input').removeClass('error');
       console.log('signUpPOST');
-      var url = "/create/user";
+      var url = "/user/create";
       var method = "POST";
       var firstNameInput = document.getElementById('first-name');
       var firstName = firstNameInput.value;

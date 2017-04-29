@@ -1,9 +1,17 @@
 package com.sgbd;
 
+import com.sgbd.dto.SignUpDTO;
 import com.sgbd.model.User;
+import com.sgbd.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
+import static com.sgbd.model.User.USER_ID_COLUMN_NAME;
 
 /**
  * Created by mihae on 4/3/2017.
@@ -12,28 +20,54 @@ import java.io.Serializable;
 @Service
 public class UserServiceImpl implements UserService{
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public Serializable findByEmail(String email) {
-        return null;
+        return userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, email, User.class);
+    }
+
+    @Override
+    public Serializable findById (Long userId) {
+        return userRepository.findByAttribute(USER_ID_COLUMN_NAME, userId, User.class);
     }
 
     @Override
     public User getUser(String userEmail) {
-        return new User();
+        return (User) userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class);
     }
+
 
     @Override
     public String deleteUser(String userEmail) {
-        return null;
+        if (userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail,User.class) == null){
+            return "user with email " + userEmail +" does not exist";
+        } else {
+            userRepository.deleteUser(userEmail);
+            return "user with email " + userEmail + " deleted";
+        }
     }
 
     @Override
-    public Serializable findById(Long userId) {
-        return null;
+    public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException{
+        User user = new User();
+        System.out.println("FIRST NAME: " + signUpDTO.getFirstName());
+        user.setFirstName(signUpDTO.getFirstName());
+        user.setLastName(signUpDTO.getLastName());
+        user.setEmail(signUpDTO.getEmail());
+        user.setPassword(signUpDTO.getPassword());
+        return userRepository.createUser(user);
     }
 
     @Override
-    public User createUser(User user) {
-        return user;
+    public User findByEmailAndPassword(String email, String password) {
+        User user = (User) findByEmail(email);
+        if (user.getPassword() != password) {
+            return null;
+        }else {
+            return user;
+        }
     }
+
 }

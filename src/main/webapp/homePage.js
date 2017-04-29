@@ -143,7 +143,7 @@ function logInPOSThomePage() {
       $('#password-input-login-homePage').removeClass('error');
       $('#email-input-login-homePage').removeClass('error');
       console.log('logInPOST');
-      var url = "/verify/user";
+      var url = "/user/verify";
       var method = "POST";
       var passInput = document.getElementById('password-login-homePage');
       var password = passInput.value;
@@ -205,7 +205,7 @@ function signUpPOSThomePage() {
       $('#last-name-input-homePage').removeClass('error');
       $('#email-input-homePage').removeClass('error');
       console.log('signUpPOST');
-      var url = "/create/user";
+      var url = "/user/create";
       var method = "POST";
       var firstNameInput = document.getElementById('first-name-homePage');
       var firstName = firstNameInput.value;
