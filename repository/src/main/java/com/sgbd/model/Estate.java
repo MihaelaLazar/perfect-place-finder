@@ -89,6 +89,19 @@ public class Estate implements Serializable {
     @JoinColumn(name = "ID_ANNOUNCEMENT")
     private Set<Attachement> estateAttachements;
 
+    @Column(name = "LEVEL_OF_CONFORT")
+    private Long levelOfComfort;
+
+    @Column(name = "BATHROOMS")
+    private Long bathrooms;
+
+    @Column(name = "CAR_DISPOSAL")
+    private Long carDisposal;
+
+    @Column(name = "FLOOR")
+    private Long floor;
+
+
     public Set<Attachement> getEstateAttachements() {
         return estateAttachements;
     }
@@ -103,7 +116,8 @@ public class Estate implements Serializable {
 
     public Estate( String type, String address, Long surface, Long rooms, Long rentPrice,
                   Long buyPrice, String division, Long constructionYear, String description,
-                  Date creationDate, Date lastUpdate, String city, String contactNumber, long idUser, Long utilities, String typeOfTransaction) {
+                  Date creationDate, Date lastUpdate, String city, String contactNumber, long idUser, Long utilities,
+                   String typeOfTransaction, Long levelOfComfort, Long bathrooms, Long carDisposal, Long floor) {
         this.type = type;
         this.address = address;
         this.surface = surface;
@@ -120,6 +134,10 @@ public class Estate implements Serializable {
         this.idUser = idUser;
         this.utilities = utilities;
         this.typeOfTransaction = typeOfTransaction;
+        this.levelOfComfort = levelOfComfort;
+        this.bathrooms = bathrooms;
+        this.carDisposal = carDisposal;
+        this.floor = floor;
     }
 
     public Estate() {
@@ -264,5 +282,37 @@ public class Estate implements Serializable {
 
     public void setUtilities(Long utilities) {
         this.utilities = utilities;
+    }
+
+    public Long getLevelOfComfort() {
+        return levelOfComfort;
+    }
+
+    public void setLevelOfComfort(Long levelOfComfort) {
+        this.levelOfComfort = levelOfComfort;
+    }
+
+    public Long getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(Long bathrooms) {
+        this.bathrooms = bathrooms;
+    }
+
+    public Long getCarDisposal() {
+        return carDisposal;
+    }
+
+    public void setCarDisposal(Long carDisposal) {
+        this.carDisposal = carDisposal;
+    }
+
+    public Long getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Long floor) {
+        this.floor = floor;
     }
 }

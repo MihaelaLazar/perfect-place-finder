@@ -93,8 +93,9 @@ function getEstatesByFilter() {
         cityCoordinates = getCityCoordinates(city_id);
         if (map.getCenter() != cityCoordinates) {
           map.setCenter(cityCoordinates);
-
         }
+        estatesMarkersCoordinates = [];
+        estatesMarkers = [];
         var selectType = document.getElementById('type');
         var type_id = selectType.options[selectType.selectedIndex].value;
         var selectSquare = document.getElementById('square');

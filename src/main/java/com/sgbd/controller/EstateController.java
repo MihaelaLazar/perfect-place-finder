@@ -54,6 +54,13 @@ public class EstateController {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
+        System.out.println("in add property");
+        if(estateDTO.getRealEstateType().equals("Commercial space")){
+            estateDTO.setRealEstateType("space");
+        }
+        if(estateDTO.getRealEstateType().equals("Apartment")){
+            estateDTO.setRealEstateType("appartment");
+        }
         try{
             estateService.saveEstate(estateDTO);
             return new ResponseEntity<>("Added property", HttpStatus.OK);

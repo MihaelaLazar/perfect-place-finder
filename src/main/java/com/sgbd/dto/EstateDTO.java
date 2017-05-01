@@ -21,6 +21,10 @@ public class EstateDTO implements Serializable {
     private Long utilities;
     private String contactNumber;
     private Set<Attachement> attachements;
+    private Long levelOfComfort;
+    private Long bathrooms;
+    private Long carDisposal;
+    private Long floor;
 
     public EstateDTO() {
     }
@@ -135,5 +139,37 @@ public class EstateDTO implements Serializable {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public Long getLevelOfComfort() {
+        return levelOfComfort;
+    }
+
+    public void setLevelOfComfort(Long levelOfComfort) {
+        this.levelOfComfort = levelOfComfort;
+    }
+
+    public Long getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(Long bathrooms) {
+        this.bathrooms = bathrooms;
+    }
+
+    public Long getCarDisposal() {
+        return carDisposal;
+    }
+
+    public void setCarDisposal(Long carDisposal) {
+        this.carDisposal = carDisposal;
+    }
+
+    public Long getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Long floor) {
+        this.floor = floor;
     }
 }

@@ -99,80 +99,129 @@
                         <div class="fields">
                             <div class="four wide field">
                                 <label>Category:</label>
-                                <select name="category" id="category-select" required>
+                                <select name="category" id="category-select" required onchange="displayOtherFields()">
                                     <option value="" disabled selected>Choose</option>
                                     <option value="House">House</option>
                                     <option value="Apartment">Apartment</option>
                                     <option value="Commercial space">Commercial space</option>
                                 </select>
                             </div>
-                            <div class="four wide field">
-                                <label>Rooms:</label>
-                                <select name="rooms" id="rooms-select" required>
-                                    <option value="" disabled selected>Choose</option>
-                                    <option value="1">1 room</option>
-                                    <option value="2">2 rooms</option>
-                                    <option value="3">3 rooms</option>
-                                    <option value="4">4 or more rooms</option>
-                                </select>
+
+                            <div id="price-input" class="four wide field">
+                                <label>Price:</label>
+                                <input id="price" name="price" placeholder="Add price" type="number" required min="1">
                             </div>
+
                         </div>
                     </div>
                     <div class="field">
-                        <div class="ui form">
-                            <label >Transaction type:</label>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
-                                    <label>Rent</label>
+                        <div class="fields">
+                            <div class="four wide field">
+                                <div class="ui form">
+                                    <label >Transaction type:</label>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
+                                            <label>Rent</label>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
+                                            <label>Sale</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
-                                    <label>Sale</label>
-                                </div>
+                            <div id="comfort-select-field" class="four wide field">
+                                <label>Level on comfort:</label>
+                                <select name="category" id="comfort-select" required>
+                                    <option value="" disabled selected>Choose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3 ">3</option>
+                                </select>
                             </div>
+
                         </div>
+
                     </div>
                     <div class="two wide fields">
                         <div class="eight wide field">
                             <div class="field">
                                 <div class="field">
-                                    <label>Price:</label>
+
                                     <div class="two fields">
-                                        <div id="price-input" class="field">
-                                            <input id="price" name="price" placeholder="Add price" type="number" required min="1">
+                                        <div id="usable-surface-input" class="field">
+                                            <label>Usable surface:</label>
+                                            <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="number" required min="10">
                                         </div>
-                                        <div class="ui checkbox" style="margin-top:1%;">
-                                            <input id="is-negociable-input" type="checkbox" name="negociable" onChange={setNegociable('is-negociable-input')} unchecked={}>
-                                            <label>Negociable</label>
+                                        <div id="bathrooms-input" class="field">
+                                            <label>Bathrooms:</label>
+                                            <input id="bathrooms" name="price" placeholder="Add bathrooms" type="number" required min="1">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="field">
-                                    <label>Usable surface:</label>
+
                                     <div class="two fields">
-                                        <div id="usable-surface-input" class="field">
-                                            <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="number" required min="10">
+                                        <div id="rooms-field" class="field">
+                                            <label>Rooms:</label>
+                                            <select name="rooms" id="rooms-select" required>
+                                                <option value="" disabled selected>Choose</option>
+                                                <option value="1">1 room</option>
+                                                <option value="2">2 rooms</option>
+                                                <option value="3">3 rooms</option>
+                                                <option value="4">4 or more rooms</option>
+                                            </select>
+                                        </div>
+                                        <div id="floor-input" class="field">
+                                            <label>Floor:</label>
+                                            <input id="floor" name="usable_surface" placeholder="Add floor" type="number"  min="-1">
                                         </div>
 
-                                        <div class="ui image label" style="background-color:#f1f1f2;">
-                                            <h3>m<sup>2</sup></h3>
-                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="eight wide field">
-                                    <label>Construction year:</label>
-                                    <div id="construction-year-input">
-                                        <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017" required>
+                                <div id="year-and-car" class="field">
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <label>Construction year:</label>
+                                            <div id="construction-year-input">
+                                                <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017" required>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>Car:</label>
+                                            <div class="inline fields">
+                                                <div class="field">
+                                                    <div class="ui radio checkbox">
+                                                        <input tabindex="0" id="parking" name="car" type="radio" onChange={setCheckbox('parking')} unchecked={}>
+                                                        <label>Parking</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui radio checkbox">
+                                                        <input tabindex="0" id="garage" name="car" type="radio" onChange={setCheckbox('garage')} unchecked={}>
+                                                        <label>Garage</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <div class="ui radio checkbox">
+                                                        <input tabindex="0" id="none" name="car" type="radio" onChange={setCheckbox('none')} unchecked={}>
+                                                        <label>None</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
                                     </div>
+
                                 </div>
 
-                                <div class="two wide fields">
-
+                                <div id="utilities-and-division" class="two wide fields">
                                     <div class=" field">
                                         <label>Furniture/Utilities</label>
                                         <select name="furniture" id="furniture-utilities-select" required>

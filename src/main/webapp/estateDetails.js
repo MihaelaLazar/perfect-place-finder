@@ -42,11 +42,80 @@ window.onload = function() {
             }else {
                 $('#estate-price').text("Price:  " + estateDetails.buyPrice);
             }
-            $('#rooms-surface-contact').text(estateDetails.rooms + " rooms, " + estateDetails.surface + " mp, " + estateDetails.contactNumber);
+            if (estateDetails.rooms > 0) {
+                $('#rooms-surface-contact').text(estateDetails.rooms + " room/s, " + estateDetails.surface + " mp, " + estateDetails.contactNumber);
+            } else {
+                 $('#rooms-surface-contact').text( estateDetails.surface + " mp, " + estateDetails.contactNumber);
+            }
             $('#contact-number-form').text(estateDetails.contactNumber);
             $('#estate-description').text(estateDetails.description);
-            $('#creation-date').text('STATUS: available from: ' + estateDetails.creationDate);
-            $('#estate-bedrooms').text('Bedrooms: ' + estateDetails.rooms);
+            $('#creation-date').text('Available from: ' + estateDetails.creationDate);
+            $('#surface-images').text('Surface: ' + estateDetails.surface + " mp");
+
+            if (estateDetails.type === "appartment") {
+                $('#floor-images').text('Floor: ' + estateDetails.floor);
+                $('#floor-table').text(estateDetails.floor);
+            } else {
+                $('#floor-images').text('Floor: -');
+                $('#floor-table').text('-');
+            }
+
+            if (estateDetails.type === "space") {
+                $('#construction-year-images').text('Construction year: - ');
+                $('#bedrooms-table').text('-' );
+                $('#bedrooms-number-images').text('Bedrooms: -');
+                $('#division-images').text('Division: -');
+                $('#division-table').text('- ');
+                $('#year-table').text('- ');
+                $('#bathrooms-table').text('- ');
+                $('#parking-table').text('- ');
+                $('#level-of-comfort-table').text('- ');
+            } else {
+                $('#construction-year-images').text('Construction year: ' + estateDetails.constructionYear);
+                $('#bedrooms-number-images').text('Bedrooms: ' + estateDetails.rooms);
+                $('#bedrooms-table').text('Bedrooms: ' + estateDetails.rooms);
+                $('#division-images').text('Division: ' + estateDetails.division);
+                $('#division-table').text( estateDetails.division);
+                $('#year-table').text(estateDetails.constructionYear);
+                $('#bathrooms-table').text(estateDetails.bathrooms);
+                $('#level-of-comfort-table').text(estateDetails.levelOfComfort);
+//                $('#parking-table').text(estateDetails.carDisposal);
+            }
+            $('#surface-table').text(estateDetails.surface);
+            if (estateDetails.utilities === 0) {
+                $('#utilities-table').text("-");
+            }
+            if (estateDetails.utilities === 1) {
+                $('#utilities-table').text("Complete");
+            }
+            if (estateDetails.utilities === 2) {
+                $('#utilities-table').text("Partial");
+            }
+            if (estateDetails.utilities === 3) {
+                $('#utilities-table').text("None");
+            }
+            if (estateDetails.carDisposal === 1) {
+                $('#parking-table').text("Yes");
+            } else {
+                $('#parking-table').text("No");
+            }
+            if (estateDetails.carDisposal === 2) {
+                $('#garage-table').text("Yes");
+            } else {
+                $('#garage-table').text("No");
+            }
+
+            var utilities;
+            if ( estateDetails.utilities === 1) {
+                utilities = "complete";
+            } else {
+                if (estateDetails.utilities === 2) {
+                    utilities = "partial";
+                } else {
+                    utilities = "none";
+                }
+            }
+            $('#estate-utilities').text('Utilities: ' + utilities);
             initMap2();
             console.log(data);
         }

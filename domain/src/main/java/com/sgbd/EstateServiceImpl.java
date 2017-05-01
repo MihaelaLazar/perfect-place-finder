@@ -110,7 +110,8 @@ public class EstateServiceImpl implements EstateService {
         Estate estate = new Estate(estateDTO.getRealEstateType(),estateDTO.getAddressLat() + " " + estateDTO.getAddressLng(),
                 estateDTO.getSurface(),estateDTO.getRoomsNumber(),estateDTO.getRentPrice(),estateDTO.getBuyPrice(),
                 estateDTO.getDivision(),estateDTO.getConstructionYear(),estateDTO.getDescription(),
-                date,date,estateDTO.getCity(),estateDTO.getContactNumber(), 1,estateDTO.getUtilities(), estateTransactionType);
+                date,date,estateDTO.getCity(),estateDTO.getContactNumber(), 1,estateDTO.getUtilities(), estateTransactionType,
+                estateDTO.getLevelOfComfort(), estateDTO.getBathrooms(), estateDTO.getCarDisposal(), estateDTO.getFloor());
        return estate;
     }
 

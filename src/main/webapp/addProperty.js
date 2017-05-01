@@ -15,7 +15,6 @@
  var city;
 
 // Initialize the map
-
  function initMap11() {
      var myLatLng = {lat:47, lng:27};
        var map11 = new google.maps.Map(document.getElementById('map11'), {
@@ -69,8 +68,10 @@
      }
  }
 
- function addPropertyPOST(event) {
-         event.preventDefault();
+
+var hasParking;
+function addPropertyPOST(event) {
+        event.preventDefault();
         console.log('addPropertyPOST');
         var isValidLogin = true;
         var methodLogin = "POST";
@@ -80,7 +81,7 @@
         var roomsInput = document.getElementById('rooms-select');
         var rooms = roomsInput.value;
         var priceInput = document.getElementById('price');
-        var price= priceInput.value;
+        var price = priceInput.value;
         var surfaceInput = document.getElementById('usable-surface');
         var surface = surfaceInput.value;
         var yearInput = document.getElementById('construction-year');
@@ -90,16 +91,20 @@
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
         var nameInput = document.getElementById('name');
-//        var name = nameInput.value;
-//        var emailInput = document.getElementById('email');
-//        var email = emailInput.value;
+        var levelOfComfortSelect = document.getElementById('comfort-select');
+        var levelOfComfort = levelOfComfortSelect.value;
         var phoneNumberInput = document.getElementById('phone-number');
         var phoneNumber = phoneNumberInput.value;
         var divisionInput = document.getElementById('division-select');
         var division = divisionInput.value;
+        var bathroomsInput = document.getElementById('bathrooms');
+        var bathrooms = bathroomsInput.value;
+        var floorInput = document.getElementById('floor-input');
+        var floor = floorInput.value;
         var rent_price;
         var buy_price;
-         if (division === "") {
+
+         if (division === "" && category !== "Commercial space") {
              isValidLogin = false;
          } else {
              if (division === 1) {
@@ -112,11 +117,19 @@
                  }
              }
          }
+         if (levelOfComfort === "" && category !== "Commercial space" ) {
+             console.log("levelOfComfort null");
+            isValidLogin = false;
+         }
+        if (bathrooms === "" && category !== "Commercial space") {
+            console.log("bathrooms null");
+            isValidLogin = false;
+        }
         if (category === "") {
                 console.log("category null");
                isValidLogin = false;
         }
-        if (rooms === "") {
+        if (rooms === "" && category !== "Commercial space") {
                console.log("rooms null");
                isValidLogin = false;
          }
@@ -128,11 +141,11 @@
              console.log("surface null");
                isValidLogin = false;
          }
-        if (year === "") {
+        if (year === "" && category !== "Commercial space") {
              console.log("year null");
                isValidLogin = false;
          }
-        if (furniture === "") {
+        if (furniture === "" && category !== "Commercial space") {
              console.log("furniture null");
                isValidLogin = false;
          }
@@ -144,27 +157,35 @@
               console.log("phoneNumber null");
                 isValidLogin = false;
          }
-//        if (email === "") {
-//             console.log("email null");
-//                 isValidLogin = false;
-//         }
-        if (phoneNumber === "") {
-               console.log("phoneNumber null");
-               isValidLogin = false;
-        }
-        if (furniture === "") {
+        if (furniture === "" && category !== "Commercial space") {
             isValidLogin = false;
         }
 
+        if (category === "Apartment" && floor === ""){
+            isValidLogin = false;
+        }
+
+        if (category === "Commercial space"){
+            rooms = 0;
+            year = 0;
+            division = " ";
+            furniture = 0;
+            levelOfComfort = 0;
+            bathrooms = 0;
+            hasParking = 0;
+            floor = -1;
+        }
+
         if (isValidLogin === true ){
-              if(isForRent===1){
-                 rent_price = price;
-                  buy_price = "0";
+              if(isForRent === 1){
+                  rent_price = price;
+                  buy_price = 0;
               }
               if(isForSale===1){
                  buy_price = price;
-                 rent_price = "0";
+                 rent_price = 0;
               }
+              console.log("buy price: " + buy_price + ", rent price: " + rent_price);
               var addressLatString =  addressLat.toString();
               var addressLngString = addressLng.toString();
               var postDataProperty = {
@@ -180,7 +201,11 @@
                    "division" : division,
                    "city" : city,
                    "utilities" : furniture,
-                   "contactNumber" : phoneNumber
+                   "contactNumber" : phoneNumber,
+                   "levelOfComfort" : levelOfComfort,
+                   "bathrooms" : bathrooms,
+                   "carDisposal" : hasParking,
+                   "floor" : floor
              };
             var async = true;
             var requestAddProperty = new XMLHttpRequest();
@@ -208,6 +233,37 @@ var modalPropertyFailed = document.getElementById('addPropertyFailedModal');
 var modalPropertySuccess = document.getElementById('addPropertySuccessfulModal');
 
 
+function displayOtherFields(){
+    var categoryInput = document.getElementById('category-select');
+    var category = categoryInput.value;
+    if (category === "Commercial space") {
+        document.getElementById('comfort-select-field').style.visibility = 'hidden';
+        document.getElementById('bathrooms-input').style.visibility = 'hidden';
+        document.getElementById('rooms-field').style.visibility = 'hidden';
+        document.getElementById('floor-input').style.visibility = 'hidden';
+        document.getElementById('year-and-car').style.visibility = 'hidden';
+        document.getElementById('utilities-and-division').style.visibility = 'hidden';
+    }
+
+    if (category === "House") {
+            document.getElementById('comfort-select-field').style.visibility = 'visible';
+            document.getElementById('bathrooms-input').style.visibility = 'visible';
+            document.getElementById('rooms-field').style.visibility = 'visible';
+            document.getElementById('floor-input').style.visibility = 'hidden';
+            document.getElementById('year-and-car').style.visibility = 'visible';
+            document.getElementById('utilities-and-division').style.visibility = 'visible';
+     }
+
+     if (category === "Apartment") {
+             document.getElementById('comfort-select-field').style.visibility = 'visible';
+             document.getElementById('bathrooms-input').style.visibility = 'visible';
+             document.getElementById('rooms-field').style.visibility = 'visible';
+             document.getElementById('floor-input').style.visibility = 'visible';
+             document.getElementById('year-and-car').style.visibility = 'visible';
+             document.getElementById('utilities-and-division').style.visibility = 'visible';
+      }
+}
+
 /* Event listener for clicking outside modals */
 window.onclick = function(event) {
        if(event.target == modalPropertyFailed ){
@@ -221,13 +277,20 @@ window.onclick = function(event) {
 
 /* This function saves the value checked on the transaction type checkbox */
 function setCheckbox(id) {
-    isForRent=0;
-    isForSale=0;
       if(document.getElementById(id).checked) {
-        if(id==="transaction-type-sale-input")
-          isForSale=1;
-        if(id==="transaction-type-rent-input")
-            isForRent=1;
+        if(id ==="transaction-type-sale-input")
+          isForSale = 1;
+        if(id ==="transaction-type-rent-input")
+            isForRent = 1;
+        if (id === "parking") {
+            hasParking = 1;
+        }
+        if (id === "garage") {
+            hasParking = 2;
+        }
+        if (id === "none") {
+            hasParking = 0;
+        }
       }
 }
 /* This function checks if the price of announcement is negociable or not */
