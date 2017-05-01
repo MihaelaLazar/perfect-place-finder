@@ -9,7 +9,49 @@ function getQueryVariableEstateDetails(variable) {
         }
      }
      return null;
- }
+}
+
+
+window.onload = function() {
+    console.log("LOAD");
+    var url = '/estate/getDetails?id=' + getQueryVariableEstateDetails('estate');
+    console.log("estate id in LOAD: " + getQueryVariableEstateDetails('id'));
+    $.ajax({
+        method: 'GET',
+        url: url,
+        contentType: "application/json;charset=UTF-8",
+        processData: false,
+        cache: false,
+        success : function(data) {
+            var estateDetails = data;
+            var address = estateDetails.address.split(" ");
+            var latLong = new google.maps.LatLng(address[0], address[1]);
+            estatePosition = latLong;
+            $('#city-name-head').text(estateDetails.city);
+            $('#estate-name-head').text(estateDetails.type);
+
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode({'location': latLong}, function(results, status) {
+                if (status === 'OK') {
+                   $('#estate-name-address').text(results[1].formatted_address.split(", "));
+                 }
+               }
+            );
+            if (estateDetails.rentPrice != 0 ) {
+                $('#estate-price').text("Price:   " + estateDetails.rentPrice);
+            }else {
+                $('#estate-price').text("Price:  " + estateDetails.buyPrice);
+            }
+            $('#rooms-surface-contact').text(estateDetails.rooms + " rooms, " + estateDetails.surface + " mp, " + estateDetails.contactNumber);
+            $('#contact-number-form').text(estateDetails.contactNumber);
+            $('#estate-description').text(estateDetails.description);
+            $('#creation-date').text('STATUS: available from: ' + estateDetails.creationDate);
+            $('#estate-bedrooms').text('Bedrooms: ' + estateDetails.rooms);
+            initMap2();
+            console.log(data);
+        }
+    });
+}
 
 var globalMap2;
 var markerGlobal;
@@ -32,7 +74,7 @@ function initMap2() {
                 console.log('found ' + estates[i].coordinates.lat);
             }
       }
-      console.log('estate id: ' + estatePosition.lat() );
+//      console.log('estate id: ' + estatePosition.lat() );
       geocoder = new google.maps.Geocoder();
       globalMap2 = new google.maps.Map(document.getElementById('map2'), {
         zoom: 14,

@@ -1,10 +1,13 @@
 package com.sgbd.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Lazarm
@@ -36,6 +39,11 @@ public class User implements Serializable {
     @Column(name="PASSWORD", nullable = false)
     private String password;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "ID_USER")
+    private Set<Estate> announcements;
+
     @Transient
     private boolean enabled;
 
@@ -60,6 +68,14 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+    }
+
+    public Set<Estate> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(Set<Estate> announcements) {
+        this.announcements = announcements;
     }
 
     public Long getId() {

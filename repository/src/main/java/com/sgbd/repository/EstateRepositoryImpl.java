@@ -1,7 +1,7 @@
 package com.sgbd.repository;
 
 import com.sgbd.dto.PaginatedEstatesDetails;
-import com.sgbd.model.User;
+import com.sgbd.model.Estate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ public class EstateRepositoryImpl implements EstateRepository {
                 + " o WHERE o." + columnName + "=:identifier");
         query.setParameter("identifier", identifier);
 
-        final List<User> results = query.getResultList();
+        final List<Estate> results = query.getResultList();
 
         if (!results.isEmpty()) {
             return results.iterator().next();
@@ -48,5 +48,15 @@ public class EstateRepositoryImpl implements EstateRepository {
         paginatedEstatesDetails.setTotalCount( entityManager.createQuery("from Estate WHERE " + queryFilters).getResultList().size());
         paginatedEstatesDetails.setOffset(offset);
         return paginatedEstatesDetails;
+    }
+
+
+    @Transactional
+    public Serializable save(Serializable entity, Class modelClass) throws PersistenceException {
+        try {
+            return entityManager.merge(entity);
+        } catch (Exception e) {
+            throw new PersistenceException("Failed saveOrUpdate for entity class " + modelClass, e);
+        }
     }
 }

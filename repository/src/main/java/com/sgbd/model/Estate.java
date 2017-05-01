@@ -5,6 +5,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "PF_ANNOUNCEMENTS", uniqueConstraints = {
         @UniqueConstraint(columnNames = "ADDRESS")})
-public class Estate {
+public class Estate implements Serializable {
 
     public static final String ESTATE_ID_COLUMN_NAME = "id";
 
@@ -51,7 +52,7 @@ public class Estate {
     private String division;
 
     @Column(name = "YEAR_OF_CONSTRUCTION", nullable = false)
-    private int constructionYear;
+    private Long constructionYear;
 
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
@@ -68,6 +69,15 @@ public class Estate {
 
     @Column(name = "CITY", nullable = false)
     private String city;
+
+    @Column(name = "CONTACT_NUMBER", nullable = false)
+    private String contactNumber;
+
+    @Column(name = "ID_USER", nullable = false)
+    private Long idUser;
+
+    @Column(name = "UTILITIES", nullable = false)
+    private Long utilities;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
@@ -91,8 +101,9 @@ public class Estate {
         this.estateMessages = estateMessages;
     }
 
-    public Estate(Long ID, String type, String address, Long surface, Long rooms, Long rentPrice, Long buyPrice, String division, int constructionYear, String description, Date creationDate, Date lastUpdate, String city) {
-        this.ID = ID;
+    public Estate( String type, String address, Long surface, Long rooms, Long rentPrice,
+                  Long buyPrice, String division, Long constructionYear, String description,
+                  Date creationDate, Date lastUpdate, String city, String contactNumber, long idUser, Long utilities, String typeOfTransaction) {
         this.type = type;
         this.address = address;
         this.surface = surface;
@@ -105,9 +116,21 @@ public class Estate {
         this.creationDate = creationDate;
         this.lastUpdate = lastUpdate;
         this.city = city;
+        this.contactNumber = contactNumber;
+        this.idUser = idUser;
+        this.utilities = utilities;
+        this.typeOfTransaction = typeOfTransaction;
     }
 
     public Estate() {
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public Long getID() {
@@ -174,11 +197,11 @@ public class Estate {
         this.division = division;
     }
 
-    public int getConstructionYear() {
+    public Long getConstructionYear() {
         return constructionYear;
     }
 
-    public void setConstructionYear(int constructionYear) {
+    public void setConstructionYear(Long constructionYear) {
         this.constructionYear = constructionYear;
     }
 
@@ -225,5 +248,21 @@ public class Estate {
 
     public void setEstateAttachements(Set<Attachement> estateAttachements) {
         this.estateAttachements = estateAttachements;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public Long getUtilities() {
+        return utilities;
+    }
+
+    public void setUtilities(Long utilities) {
+        this.utilities = utilities;
     }
 }

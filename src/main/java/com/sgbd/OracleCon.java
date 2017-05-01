@@ -173,7 +173,7 @@ public class OracleCon {
             currentEstate.setRentPrice(Long.parseLong(String.valueOf(rs.getInt(6))));
             currentEstate.setBuyPrice(Long.parseLong(String.valueOf(rs.getInt(7))));
             currentEstate.setDivision(rs.getString(8));
-            currentEstate.setConstructionYear(rs.getInt(9));
+            currentEstate.setConstructionYear(((long) rs.getInt(9)));
             currentEstate.setDescription(rs.getString(10));
             currentEstate.setCreationDate(rs.getDate(11));
             currentEstate.setLastUpdate(rs.getDate(12));

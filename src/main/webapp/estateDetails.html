@@ -52,7 +52,9 @@
         <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
     </a>
     <div id="addProperty">
-        <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
+        <form method="GET" action="/estate/add/property">
+            <button class="ui inverted blue button" >Add property</button>
+        </form>
     </div>
     <div id="signup">
         <button class="ui inverted blue button" onclick="document.getElementById('signUpEstateDetails').style.display='block'">Sign up</button>
@@ -222,11 +224,11 @@
                     </div>
                     <i class="chevron circle right icon"></i>
                     <div class="ui image label" style="background-color:  #f1f1f2;">
-                        <h4 class="ui header">Estate address</h4>
+                        <h4 class="ui header" id="city-name-head"></h4>
                     </div>
                     <i class="chevron circle right icon"></i>
                     <div class="ui image label" style="background-color:  #f1f1f2;">
-                        <h4 class="ui header">Current estate</h4>
+                        <h4 class="ui header" id="estate-name-head"></h4>
                     </div>
                 </div>
             </div>
@@ -234,27 +236,27 @@
         <div class="three column row" style="margin-top:-2%;">
             <div class="column">
                 <div class="ui image label" style="background-color:#f1f1f2;">
-                    <h1 class="ui header">Address</h1>
+                    <h1 class="ui header" id="estate-name-address">Address</h1>
                 </div>
             </div>
         </div>
-        <div class="three column row" style="margin-top:-2%;">
-            <div class="column">
-                <div class="ui image label" style="background-color:  #f1f1f2;">
-                    <h4 class="ui header">Address, City, ZIP Code</h4>
-                </div>
-            </div>
-        </div>
+        <!--<div class="three column row" style="margin-top:-2%;">-->
+            <!--<div class="column">-->
+                <!--<div class="ui image label" style="background-color:  #f1f1f2;">-->
+                    <!--<h4 class="ui header" id="estate-name-address-city-zipCode"> Address, City, ZIP Code</h4>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="two column row" style="margin-top:-2%;">
             <div class="column">
                 <div class="ui image label" style="background-color: #f1f1f2;">
-                    <h2 class="ui header">Price: </h2>
+                    <h2 class="ui header" id="estate-price">Price:  </h2>
                 </div>
                 <div class="ui image label" style="background-color: #f1f1f2;">
                     <h3 class="ui header"><i class="euro icon"></i></h3>
                 </div>
                 <div class="ui image label" style="background-color:#f1f1f2;">
-                    <h4 class="ui header"> number of rooms, surface, contact number</h4>
+                    <h4 class="ui header" id="rooms-surface-contact"> number of rooms, surface, contact number</h4>
                 </div>
             </div>
         </div>
@@ -299,7 +301,7 @@
                         <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
                             <h3>Contact this property</h3>
                             <div class="lead-form-contact-callout">Call
-                                <strong class="tel">(844) 563-8113</strong>
+                                <strong class="tel" id="contact-number-form">(844) 563-8113</strong>
                                 or send an email
                             </div>
                         </div>
@@ -417,13 +419,13 @@
         <div class="ui gray left segment">
             <p>38 Maryland Avenue #3 - 38 Maryland Avenue #3</p>
             <p>Annapolis, MD 21401</p>
-            <p>This 2 bedroom 3rd floor apartment in Downtown Annapolis is quite the charmer! Very spacious with great windows for natural lighting and
+            <p id="estate-description">This 2 bedroom 3rd floor apartment in Downtown Annapolis is quite the charmer! Very spacious with great windows for natural lighting and
                 pleasing interior brick wall designs. Secure building and has available parking. Walking distance to many unique shops and eateries!</p>
-            <p>STATUS: Available March 15, 2017</p>
-            <p>PROPERTY DETAILS:</p>
-            <p>Bedrooms: 2 </p>
-            <p>Baths: 1</p>
-            <p>Heat: Gas</p>
+            <p id="creation-date">STATUS: Available March 15, 2017</p>
+            <p style="font-weight: bold;">PROPERTY DETAILS:</p>
+            <p id="estate-bedrooms"style="font-weight: bold;">Bedrooms: 2 </p>
+            <!--<p>Baths: 1</p>-->
+            <p >Heat: Gas</p>
             <p>Cooling: Central </p>
             <p>Amenities:</p>
             <ul>

@@ -4,6 +4,7 @@ import com.sgbd.OracleCon;
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.Set;
 
 import static com.sgbd.util.ContentType.JSON;
 
@@ -110,5 +113,18 @@ public class UserController {
         }
     }
 
+    @RequestMapping(path = "/getAnnouncements", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Set<Estate>> getAnnouncements(Response response, Request request) {
+        Long id = Long.parseLong(request.getParameter("id"));
+        Set<Estate> userAnnouncements = null;
+        try {
+            User user = (User) userService.findById(id);
+            return new ResponseEntity<>(user.getAnnouncements(), HttpStatus.OK);
+
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(userAnnouncements, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

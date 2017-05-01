@@ -13,10 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sgbd.util.ContentType.JSON;
 
 @RestController
 @RequestMapping(path="/estate")
@@ -44,15 +47,19 @@ public class EstateController {
     @ResponseBody
     public ResponseEntity<String> getAddProperty(Response response, Request request, @RequestBody EstateDTO estateDTO) {
 
-        try {
-            OracleCon.getOracleCon().addProperty(estateDTO);
-        } catch (SQLException e) {
-            return new ResponseEntity<>("DUPLICATE PROPERTY", HttpStatus.FORBIDDEN);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//        try {
+//            OracleCon.getOracleCon().addProperty(estateDTO);
+//        } catch (SQLException e) {
+//            return new ResponseEntity<>("DUPLICATE PROPERTY", HttpStatus.FORBIDDEN);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        try{
+            estateService.saveEstate(estateDTO);
+            return new ResponseEntity<>("Added property", HttpStatus.OK);
+        } catch(PersistenceException e) {
+            return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);
         }
-
-        return new ResponseEntity<>("Added property", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/paginate", method = RequestMethod.GET)
@@ -103,6 +110,13 @@ public class EstateController {
         paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
         return new ResponseEntity<>(paginatedEstatesDetails, HttpStatus.OK);
 
+    }
+
+    @RequestMapping(path = "/getDetails", method = RequestMethod.GET)
+    public ResponseEntity<Estate> getEstateDetails(Request request, Response response) {
+        Estate estate= (Estate) estateService.findById(Long.parseLong(request.getParameter("id")));
+        response.setContentType(JSON.getContentType());
+        return new ResponseEntity<>(estate, HttpStatus.OK);
     }
 
 

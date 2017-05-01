@@ -245,15 +245,12 @@ function getEstatesByFilter() {
             var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
             $( "#number-of-properties" ).empty();
             $('#number-of-properties').append(numberOfProperties);
-
+            initMap();
         }
         request.open(method, url,true);
         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         request.send();
-
         // request.send(JSON.stringify(getData));
-        initMap();
-
 }
 
 /* This function changes the state of announcement: if the user liked it(set it to favorites) or not.
@@ -598,6 +595,7 @@ function loadMore() {
         var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
         $( "#number-of-properties" ).empty();
         $('#number-of-properties').append(numberOfProperties);
+        initMap();
     }
     request.open(method, url,true);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -693,28 +691,52 @@ function initMap() {
         pollutionLayerNewYork = new google.maps.Data();
         pollutionLayerLondon = new google.maps.Data();
 
-        var icon = {
-          url: "images/Marker Filled-50.png",
-          scaledSize: new google.maps.Size(40, 40),
-          origin: new google.maps.Point(0,0),
-          anchor: new google.maps.Point(0, 0)
-        };
-        var markers = estatesMarkersCoordinates.map(function(location,i) {
-          return new google.maps.Marker({
-              position: location,
-              icon:  icon,
-             // draggable: true,
-              animation: google.maps.Animation.DROP
-          });
-        });
-        console.log(markers);
+//        var icon = {
+//          url: "images/Marker Filled-50.png",
+//          scaledSize: new google.maps.Size(40, 40),
+//          origin: new google.maps.Point(0,0),
+//          anchor: new google.maps.Point(0, 0)
+//        };
+//        var markers = estatesMarkersCoordinates.map(function(location,i) {
+//          return new google.maps.Marker({
+//              position: location,
+//              icon:  icon,
+//             // draggable: true,
+//              animation: google.maps.Animation.DROP
+//          });
+//        });
+//        console.log(markers);
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, estatesMarkers,
-          {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        for(var i = 0; i < markers.length; i ++) {
-            estatesMarkers[i] = markers[i];
-        }
+//        var markerCluster = new MarkerClusterer(map, estatesMarkers,
+//          {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+//        for(var i = 0; i < markers.length; i ++) {
+//            estatesMarkers[i] = markers[i];
+//        }
+        reinitializeMarkers();
 }
+
+/* This function re-initializes the map with markers(announcements) when loadMore() function is called. */
+function reinitializeMarkers() {
+    var icon = {
+        url: "images/Marker Filled-50.png",
+        scaledSize: new google.maps.Size(40, 40),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(0, 0)
+      };
+      var markers = estatesMarkersCoordinates.map(function(location,i) {
+      return new google.maps.Marker({
+          position: location,
+          icon:  icon,
+         // draggable: true,
+          animation: google.maps.Animation.DROP
+      });
+    });
+     var markerCluster = new MarkerClusterer(map, estatesMarkers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+           for(var i = 0; i < markers.length; i ++) {
+               estatesMarkers[i] = markers[i];
+           }
+ }
 
 /* This function gets chosen city coordinates to place the center of map on the center of the city. */
 function getCityCoordinates(city_id) {

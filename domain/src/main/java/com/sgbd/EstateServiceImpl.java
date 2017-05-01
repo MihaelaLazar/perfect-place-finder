@@ -1,6 +1,7 @@
 package com.sgbd;
 
 //import com.sgbd.dto.PaginatedEstatesDetails;
+import com.sgbd.dto.EstateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
 import com.sgbd.repository.EstateRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +89,29 @@ public class EstateServiceImpl implements EstateService {
             offset = Integer.parseInt(filters.get("offset"));
         }
         return estateRepository.getEstatesByFilters(queryFilters,offset);
+    }
+
+    @Override
+    public Serializable saveEstate(EstateDTO estateDTO) {
+        Estate estate = createEstate(estateDTO);
+        return estateRepository.save(estate, Estate.class);
+    }
+
+    private Estate createEstate(EstateDTO estateDTO) {
+        Long price = -1l;
+        String estateTransactionType = "";
+        if (estateDTO.getBuyPrice() != 0) {
+            price = estateDTO.getBuyPrice();
+            estateTransactionType = "sale";
+        } else {
+            estateTransactionType = "rent";
+        }
+        Date date = new Date();
+        Estate estate = new Estate(estateDTO.getRealEstateType(),estateDTO.getAddressLat() + " " + estateDTO.getAddressLng(),
+                estateDTO.getSurface(),estateDTO.getRoomsNumber(),estateDTO.getRentPrice(),estateDTO.getBuyPrice(),
+                estateDTO.getDivision(),estateDTO.getConstructionYear(),estateDTO.getDescription(),
+                date,date,estateDTO.getCity(),estateDTO.getContactNumber(), 1,estateDTO.getUtilities(), estateTransactionType);
+       return estate;
     }
 
 }

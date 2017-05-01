@@ -214,20 +214,96 @@
                             <textarea id="description" placeholder="Add a drescription here.." required></textarea>
                         </div>
 
-                        <h4 class="ui dividing header">Contact</h4>
+                        <h4 class="ui dividing header">Add photos</h4>
                         <div class="field">
-                            <label>Contact name</label>
-                            <div id="name-input" class="four wide field">
-                                <input id="name" type="text" placeholder="Add name" required>
+                            <div id="list-of-images" class="ui small images">
+                                <label for="file1" class="ui large image">
+                                    <img id="image1" src="/images/image.png">
+                                </label>
+                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file1" style="display:none">
+                                <label for="file2" class="ui large image">
+                                    <img id="image2" src="/images/image.png">
+                                </label>
+                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file2" style="display:none">
+                                <label for="file3" class="ui large image">
+                                    <img id="image3" src="/images/image.png">
+                                </label>
+                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file3" style="display:none">
+                                <label for="file4" class="ui large image">
+                                    <img id="image4" src="/images/image.png">
+                                </label>
+                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file4" style="display:none">
                             </div>
                         </div>
 
-                        <div class="field">
-                            <label>Email</label>
-                            <div id="email-input" class="four wide field">
-                                <input id="email" type="email" placeholder="Add email"required>
-                            </div>
-                        </div>
+                        <script>
+                             var indexImage = 1;
+                            $('#file1').change(function() {
+                                console.log('image added: ' + indexImage);
+                                if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
+                                    if(this.files[0].size>1048576) {
+                                        console.log('File size is larger than 1MB!');
+                                    } else {
+                                        var reader = new FileReader();
+                                        console.log('loading image...');
+                                        reader.onload = function (e){
+                                            result = e.target.result;
+                                            $('#image1').attr('src', result);
+                                        }
+                                        reader.readAsDataURL(this.files[0]);
+                                        indexImage = indexImage + 1;
+                                        var frm = new FormData();
+                                        frm.append('image1', this.files[0]);
+                                        $.ajax({
+                                            method: 'POST',
+                                            url: '/upload/image1',
+                                            //  address: '/save/image',
+                                            data: frm,
+                                            contentType: false,
+                                            processData: false,
+                                            cache: false
+                                        });
+                                    }
+                                } else console.log('This is not an image file!');
+
+                            });
+
+                            $('#file2').change(function() {
+                                console.log('image added: ' + indexImage);
+                                if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
+                                    if(this.files[0].size>1048576) {
+                                        console.log('File size is larger than 1MB!');
+                                    } else {
+                                        var reader = new FileReader();
+                                       // reader.onload = imageIsLoaded;
+                                        console.log('loading image...');
+                                        reader.onload = function (e){
+                                            result = e.target.result;
+                                            $('#image2').attr('src', result);
+
+                                        }
+                                        reader.readAsDataURL(this.files[0]);
+                                        indexImage = indexImage + 1;
+                                    }
+                                } else console.log('This is not an image file!');
+                                var frm = new FormData(this.files[0]);
+//                                frm.append('image2', this.files[0]);
+//                                frm.append("label", "WEBUPLOAD");
+                                $.ajax({
+                                    method: 'POST',
+                                    url: '/upload',
+                                    data: frm,
+                                    enctype: 'multipart/form-data',
+                                    contentType: false,
+                                    processData: false,
+                                    cache: false,
+                                    success : function(data) {
+                                        console.log(data);
+                                        alert(data);
+                                    }
+                                });
+                            });
+                        </script>
 
                         <div class="field">
                             <label>Phone number</label>

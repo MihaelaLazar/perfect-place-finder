@@ -1,6 +1,9 @@
 package com.sgbd.dto;
 
+import com.sgbd.model.Attachement;
+
 import java.io.Serializable;
+import java.util.Set;
 
 public class EstateDTO implements Serializable {
 
@@ -15,8 +18,19 @@ public class EstateDTO implements Serializable {
     private Double addressLng;
     private String division;
     private String city;
+    private Long utilities;
+    private String contactNumber;
+    private Set<Attachement> attachements;
 
     public EstateDTO() {
+    }
+
+    public Set<Attachement> getAttachements() {
+        return attachements;
+    }
+
+    public void setAttachements(Set<Attachement> attachements) {
+        this.attachements = attachements;
     }
 
     public String getRealEstateType() {
@@ -105,5 +119,21 @@ public class EstateDTO implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Long getUtilities() {
+        return utilities;
+    }
+
+    public void setUtilities(Long utilities) {
+        this.utilities = utilities;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 }

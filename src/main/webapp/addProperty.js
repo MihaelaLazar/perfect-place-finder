@@ -32,15 +32,16 @@
        markersArray.push(marker);
        google.maps.event.addListener(globalMap11, 'click', function(event) {
              placeMarker(event.latLng);
-             addressLat=event.latLng.lat();
-             addressLng=event.latLng.lng();
+             addressLat = event.latLng.lat();
+             addressLng = event.latLng.lng();
              var geocoder = new google.maps.Geocoder;
              var latlng = {lat: addressLat, lng: addressLng};
              geocoder.geocode({'location': latlng}, function(results, status) {
                 if (status === 'OK') {
                    console.log(results[1].formatted_address);
                    var cityAddress = results[1].formatted_address.split(", ")
-                   city = cityAddress[cityAddress.length - 2];
+                   var cityWithDiacritics = cityAddress[cityAddress.length - 2];
+                   city = cityWithDiacritics.replace(/ș/i, "s");
                    console.log(city);
                  }
                }
@@ -89,9 +90,9 @@
         var descriptionInput = document.getElementById('description');
         var description = descriptionInput.value;
         var nameInput = document.getElementById('name');
-        var name = nameInput.value;
-        var emailInput = document.getElementById('email');
-        var email = emailInput.value;
+//        var name = nameInput.value;
+//        var emailInput = document.getElementById('email');
+//        var email = emailInput.value;
         var phoneNumberInput = document.getElementById('phone-number');
         var phoneNumber = phoneNumberInput.value;
         var divisionInput = document.getElementById('division-select');
@@ -143,13 +144,16 @@
               console.log("phoneNumber null");
                 isValidLogin = false;
          }
-        if (email === "") {
-             console.log("email null");
-                 isValidLogin = false;
-         }
+//        if (email === "") {
+//             console.log("email null");
+//                 isValidLogin = false;
+//         }
         if (phoneNumber === "") {
                console.log("phoneNumber null");
                isValidLogin = false;
+        }
+        if (furniture === "") {
+            isValidLogin = false;
         }
 
         if (isValidLogin === true ){
@@ -161,11 +165,8 @@
                  buy_price = price;
                  rent_price = "0";
               }
-
               var addressLatString =  addressLat.toString();
               var addressLngString = addressLng.toString();
-
-
               var postDataProperty = {
                   "realEstateType": category,
                    "surface" : surface,
@@ -177,11 +178,10 @@
                    "addressLat" : addressLatString,
                    "addressLng" : addressLngString,
                    "division" : division,
-                   "city" : city
+                   "city" : city,
+                   "utilities" : furniture,
+                   "contactNumber" : phoneNumber
              };
-
-
-
             var async = true;
             var requestAddProperty = new XMLHttpRequest();
             var data;
@@ -189,7 +189,8 @@
             requestAddProperty.onload = function () {
                   status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
                   data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
-                  if (data === 'DUPLICATE PROPERTY') {
+                  console.log(status);
+                  if (data === 'Could not add property') {
                          document.getElementById('addPropertyFailedModal').style.display='block';
                      } else {
                        document.getElementById('addPropertySuccessfulModal').style.display='block';
@@ -229,14 +230,14 @@ function setCheckbox(id) {
             isForRent=1;
       }
 }
-
-  			  function setNegociable(id) {
-  				isNegociable=0;
-                  if(document.getElementById(id).checked) {
-                    if(id==="is-negociable-input")
-                      isNegociable=1;
-                  }
-                }
+/* This function checks if the price of announcement is negociable or not */
+function setNegociable(id) {
+    isNegociable = 0;
+          if(document.getElementById(id).checked) {
+                if(id === "is-negociable-input")
+                    isNegociable = 1;
+      }
+}
 
 /* This function makes the top menu bar stay fixed when scrolling */
 $(function(){
