@@ -1027,7 +1027,7 @@ function logInPOST() {
      $('#password-input-login').removeClass('error');
      $('#email-input-login').removeClass('error');
      console.log('logInPOST');
-     var url = "/user/verify";
+     var url = "/user/login";
      var method = "POST";
      var passInput = document.getElementById('password-login');
      var password = passInput.value;

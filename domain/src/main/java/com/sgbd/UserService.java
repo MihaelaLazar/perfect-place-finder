@@ -21,4 +21,5 @@ public interface UserService {
     User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException;
 
     User findByEmailAndPassword(String email, String password);
+
 }

@@ -12,9 +12,6 @@ import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by mihae on 4/8/2017.
- */
 @Repository
 @Transactional
 public class EstateRepositoryImpl implements EstateRepository {

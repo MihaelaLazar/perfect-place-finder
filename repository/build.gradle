@@ -15,4 +15,5 @@ dependencies {
     compile 'org.hibernate:hibernate-gradle-plugin:5.2.9.Final'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.2.RELEASE'
     compile files('libs/ojdbc6-11.2.0.3.0.jar')
+    compile project (':domain')
 }

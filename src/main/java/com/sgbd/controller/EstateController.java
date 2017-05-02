@@ -14,9 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
-import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.sgbd.util.ContentType.JSON;
@@ -54,7 +57,6 @@ public class EstateController {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        System.out.println("in add property");
         if(estateDTO.getRealEstateType().equals("Commercial space")){
             estateDTO.setRealEstateType("space");
         }
@@ -111,10 +113,8 @@ public class EstateController {
 
     @RequestMapping(path = "/getByFilters", method = RequestMethod.GET)
     public ResponseEntity<PaginatedEstatesDetails> getEstates(Request request, Response response){
-        System.out.println(request.getQueryString());
         response.setContentType("application/json");
-        PaginatedEstatesDetails paginatedEstatesDetails;
-        paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
+        PaginatedEstatesDetails paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
         return new ResponseEntity<>(paginatedEstatesDetails, HttpStatus.OK);
 
     }
@@ -126,5 +126,70 @@ public class EstateController {
         return new ResponseEntity<>(estate, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/save/image", method = RequestMethod.POST)
+    public String saveImage(Request request, Response response){
+        System.out.println(request.getParameterMap().toString());
+        InputStream inputStream = null;
+//        String newFile = request.getParameter("image1");
+        Part filePart = null;
+        try {
+            filePart = request.getPart("image1");
+//            String fileName = getFileName(filePart);
+            OutputStream out = null;
+            InputStream filecontent = null;
+            try {
+//                Timestamp timestamp = new Timestamp(new Date().getTime());
+                String fileNameDateStamp = new Date().toString().replace(" ","").replace(":","") + ".jpg";
+                out = new FileOutputStream(new File("C:\\upload" + File.separator
+                        + fileNameDateStamp/*fileName*/));
+                filecontent = filePart.getInputStream();
+
+                int read = 0;
+                final byte[] bytes = new byte[1024];
+
+                while ((read = filecontent.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+            } catch (FileNotFoundException fne) {
+
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+                if (filecontent != null) {
+                    filecontent.close();
+                }
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+        if (filePart != null) {
+            System.out.println(filePart.getName());
+            System.out.println(filePart.getSize());
+            System.out.println(filePart.getContentType());
+            try {
+                inputStream = filePart.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(inputStream);
+        }
+        return "";
+    }
+
+    private String getFileName(final Part part) {
+//        final String partHeader = part.getHeader("content-disposition");
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(
+                        content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
 
 }

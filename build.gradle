@@ -34,6 +34,9 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-jetty")
 	compile("org.springframework.boot:spring-boot-starter-actuator")
 	compile('com.fasterxml.jackson.core:jackson-databind:2.8.8')
-	compile project (':domain')
+	compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    compile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+//	compile('org.springframework.boot:spring-boot-starter-security')
+    compile project (':domain')
 	testCompile("junit:junit")
 }

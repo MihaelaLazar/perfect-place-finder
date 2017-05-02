@@ -430,7 +430,7 @@ function logInPOSTEstateDetails() {
       $('#password-input-login-EstateDetails').removeClass('error');
       $('#email-input-login-EstateDetails').removeClass('error');
       console.log('logInPOST');
-      var url = "/user/verify";
+      var url = "/user/login";
       var method = "POST";
       var passInput = document.getElementById('password-login-EstateDetails');
       var password = passInput.value;

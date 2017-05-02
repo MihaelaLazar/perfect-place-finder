@@ -143,7 +143,7 @@ function logInPOSThomePage() {
       $('#password-input-login-homePage').removeClass('error');
       $('#email-input-login-homePage').removeClass('error');
       console.log('logInPOST');
-      var url = "/user/verify";
+      var url = "/user/login";
       var method = "POST";
       var passInput = document.getElementById('password-login-homePage');
       var password = passInput.value;

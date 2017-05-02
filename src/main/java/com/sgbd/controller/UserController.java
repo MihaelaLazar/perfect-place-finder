@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -34,7 +36,18 @@ public class UserController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public Object redirectToHomePage(Request request, Response response) {
         response.setContentType("text/html");
-
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[20];
+        random.nextBytes(bytes);
+        String token = bytes.toString();
+        System.out.println("TOKEN: " + token);
+        HttpSession httpSession = request.getSession(true);
+        httpSession.setMaxInactiveInterval(2);
+        httpSession.setAttribute("token",token);
+        System.out.println("Last accessed time: " + httpSession.getLastAccessedTime());
+        Cookie cookie = new Cookie("token", token);
+        request.setCookies(new Cookie[]{cookie});
+        response.addCookie(cookie);
         try {
             response.sendRedirect("/homePage.html");
         } catch (IOException e) {
@@ -81,7 +94,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/user", method = RequestMethod.POST)
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> validateUser(Response response, Request request, @RequestBody LoginDTO loginDTO) {
 //        String[] emailAndPassword;
@@ -100,6 +113,9 @@ public class UserController {
 //        return new ResponseEntity<>("Login succeed", HttpStatus.OK);
 
         String[] emailAndPassword;
+//        request.getSession(true).setAttribute("token",);
+//        Cookie cookie = new Cookie("sessionID", );
+//        cookie.setSecure(true);
         try {
             User user = (User) userService.findByEmailAndPassword(loginDTO.getEmail(),loginDTO.getPassword());
             if (user != null) {
