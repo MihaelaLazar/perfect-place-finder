@@ -102,6 +102,7 @@ public class Estate implements Serializable {
     private Long floor;
 
 
+
     public Set<Attachement> getEstateAttachements() {
         return estateAttachements;
     }

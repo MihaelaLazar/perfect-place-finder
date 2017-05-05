@@ -3,22 +3,26 @@ package com.sgbd;
 //import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.dto.EstateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
+import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.repository.EstateRepository;
+import com.sgbd.util.AttachType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.sgbd.model.Estate.ESTATE_ID_COLUMN_NAME;
+import static com.sgbd.util.AppConstants.UPLOAD_PATH;
 
 /**
  * Created by mihae on 4/8/2017.
  */
 @Service
+@Transactional
 public class EstateServiceImpl implements EstateService {
 
     @Autowired
@@ -80,7 +84,7 @@ public class EstateServiceImpl implements EstateService {
             }
         }
         if(filters.get("transType") != null) {
-            queryFilters += " AND" +  " TYPE_OF_TRANSACTION = '" + filters.get("transType").toUpperCase() + "' ";
+            queryFilters += " AND" +  " upper(TYPE_OF_TRANSACTION) = '" + filters.get("transType").toUpperCase() + "' ";
         }
 
 
@@ -92,9 +96,27 @@ public class EstateServiceImpl implements EstateService {
     }
 
     @Override
+    @Transactional
     public Serializable saveEstate(EstateDTO estateDTO) {
         Estate estate = createEstate(estateDTO);
-        return estateRepository.save(estate, Estate.class);
+        if (estateDTO.getBuyPrice() != 0 ){
+            estate.setTypeOfTransaction("RENT");
+        } else {
+            estate.setTypeOfTransaction("SALE");
+        }
+        estate = (Estate) estateRepository.save(estate, Estate.class);
+        Set<Attachement> announcementAttachements = new HashSet<>();
+        String[] announcementAttachementsImagesNames = estateDTO.getAnnouncementImagesArray().toArray(new String[estateDTO.getAnnouncementImagesArray().size()]);
+        String[] announcementAttachementsImagesIconURI = estateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateDTO.getAnnouncementImagesIconsURIArray().size()]);
+        for(int index = 0; index < announcementAttachementsImagesNames.length; index ++){
+            Attachement attachement = new Attachement(UPLOAD_PATH + File.separator + announcementAttachementsImagesNames[index], AttachType.JPEG);
+            attachement.setIconUri(announcementAttachementsImagesIconURI[index]);
+            attachement.setIdAnnouncement(estate.getID());
+            announcementAttachements.add(attachement);
+        }
+        estate.setEstateAttachements(announcementAttachements);
+
+        return estateRepository.saveOrUpdate(estate);
     }
 
     private Estate createEstate(EstateDTO estateDTO) {

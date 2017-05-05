@@ -32,10 +32,10 @@
     <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
 
     <style>
-  		input { /*for the datepicker*/
-  			font-size: 1em;
-  		}
-  	</style>
+        input { /*for the datepicker*/
+            font-size: 1em;
+        }
+    </style>
 
     <link rel="icon" type="image/png" href="images/place-finder.png">
     <title>PerF</title>
@@ -65,30 +65,30 @@
 </div>
 
 <script>
-          $(function(){
-              var stickyHeaderTop = $('#top').offset().top;
-              $(window).scroll(function(){
-                          if( $(window).scrollTop() > stickyHeaderTop ) {
-                                  $('#top').css({position: 'fixed', top: '0px'});
-                                  $('#top').css('width','100%');
-                                  $('#top').css('display', 'block');
-                                  $('#top').css('z-index','999999');
-                          } else {
-                                  $('#top').css({position: 'static', top: '0px'});
-                          }
-                  });
+    $(function(){
+        var stickyHeaderTop = $('#top').offset().top;
+        $(window).scroll(function(){
+            if( $(window).scrollTop() > stickyHeaderTop ) {
+                $('#top').css({position: 'fixed', top: '0px'});
+                $('#top').css('width','100%');
+                $('#top').css('display', 'block');
+                $('#top').css('z-index','999999');
+            } else {
+                $('#top').css({position: 'static', top: '0px'});
+            }
         });
-    </script>
+    });
+</script>
 <div id="backToTop" class="ui raised container segment" style="position:absolute;width:60%;height: 250%; left:10%; right:10%; background: #f1f1f2;z-index: 9; ">
     <div class="ui borderless blue inverted menu" style="margin-top:-1.5%;margin-left:-1.3%;margin-right:-1.3%;">
         <div class="item">
             <button class="ui inverted white button" type="submit" onclick="getBack()"><i class="chevron circle left icon"></i>Back to search</button>
 
             <script>
-            function getBack(){
-              window.location = "./searchCity.html";
-            }
-          </script>
+                function getBack(){
+                    window.location = "./searchCity.html";
+                }
+            </script>
         </div>
 
         <div class="item">
@@ -100,117 +100,117 @@
     </div>
 
     <div class="modal" id="logInStatus-EstateDetails">
-      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-        <form class="ui form">
-            <br>
-            <center>
-                <h2>Successfully logged in</h2>
-            </center>
-            <br>
-        </form>
-      </div>
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <br>
+                <center>
+                    <h2>Successfully logged in</h2>
+                </center>
+                <br>
+            </form>
+        </div>
     </div>
 
     <div class="modal" id="logInStatusFailed-EstateDetails">
-      <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-        <form class="ui form">
-            <br>
-            <center><h2>Incorrect email/password</h2></center>
-            <br>
-        </form>
-      </div>
-    </div>
-
-<div id="logInEstateDetails" class="modal">
-  <span onclick="document.getElementById('logInEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
-  <div class="modal-content animate"  style="width:30%;">
-    <div class="container">
-      <h3 class="ui dividing header">Log in to your account</h3>
-      <div class="field" style="width:100%;">
-        <div id="errorMessageContainer-login-EstateDetails" style="display:none;">
-          <ul>
-            <li id="errorMessage-login-EstateDetails"></li>
-          </ul>
-        </div>
-        <label>Email</label>
-        <div id="email-input-login-EstateDetails" class="ui fluid input">
-          <input class="ui input" id="email-login-EstateDetails" name="email" placeholder="Email" type="text">
-        </div>
-      </div>
-      <br>
-
-      <div class="field" style="width:100%;">
-        <label>Password</label>
-        <div id="password-input-login-EstateDetails" class="ui fluid input">
-          <input class="ui input" id="password-login-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
-        </div>
-      </div>
-      <br>
-      <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOSTEstateDetails()">Log in</button>
-    </div>
-      <center><h3>Don't have a placeFinder account? <a href="#" onclick="document.getElementById('logInEstateDetails').style.display='none'; document.getElementById('signUpEstateDetails').style.display='block';" >Create one.</a></h3></center> <br>
-  </div>
-</div>
-
-      <div class="modal" id="signInStatus-EstateDetails">
         <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-          <form class="ui form">
-            <h2>Successfully signed in</h2>
-          </form>
+            <form class="ui form">
+                <br>
+                <center><h2>Incorrect email/password</h2></center>
+                <br>
+            </form>
         </div>
-      </div>
-
-      <div class="modal" id="signInStatusFailed-EstateDetails">
-        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-          <form class="ui form">
-            <h2>Email already existent in data base</h2>
-          </form>
-        </div>
-      </div>
-
-
-  <div id="signUpEstateDetails" class="modal">
-    <span onclick="document.getElementById('signUpEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
-    <div class="modal-content animate"  style="width:30%;">
-      <div class="container"><h3>Create an Account</h3>
-        <div class="field" style="width:100%;">
-          <div id="errorMessageContainer-EstateDetails" style="display:none;">
-            <ul>
-              <li id="errorMessage-EstateDetails"></li>
-            </ul>
-          </div>
-          <label>First Name</label>
-          <div id="first-name-input-EstateDetails" class="ui fluid input">
-            <input  id="first-name-EstateDetails" name="first-name-EstateDetails" placeholder="First Name" type="text">
-          </div>
-        </div>
-
-        <br>
-        <div class="field" style="width:100%;">
-          <label>Last Name</label>
-          <div id="last-name-input-EstateDetails" class="ui fluid input">
-            <input id="last-name-EstateDetails" name="last-name-EstateDetails" placeholder="Last Name" type="text">
-          </div>
-        </div>
-        <br>
-        <div class="field" style="width:100%;">
-          <label>Email</label>
-          <div id="email-input-EstateDetails" class="ui fluid input">
-            <input class="ui input" id="email-EstateDetails" name="email" placeholder="Email" type="text">
-          </div>
-        </div>
-        <br>
-        <div class="field" style="width:100%;">
-          <label>Password</label>
-          <div id="password-input-EstateDetails" class="ui fluid input">
-            <input class="ui input" id="passwordSignUp-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
-          </div>
-        </div>
-        <br>
-        <button class="ui fluid blue button" type="submit" value="Submit" onclick="signUpPOSTEstateDetails()">Sign Up</button>
-      </div>
     </div>
-  </div>    
+
+    <div id="logInEstateDetails" class="modal">
+        <span onclick="document.getElementById('logInEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
+        <div class="modal-content animate"  style="width:30%;">
+            <div class="container">
+                <h3 class="ui dividing header">Log in to your account</h3>
+                <div class="field" style="width:100%;">
+                    <div id="errorMessageContainer-login-EstateDetails" style="display:none;">
+                        <ul>
+                            <li id="errorMessage-login-EstateDetails"></li>
+                        </ul>
+                    </div>
+                    <label>Email</label>
+                    <div id="email-input-login-EstateDetails" class="ui fluid input">
+                        <input class="ui input" id="email-login-EstateDetails" name="email" placeholder="Email" type="text">
+                    </div>
+                </div>
+                <br>
+
+                <div class="field" style="width:100%;">
+                    <label>Password</label>
+                    <div id="password-input-login-EstateDetails" class="ui fluid input">
+                        <input class="ui input" id="password-login-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
+                    </div>
+                </div>
+                <br>
+                <button class="ui fluid blue button" type="submit" value="Submit" onclick="logInPOSTEstateDetails()">Log in</button>
+            </div>
+            <center><h3>Don't have a placeFinder account? <a href="#" onclick="document.getElementById('logInEstateDetails').style.display='none'; document.getElementById('signUpEstateDetails').style.display='block';" >Create one.</a></h3></center> <br>
+        </div>
+    </div>
+
+    <div class="modal" id="signInStatus-EstateDetails">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <h2>Successfully signed in</h2>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="signInStatusFailed-EstateDetails">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <h2>Email already existent in data base</h2>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="signUpEstateDetails" class="modal">
+        <span onclick="document.getElementById('signUpEstateDetails').style.display='none'" class="close" title="Close Modal">×</span>
+        <div class="modal-content animate"  style="width:30%;">
+            <div class="container"><h3>Create an Account</h3>
+                <div class="field" style="width:100%;">
+                    <div id="errorMessageContainer-EstateDetails" style="display:none;">
+                        <ul>
+                            <li id="errorMessage-EstateDetails"></li>
+                        </ul>
+                    </div>
+                    <label>First Name</label>
+                    <div id="first-name-input-EstateDetails" class="ui fluid input">
+                        <input  id="first-name-EstateDetails" name="first-name-EstateDetails" placeholder="First Name" type="text">
+                    </div>
+                </div>
+
+                <br>
+                <div class="field" style="width:100%;">
+                    <label>Last Name</label>
+                    <div id="last-name-input-EstateDetails" class="ui fluid input">
+                        <input id="last-name-EstateDetails" name="last-name-EstateDetails" placeholder="Last Name" type="text">
+                    </div>
+                </div>
+                <br>
+                <div class="field" style="width:100%;">
+                    <label>Email</label>
+                    <div id="email-input-EstateDetails" class="ui fluid input">
+                        <input class="ui input" id="email-EstateDetails" name="email" placeholder="Email" type="text">
+                    </div>
+                </div>
+                <br>
+                <div class="field" style="width:100%;">
+                    <label>Password</label>
+                    <div id="password-input-EstateDetails" class="ui fluid input">
+                        <input class="ui input" id="passwordSignUp-EstateDetails" name="password-EstateDetails" placeholder="Password" type="password">
+                    </div>
+                </div>
+                <br>
+                <button class="ui fluid blue button" type="submit" value="Submit" onclick="signUpPOSTEstateDetails()">Sign Up</button>
+            </div>
+        </div>
+    </div>
 
     <div class="ui grid">
 
@@ -241,11 +241,11 @@
             </div>
         </div>
         <!--<div class="three column row" style="margin-top:-2%;">-->
-            <!--<div class="column">-->
-                <!--<div class="ui image label" style="background-color:  #f1f1f2;">-->
-                    <!--<h4 class="ui header" id="estate-name-address-city-zipCode"> Address, City, ZIP Code</h4>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div class="column">-->
+        <!--<div class="ui image label" style="background-color:  #f1f1f2;">-->
+        <!--<h4 class="ui header" id="estate-name-address-city-zipCode"> Address, City, ZIP Code</h4>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <div class="two column row" style="margin-top:-2%;">
             <div class="column">
@@ -262,41 +262,13 @@
         </div>
 
         <div class="two wide fields" style="height:150px;">
-            <div class="sixteen wide field">
-                <div class="slideshow-container" style="background-color:#DCDCDC;">
-
-                    <div class="mySlides fade" style="display: initial;">
-                        <div class="numbertext">1 / 3</div>
-                        <a class="example-image-link" href="images/house-example.png" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
-                            <img class="ui big image" src="images/house-example.png" alt="" />
-                        </a>
-                        <!--<img src="images/house-example.png" style="width:100%">-->
-                        <div class="text">1 / 3</div>
-                    </div>
-
-                    <div class="mySlides fade" style="background-color:#DCDCDC">
-                        <div class="numbertext">2 / 3</div>
-                        <a class="example-image-link" href="images/house-example.png" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close.">
-                            <img class="ui big image" src="images/house-example.png" alt="" />
-                        </a>
-                        <div class="text">2 / 3 </div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext">3 / 3</div>
-                        <a class="example-image-link" href="images/Iasi-estates/e3/profile.jpg" data-lightbox="example-set" data-title="Click anywhere outside the image or the X to the right to close.">
-                            <img class="ui big image" src="images/Iasi-estates/e3/profile.jpg" alt="" />
-                        </a>
-                        <div class="text">3 / 3 </div>
-                    </div>
-
-                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <div class="field" style="max-width:65%;">
+                <div class="slideshow-container" id="slide-show" style="background-color:#DCDCDC;">
                 </div>
             </div>
 
-            <div class="sixteen wide field">
-                <div class="ui raised  very padded  segment" style="position:absolute;margin-top:0%; margin-left: 48%; width:50%; height: 15%;">
+            <div class="field" style="max-width:45%;">
+                <div class="ui raised  very padded  segment" style="position:absolute;margin-top:0%; margin-left: 70%; width:26%; height: 15%;">
                     <div class="field">
                         <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
                             <h3>Contact this property</h3>
@@ -323,14 +295,14 @@
                                             <script src="js/jquery-1.9.1.js"></script>
                                             <script src="js/jquery-ui-1.10.1.min.js"></script>
                                             <script>
-                                              $(function() {
-                                                  $("#date-picker-input-1").datepicker({
-                                                      inline: true,
-                                                      showOtherMonths: true
-                                                  })
-                                                      .datepicker('widget').wrap('<div class="ll-skin-nigran"/>');
-                                              });
-                                          </script>
+                                                $(function() {
+                                                    $("#date-picker-input-1").datepicker({
+                                                        inline: true,
+                                                        showOtherMonths: true
+                                                    })
+                                                        .datepicker('widget').wrap('<div class="ll-skin-nigran"/>');
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -522,52 +494,52 @@
             <a href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
         </div>
         <!--<div class="ui grid">-->
-            <div class="ui equal width center aligned padded grid">
-                <div class="column">
-                    <div id="map2" style="height:200%;width:100%;"></div>
-                </div>
-                <div class="column">
-                    <div class="ui grid" >
-                        <div class="one column row">
-                            <div class="column">
-                                <div class="ui tertiary segment">
-                                    <div class="ui checkbox">
-                                        <input id='schoolsLayerEstate' name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('schoolsLayerEstate')} unchecked={}/>
-                                        <label>SCHOOLS NEARBY</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column"></div>
-                        </div>
-                        <div class="one column row">
-                            <div class="column">
-                                <div class="ui tertiary segment">
-                                    <div class="ui checkbox">
-                                        <input id="storesLayer" name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('storesLayer')} unchecked={}/>
-                                        <label>STORES NEARBY</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column"></div>
-                        </div>
-                        <div class="one column row">
-                            <div class="column">
-                                <div class="ui tertiary segment">
-                                    <div class="ui checkbox">
-                                        <input id='parkingLayer' name="parkingLayer" type="checkbox" onChange={changeOverlayEstate('parkingLayer')} unchecked={}/>
-                                        <label>PARKINGS NEARBY</label>
-                                    </div>
-                                    <!--<a href="#" onclick="changeOverlayEstate('parkingLayer')"> <h4 style="color:gray;" >PARKINGS NEARBY</h4></a>-->
-                                </div>
-                            </div>
-                            <div class="column"></div>
-                        </div>
-                    </div>
-
-                </div>
+        <div class="ui equal width center aligned padded grid">
+            <div class="column">
+                <div id="map2" style="height:200%;width:100%;"></div>
             </div>
+            <div class="column">
+                <div class="ui grid" >
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui tertiary segment">
+                                <div class="ui checkbox">
+                                    <input id='schoolsLayerEstate' name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('schoolsLayerEstate')} unchecked={}/>
+                                    <label>SCHOOLS NEARBY</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui tertiary segment">
+                                <div class="ui checkbox">
+                                    <input id="storesLayer" name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('storesLayer')} unchecked={}/>
+                                    <label>STORES NEARBY</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                    <div class="one column row">
+                        <div class="column">
+                            <div class="ui tertiary segment">
+                                <div class="ui checkbox">
+                                    <input id='parkingLayer' name="parkingLayer" type="checkbox" onChange={changeOverlayEstate('parkingLayer')} unchecked={}/>
+                                    <label>PARKINGS NEARBY</label>
+                                </div>
+                                <!--<a href="#" onclick="changeOverlayEstate('parkingLayer')"> <h4 style="color:gray;" >PARKINGS NEARBY</h4></a>-->
+                            </div>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    </div>
+</div>
 </div>
 
 <div style="text-align:left; position:relative; margin-top:-7%; margin-left: 19%;">
@@ -582,7 +554,7 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzIgiHa5eWqPLvnoX7pS75GHTZffQo61k&libraries=places,visualization&callback=initMap2">
 </script>
 <script src="js/slideshow.js"></script>
-<script src="js/automaticSlideshow.js"></script>
+<!--<script src="js/automaticSlideshow.js"></script>-->
 
 </body>
 </html>

@@ -29,356 +29,290 @@
     <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
 
     <style>
-  		input { /*for the datepicker*/
-  			font-size: 1em;
-  		}
-  	</style>
+        input { /*for the datepicker*/
+            font-size: 1em;
+        }
+    </style>
 
     <link rel="icon" type="image/png" href="images/place-finder.png">
     <title>PerF</title>
 </head>
 <body style="background-color: lightblue;">
 
-    <div id="topAddProperty" class="ui massive blue menu" >
-        <a href="./homePage.html">
-            <img class="ui mini image" style="position:absolute;left: 20%; top:5px;" src="images/place-finder.png">
-        </a>
-        <a>
-            <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
-        </a>
+<div id="topAddProperty" class="ui massive blue menu" >
+    <a href="./homePage.html">
+        <img class="ui mini image" style="position:absolute;left: 20%; top:5px;" src="images/place-finder.png">
+    </a>
+    <a>
+        <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
+    </a>
 
-        <div id="addPropertyInAddProperty" >
-            <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
-        </div>
-        <div id="logoutAddProperty">
-            <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'">Log out</button>
-        </div>
+    <div id="addPropertyInAddProperty" >
+        <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
     </div>
+    <div id="logoutAddProperty">
+        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'" >Log out</button>
+    </div>
+</div>
 
-    <div class="ui raised container segment" style="position:absolute;width:60%;height: 130%; left:10%; right:10%; background: #f1f1f2;z-index: 9;">
-        <div class="ui borderless blue inverted menu" style="margin-top:-1.5%;margin-left:-1.3%;margin-right:-1.3%;">
-            <div class="item">
-                <button class="ui inverted white button" type="submit" onclick="getBack()"><i class="chevron circle left icon"></i>Back to search</button>
-                <script>
+<div class="ui raised container segment" style="position:absolute;width:60%;height: 130%; left:10%; right:10%; background: #f1f1f2;z-index: 9;">
+    <div class="ui borderless blue inverted menu" style="margin-top:-1.5%;margin-left:-1.3%;margin-right:-1.3%;">
+        <div class="item">
+            <button class="ui inverted white button" type="submit" onclick="getBack()"><i class="chevron circle left icon"></i>Back to search</button>
+            <script>
                 function getBack(){
-                  window.location = "./searchCity.html";
+                    window.location = "./searchCity.html";
                 }
-              </script>
-            </div>
-            <div class="item">
-                <div class="ui left icon input">
-                    <i class="ui large search icon"></i>
-                    <input placeholder="Search for estates in ..." type="text">
-                </div>
-            </div>
-
+            </script>
         </div>
-
-        <div class="modal" id="addPropertySuccessfulModal">
-            <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-                <form class="ui form">
-                    <h2>Successfully added property.</h2>
-                </form>
+        <div class="item">
+            <div class="ui left icon input">
+                <i class="ui large search icon"></i>
+                <input placeholder="Search for estates in ..." type="text">
             </div>
         </div>
 
-        <div class="modal" id="addPropertyFailedModal">
-            <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-                <form class="ui form">
-                    <h2>Cannot add property. Already existent property with same address.</h2>
-                </form>
-            </div>
-        </div>
+    </div>
 
+    <div class="modal" id="addPropertySuccessfulModal">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <h2>Successfully added property.</h2>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addPropertyFailedModal">
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
+            <form class="ui form">
+                <h2>Cannot add property. Already existent property with same address.</h2>
+            </form>
+        </div>
+    </div>
+
+    <div>
         <div>
-            <div>
-                <form class="ui form">
-                    <h4 class="ui dividing header">Add property</h4>
+            <form class="ui form">
+                <h4 class="ui dividing header">Add property</h4>
 
-                    <div class="field">
-                        <div class="fields">
-                            <div class="four wide field">
-                                <label>Category:</label>
-                                <select name="category" id="category-select" required onchange="displayOtherFields()">
-                                    <option value="" disabled selected>Choose</option>
-                                    <option value="House">House</option>
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Commercial space">Commercial space</option>
-                                </select>
-                            </div>
-
-                            <div id="price-input" class="four wide field">
-                                <label>Price:</label>
-                                <input id="price" name="price" placeholder="Add price" type="number" required min="1">
-                            </div>
-
+                <div class="field">
+                    <div class="fields">
+                        <div class="four wide field">
+                            <label>Category:</label>
+                            <select name="category" id="category-select" required onchange="displayOtherFields()">
+                                <option value="" disabled selected>Choose</option>
+                                <option value="house">House</option>
+                                <option value="appartment">Apartment</option>
+                                <option value="space">Commercial space</option>
+                            </select>
                         </div>
+
+                        <div id="price-input" class="four wide field">
+                            <label>Price:</label>
+                            <input id="price" name="price" placeholder="Add price" type="number" required min="1">
+                        </div>
+
                     </div>
-                    <div class="field">
-                        <div class="fields">
-                            <div class="four wide field">
-                                <div class="ui form">
-                                    <label >Transaction type:</label>
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
-                                            <label>Rent</label>
-                                        </div>
+                </div>
+                <div class="field">
+                    <div class="fields">
+                        <div class="four wide field">
+                            <div class="ui form">
+                                <label >Transaction type:</label>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
+                                        <label>Rent</label>
                                     </div>
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
-                                            <label>Sale</label>
-                                        </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
+                                        <label>Sale</label>
                                     </div>
                                 </div>
                             </div>
-                            <div id="comfort-select-field" class="four wide field">
-                                <label>Level on comfort:</label>
-                                <select name="category" id="comfort-select" required>
-                                    <option value="" disabled selected>Choose</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3 ">3</option>
-                                </select>
-                            </div>
-
+                        </div>
+                        <div id="comfort-select-field" class="four wide field">
+                            <label>Level on comfort:</label>
+                            <select name="category" id="comfort-select" required>
+                                <option value="" disabled selected>Choose</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3 ">3</option>
+                            </select>
                         </div>
 
                     </div>
-                    <div class="two wide fields">
-                        <div class="eight wide field">
+
+                </div>
+                <div class="two wide fields">
+                    <div class="eight wide field">
+                        <div class="field">
                             <div class="field">
-                                <div class="field">
 
-                                    <div class="two fields">
-                                        <div id="usable-surface-input" class="field">
-                                            <label>Usable surface:</label>
-                                            <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="number" required min="10">
-                                        </div>
-                                        <div id="bathrooms-input" class="field">
-                                            <label>Bathrooms:</label>
-                                            <input id="bathrooms" name="price" placeholder="Add bathrooms" type="number" required min="1">
-                                        </div>
+                                <div class="two fields">
+                                    <div id="usable-surface-input" class="field">
+                                        <label>Usable surface:</label>
+                                        <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="number" required min="10">
                                     </div>
-                                </div>
-
-                                <div class="field">
-
-                                    <div class="two fields">
-                                        <div id="rooms-field" class="field">
-                                            <label>Rooms:</label>
-                                            <select name="rooms" id="rooms-select" required>
-                                                <option value="" disabled selected>Choose</option>
-                                                <option value="1">1 room</option>
-                                                <option value="2">2 rooms</option>
-                                                <option value="3">3 rooms</option>
-                                                <option value="4">4 or more rooms</option>
-                                            </select>
-                                        </div>
-                                        <div id="floor-input" class="field">
-                                            <label>Floor:</label>
-                                            <input id="floor" name="usable_surface" placeholder="Add floor" type="number"  min="-1">
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div id="year-and-car" class="field">
-                                    <div class="two fields">
-                                        <div class="field">
-                                            <label>Construction year:</label>
-                                            <div id="construction-year-input">
-                                                <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017" required>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <label>Car:</label>
-                                            <div class="inline fields">
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input tabindex="0" id="parking" name="car" type="radio" onChange={setCheckbox('parking')} unchecked={}>
-                                                        <label>Parking</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input tabindex="0" id="garage" name="car" type="radio" onChange={setCheckbox('garage')} unchecked={}>
-                                                        <label>Garage</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input tabindex="0" id="none" name="car" type="radio" onChange={setCheckbox('none')} unchecked={}>
-                                                        <label>None</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div id="utilities-and-division" class="two wide fields">
-                                    <div class=" field">
-                                        <label>Furniture/Utilities</label>
-                                        <select name="furniture" id="furniture-utilities-select" required>
-                                            <option value="" disabled selected>Choose</option>
-                                            <option value="1">Complete</option>
-                                            <option value="2">Partial</option>
-                                            <option value="3">None</option>
-                                        </select>
-                                    </div>
-                                    <div class=" field">
-                                        <label>Division</label>
-                                        <select name="division" id="division-select" required>
-                                            <option value="" disabled selected>Choose</option>
-                                            <option value="Semi-detached">Semi-detached</option>
-                                            <option value="Detached">Detached</option>
-                                            <option value="Non-detached">Non-detached</option>
-                                        </select>
+                                    <div id="bathrooms-input" class="field">
+                                        <label>Bathrooms:</label>
+                                        <input id="bathrooms" name="price" placeholder="Add bathrooms" type="number" required min="1">
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="field">
+
+                                <div class="two fields">
+                                    <div id="rooms-field" class="field">
+                                        <label>Rooms:</label>
+                                        <select name="rooms" id="rooms-select" required>
+                                            <option value="" disabled selected>Choose</option>
+                                            <option value="1">1 room</option>
+                                            <option value="2">2 rooms</option>
+                                            <option value="3">3 rooms</option>
+                                            <option value="4">4 or more rooms</option>
+                                        </select>
+                                    </div>
+                                    <div id="floor-input" class="field">
+                                        <label>Floor:</label>
+                                        <input id="floor" name="usable_surface" placeholder="Add floor" type="number"  min="-1">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div id="year-and-car" class="field">
+                                <div class="two fields">
+                                    <div class="field">
+                                        <label>Construction year:</label>
+                                        <div id="construction-year-input">
+                                            <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017" required>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Car:</label>
+                                        <div class="inline fields">
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input tabindex="0" id="parking" name="car" type="radio" onChange={setCheckbox('parking')} unchecked={}>
+                                                    <label>Parking</label>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input tabindex="0" id="garage" name="car" type="radio" onChange={setCheckbox('garage')} unchecked={}>
+                                                    <label>Garage</label>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input tabindex="0" id="none" name="car" type="radio" onChange={setCheckbox('none')} unchecked={}>
+                                                    <label>None</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div id="utilities-and-division" class="two wide fields">
+                                <div class=" field">
+                                    <label>Furniture/Utilities</label>
+                                    <select name="furniture" id="furniture-utilities-select" required>
+                                        <option value="" disabled selected>Choose</option>
+                                        <option value="1">Complete</option>
+                                        <option value="2">Partial</option>
+                                        <option value="3">None</option>
+                                    </select>
+                                </div>
+                                <div class=" field">
+                                    <label>Division</label>
+                                    <select name="division" id="division-select" required>
+                                        <option value="" disabled selected>Choose</option>
+                                        <option value="Semi-detached">Semi-detached</option>
+                                        <option value="Detached">Detached</option>
+                                        <option value="Non-detached">Non-detached</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="field">
-                            <label>Property address: </label>
-                            <style>
-                            #map11 {
-                              margin-top: 50%;
-                              margin-left: 0%;
-                              height: 75%;
-                              width: 52%;
-                              }
-                            </style>
-                            <div id="map11"></div>
-                        </div>
+
                     </div>
                     <div class="field">
-                        <label>Description</label>
-                        <div id="description-textarea" class="ui form">
-                            <textarea id="description" placeholder="Add a drescription here.." required></textarea>
-                        </div>
-
-                        <h4 class="ui dividing header">Add photos</h4>
-                        <div class="field">
-                            <div id="list-of-images" class="ui small images">
-                                <label for="file1" class="ui large image">
-                                    <img id="image1" src="/images/image.png">
-                                </label>
-                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file1" style="display:none">
-                                <label for="file2" class="ui large image">
-                                    <img id="image2" src="/images/image.png">
-                                </label>
-                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file2" style="display:none">
-                                <label for="file3" class="ui large image">
-                                    <img id="image3" src="/images/image.png">
-                                </label>
-                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file3" style="display:none">
-                                <label for="file4" class="ui large image">
-                                    <img id="image4" src="/images/image.png">
-                                </label>
-                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file4" style="display:none">
-                            </div>
-                        </div>
-
-                        <script>
-                             var indexImage = 1;
-                            $('#file1').change(function() {
-                                console.log('image added: ' + indexImage);
-                                if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
-                                    if(this.files[0].size>1048576) {
-                                        console.log('File size is larger than 1MB!');
-                                    } else {
-                                        var reader = new FileReader();
-                                        console.log('loading image...');
-                                        reader.onload = function (e){
-                                            result = e.target.result;
-                                            $('#image1').attr('src', result);
-                                        }
-                                        reader.readAsDataURL(this.files[0]);
-                                        indexImage = indexImage + 1;
-                                        var frm = new FormData();
-                                        frm.append('image1', this.files[0]);
-                                        $.ajax({
-                                            method: 'POST',
-                                            url: '/estate/save/image',
-                                            //  address: '/save/image',
-                                            data: frm,
-                                            contentType: false,
-                                            processData: false,
-                                            cache: false
-                                        });
-                                    }
-                                } else console.log('This is not an image file!');
-
-                            });
-
-                            $('#file2').change(function() {
-                                console.log('image added: ' + indexImage);
-                                if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
-                                    if(this.files[0].size>1048576) {
-                                        console.log('File size is larger than 1MB!');
-                                    } else {
-                                        var reader = new FileReader();
-                                       // reader.onload = imageIsLoaded;
-                                        console.log('loading image...');
-                                        reader.onload = function (e){
-                                            result = e.target.result;
-                                            $('#image2').attr('src', result);
-
-                                        }
-                                        reader.readAsDataURL(this.files[0]);
-                                        indexImage = indexImage + 1;
-                                    }
-                                } else console.log('This is not an image file!');
-                                var frm = new FormData(this.files[0]);
-//                                frm.append('image2', this.files[0]);
-//                                frm.append("label", "WEBUPLOAD");
-                                $.ajax({
-                                    method: 'POST',
-                                    url: '/estate/save/image',
-                                    data: frm,
-                                    enctype: 'multipart/form-data',
-                                    contentType: false,
-                                    processData: false,
-                                    cache: false,
-                                    success : function(data) {
-                                        console.log(data);
-                                        alert(data);
-                                    }
-                                });
-                            });
-                        </script>
-
-                        <div class="field">
-                            <label>Phone number</label>
-                            <div id="phone-number-input"class="four wide field">
-                                <input id="phone-number" type="number" placeholder="+0 " required min="100000000" max="999999999">
-                            </div>
-                        </div>
-                        <button class="ui button" onclick="addPropertyPOST(event)">Add announcement</button>
+                        <label>Property address: </label>
+                        <style>
+                            #map11 {
+                                margin-top: 50%;
+                                margin-left: 0%;
+                                height: 75%;
+                                width: 52%;
+                            }
+                        </style>
+                        <div id="map11"></div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="field">
+                    <label>Description</label>
+                    <div id="description-textarea" class="ui form">
+                        <textarea id="description" placeholder="Add a drescription here.." required></textarea>
+                    </div>
+
+                    <h4 class="ui dividing header">Add photos</h4>
+                    <div class="field">
+                        <div id="list-of-images" class="ui small images">
+                            <label for="file1" class="ui large image">
+                                <img id="image1" src="/images/image.png">
+                            </label>
+                            <input accept=".jpg, .jpeg, .png" multiple type="file" id="file1" style="display:none" >
+                        </div>
+                    </div>
+
+                    <script>
+                        function deleteImage(id) {
+                            for(var i = announcementImagesArray.length - 1; i >= 0; i--) {
+                                if(announcementImagesArray[i] === id) {
+                                    announcementImagesArray.splice(i, 1);
+                                    announcementImagesIconsURIArray.splice(i, 1);
+                                    announcementImagesArrayCount = announcementImagesArrayCount - 1;
+                                    $('#list-of-images').remove("#" + id);
+                                    var imageToDelete = document.getElementById(id);
+                                    imageToDelete.parentNode.removeChild(imageToDelete);
+                                }
+                            }
+                        }
+                    </script>
+
+                    <div class="field">
+                        <label>Phone number</label>
+                        <div id="phone-number-input"class="four wide field">
+                            <input id="phone-number" type="number" placeholder="+0 " required min="100000000" max="999999999">
+                        </div>
+                    </div>
+                    <button class="ui button" onclick="addPropertyPOST(event)">Add announcement</button>
+                </div>
+            </form>
         </div>
     </div>
-    </div>
-        <script src="addProperty.js"></script>
-        <style>
-                #map11 {
-                  margin-top: 0%;
-                  margin-left: 0%;
-                  height: 100%;
-                  width: 100%;
-                  }
-            </style>
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiF0Un_CZtZJXb_az1JsfXQaejuF6iCXk&libraries=places,visualization&callback=initMap11">
-        </script>
-    </div>
+</div>
+</div>
+<script src="addProperty.js"></script>
+<style>
+    #map11 {
+        margin-top: 0%;
+        margin-left: 0%;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiF0Un_CZtZJXb_az1JsfXQaejuF6iCXk&libraries=places,visualization&callback=initMap11">
+</script>
+</div>
 </body>
 </html>

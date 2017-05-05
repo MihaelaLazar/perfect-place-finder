@@ -1,6 +1,5 @@
 package com.sgbd.controller;
 
-import com.sgbd.OracleCon;
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.SignUpDTO;
@@ -19,15 +18,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
 import java.util.Set;
 
 import static com.sgbd.util.ContentType.JSON;
 
 @RestController
-@RequestMapping(path="/user")
+//@RequestMapping(path="/user")
 public class UserController {
 
     @Autowired
@@ -67,7 +64,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(path = "/create", method = RequestMethod.POST)
+    @RequestMapping(path = "/user/create", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
 
@@ -94,7 +91,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    @RequestMapping(path = "/user/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> validateUser(Response response, Request request, @RequestBody LoginDTO loginDTO) {
 //        String[] emailAndPassword;
@@ -129,7 +126,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/getAnnouncements", method = RequestMethod.GET)
+    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Set<Estate>> getAnnouncements(Response response, Request request) {
         Long id = Long.parseLong(request.getParameter("id"));

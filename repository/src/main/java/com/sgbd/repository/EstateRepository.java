@@ -11,9 +11,11 @@ import java.io.Serializable;
  */
 public interface EstateRepository {
 
-     Serializable findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
+    Serializable findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
 
     PaginatedEstatesDetails getEstatesByFilters(String queryString, Integer offset);
 
     Serializable save(Serializable entity, Class modelClass) throws PersistenceException;
+
+    Estate saveOrUpdate(Estate estate) throws PersistenceException;
 }

@@ -50,10 +50,14 @@ public class EstateRepositoryImpl implements EstateRepository {
 
     @Transactional
     public Serializable save(Serializable entity, Class modelClass) throws PersistenceException {
-        try {
-            return entityManager.merge(entity);
-        } catch (Exception e) {
-            throw new PersistenceException("Failed saveOrUpdate for entity class " + modelClass, e);
-        }
+             entityManager.persist(entity);
+             return entity;
+
+    }
+
+    @Override
+    public Estate saveOrUpdate(Estate estate) {
+        entityManager.merge(estate);
+        return estate;
     }
 }

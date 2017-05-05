@@ -25,6 +25,9 @@ public class EstateDTO implements Serializable {
     private Long bathrooms;
     private Long carDisposal;
     private Long floor;
+    private Set<String> announcementImagesArray ;
+    private Set<String> announcementImagesIconsURIArray;
+
 
     public EstateDTO() {
     }
@@ -171,5 +174,21 @@ public class EstateDTO implements Serializable {
 
     public void setFloor(Long floor) {
         this.floor = floor;
+    }
+
+    public Set<String> getAnnouncementImagesArray() {
+        return announcementImagesArray;
+    }
+
+    public void setAnnouncementImagesArray(Set<String> announcementImagesArray) {
+        this.announcementImagesArray = announcementImagesArray;
+    }
+
+    public Set<String> getAnnouncementImagesIconsURIArray() {
+        return announcementImagesIconsURIArray;
+    }
+
+    public void setAnnouncementImagesIconsURIArray(Set<String> announcementImagesIconsURIArray) {
+        this.announcementImagesIconsURIArray = announcementImagesIconsURIArray;
     }
 }

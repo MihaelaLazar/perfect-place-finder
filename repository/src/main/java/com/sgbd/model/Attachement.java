@@ -26,14 +26,24 @@ public class Attachement {
     @Column(name = "TYPE_OF_ATTACHEMENT", nullable = false)
     private AttachType attachType;
 
+    @Column(name = "ICON_URI")
+    private String iconUri;
+
     public Attachement() {
     }
 
-    public Attachement(Long idAnnouncement, String pathToFile, AttachType attachType) {
+    public Attachement(Long idAnnouncement, String pathToFile, AttachType attachType, String iconUri) {
         this.idAnnouncement = idAnnouncement;
         this.pathToFile = pathToFile;
         this.attachType = attachType;
+        this.iconUri = iconUri;
     }
+
+    public Attachement(String pathToFile, AttachType attachType) {
+        this.pathToFile = pathToFile;
+        this.attachType = attachType;
+    }
+
 
     public Long getId() {
         return id;
@@ -66,4 +76,13 @@ public class Attachement {
     public void setAttachType(AttachType attachType) {
         this.attachType = attachType;
     }
+
+    public String getIconUri() {
+        return iconUri;
+    }
+
+    public void setIconUri(String iconUri) {
+        this.iconUri = iconUri;
+    }
+
 }
