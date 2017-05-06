@@ -73,7 +73,7 @@ public class Estate implements Serializable {
     @Column(name = "CONTACT_NUMBER", nullable = false)
     private String contactNumber;
 
-    @Column(name = "ID_USER", nullable = false)
+    @Column(name = "ID_USER")
     private Long idUser;
 
     @Column(name = "UTILITIES", nullable = false)
@@ -101,6 +101,8 @@ public class Estate implements Serializable {
     @Column(name = "FLOOR")
     private Long floor;
 
+    @Version
+    private Long version;
 
 
     public Set<Attachement> getEstateAttachements() {
@@ -116,8 +118,8 @@ public class Estate implements Serializable {
     }
 
     public Estate( String type, String address, Long surface, Long rooms, Long rentPrice,
-                  Long buyPrice, String division, Long constructionYear, String description,
-                  Date creationDate, Date lastUpdate, String city, String contactNumber, long idUser, Long utilities,
+                   Long buyPrice, String division, Long constructionYear, String description,
+                   Date creationDate, Date lastUpdate, String city, String contactNumber, long idUser, Long utilities,
                    String typeOfTransaction, Long levelOfComfort, Long bathrooms, Long carDisposal, Long floor) {
         this.type = type;
         this.address = address;

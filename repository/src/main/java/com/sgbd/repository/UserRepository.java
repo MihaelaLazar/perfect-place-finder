@@ -21,4 +21,6 @@ public interface UserRepository {
     Serializable save(Serializable entity, Class modelClass) throws PersistenceException;
 
     void close();
+
+//    User addFavoriteAnnouncement(User user, Long idAnnouncement);
 }

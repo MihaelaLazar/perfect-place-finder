@@ -1,13 +1,11 @@
 package com.sgbd.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.*;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author Lazarm
@@ -19,8 +17,8 @@ import java.util.Set;
 })
 public class User implements Serializable {
 
-    public static final String USER_EMAIL_COLUMN_NAME = "email";
-    public static final String USER_ID_COLUMN_NAME = "id";
+    public static String USER_EMAIL_COLUMN_NAME = "email";
+    public static String USER_ID_COLUMN_NAME = "id";
 
     @Id
     @GeneratedValue
@@ -38,11 +36,6 @@ public class User implements Serializable {
 
     @Column(name="PASSWORD", nullable = false)
     private String password;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @Fetch(FetchMode.SUBSELECT)
-    @JoinColumn(name = "ID_USER")
-    private Set<Estate> announcements;
 
     @Transient
     private boolean enabled;
@@ -68,14 +61,6 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-    }
-
-    public Set<Estate> getAnnouncements() {
-        return announcements;
-    }
-
-    public void setAnnouncements(Set<Estate> announcements) {
-        this.announcements = announcements;
     }
 
     public Long getId() {
@@ -135,6 +120,64 @@ public class User implements Serializable {
         return "User [id=" + id + ", email=" + email + ", firstName="
                 + firstName + ", lastName=" + lastName + ", password="
                 + password + "]";
+    }
+
+    public static Builder getBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private User user;
+
+        public Builder() {
+            user = new User();
+        }
+
+        public Builder email(String email) {
+            user.email = email;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            user.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            user.lastName = lastName;
+            return this;
+        }
+
+        public Builder password(String password) {
+            user.password = password;
+            return this;
+        }
+
+//        public Builder role(Role role) {
+//            user.userRoles.add(new UserRole(this.user, role));
+//            return this;
+//        }
+
+        public Builder enabled(boolean enabled) {
+            user.enabled = enabled;
+            return this;
+        }
+
+        public Builder locked(boolean locked) {
+            user.locked = locked;
+            return this;
+        }
+
+
+        public User build() {
+            return user;
+        }
+
+        public Builder id(Long id) {
+            user.id = id;
+            return this;
+        }
     }
 
     public String getUsername() {

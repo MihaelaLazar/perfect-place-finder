@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static com.sgbd.util.AppConstants.UPLOAD_PATH;
 import static com.sgbd.util.ContentType.JSON;
 
 @RestController
@@ -149,7 +150,7 @@ public class EstateController {
             try {
                 Timestamp timestamp = new Timestamp(new Date().getTime());
                 String fileNameDateStamp = new Date().toString().replace(" ","").replace(":","") + ".jpg";
-                out = new FileOutputStream(new File("C:\\upload" + File.separator
+                out = new FileOutputStream(new File(UPLOAD_PATH + File.separator
                         + fileNameDateStamp/*fileName*/));
                 filecontent = filePart.getInputStream();
                 int read = 0;
@@ -158,7 +159,7 @@ public class EstateController {
                 while ((read = filecontent.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
                 }
-                String originalImagePathname = "C:\\upload" + File.separator + fileNameDateStamp;
+                String originalImagePathname = UPLOAD_PATH + File.separator + fileNameDateStamp;
                 String iconPathname = ImageUtil.generateIcon(originalImagePathname, fileNameDateStamp);
                 String imageURI = ImageUtil.convertToURI(iconPathname);
                 ImageDTO imageDTO = new ImageDTO(fileNameDateStamp,imageURI);

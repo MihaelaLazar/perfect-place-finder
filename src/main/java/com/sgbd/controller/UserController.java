@@ -126,18 +126,55 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<Set<Estate>> getAnnouncements(Response response, Request request) {
-        Long id = Long.parseLong(request.getParameter("id"));
-        Set<Estate> userAnnouncements = null;
-        try {
-            User user = (User) userService.findById(id);
-            return new ResponseEntity<>(user.getAnnouncements(), HttpStatus.OK);
+//    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseEntity<Set<Estate>> getAnnouncements(Response response, Request request) {
+//        Long id = Long.parseLong(request.getParameter("id"));
+//        Set<Estate> userAnnouncements = null;
+//        try {
+//            User user = (User) userService.findById(id);
+//            return new ResponseEntity<>(user.getAnnouncements(), HttpStatus.OK);
+//
+//        }catch (EntityNotFoundException e){
+//            return new ResponseEntity<>(userAnnouncements, HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
-        }catch (EntityNotFoundException e){
-            return new ResponseEntity<>(userAnnouncements, HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseEntity<User> addFavAnnouncement(Response response, Request request) {
+//        Long id = Long.parseLong(request.getParameter("id"));
+//        User user = null;
+//        try {
+//            user = (User) userService.findById(id);
+//            userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
+//            return new ResponseEntity<>(user, HttpStatus.OK);
+//
+//        }catch (EntityNotFoundException e){
+//            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
+    /**
+     * RARES:
+     *
+     */
+//    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
+//    public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UpdateDTO updateDTO ) {
+//        userService.updateUser(updateDTO);
+//    }
+
+    /**
+     *  RALUCA:
+     */
+
+//    @RequestMapping(path = "/user/get/announcements", method = RequestMethod.GET) // pui din JS in url parametrul : id= <id-ul userului>
+//    public ResponseEntity<Set<Estate>> getUserEstates (Request request, Response response) {
+//        Set<Estate> estates = userService.getUserEstates(Long.parseLong(request.getParameter("id")));
+//        return new ResponseEntity<Set<Estate>>(estates, HttpStatus.OK);
+//        //in caz de exceptie, prinzi exceptia si arunci un cod de stare :
+////         return new ResponseEntity<Set<Estate>>(null, HttpStatus.BAD_REQUEST);
+//
+//    }
 
 }

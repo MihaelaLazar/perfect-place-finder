@@ -26,7 +26,7 @@ public class Attachement {
     @Column(name = "TYPE_OF_ATTACHEMENT", nullable = false)
     private AttachType attachType;
 
-    @Column(name = "ICON_URI")
+    @Column(name = "ICON_URI", nullable = true)
     private String iconUri;
 
     public Attachement() {
@@ -84,5 +84,4 @@ public class Attachement {
     public void setIconUri(String iconUri) {
         this.iconUri = iconUri;
     }
-
 }

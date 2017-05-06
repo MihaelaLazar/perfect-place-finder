@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 import com.sgbd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
+
 
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
 import static com.sgbd.model.User.USER_ID_COLUMN_NAME;
@@ -69,5 +71,28 @@ public class UserServiceImpl implements UserService{
             return user;
         }
     }
+
+//    @Override
+//    public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
+//         return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
+//    }
+
+    /**
+     *
+     * RARES:
+     */
+//    void updateUser(UpdateDTO updateDTO) {
+//        User user = userRepository.findByAttribute("id", updateDTO.getID(), User.class);
+//        user.setEmail(updateDTO.getEmail());
+//    }
+
+    /**
+     * RALUCA:
+     */
+
+//    Set<Estate> getUserEstates(Long idUser) {
+//        User user = userRepository.findByAttribute("id", idUser, User.class);
+//        return user.getAnnouncements();
+//    }
 
 }

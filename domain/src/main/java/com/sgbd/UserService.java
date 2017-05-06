@@ -22,4 +22,5 @@ public interface UserService {
 
     User findByEmailAndPassword(String email, String password);
 
+//    User setFavoriteAnnouncement(User user, Long idAnnouncement);
 }

@@ -1,5 +1,6 @@
 package com.sgbd.repository;
 
+import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
+import static com.sgbd.model.Estate.ESTATE_ID_COLUMN_NAME;
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
 
 /**
@@ -33,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
         final Query query = entityManager.createQuery("SELECT o FROM " + modelClass.getSimpleName()
                 + " o WHERE o." + columnName + "=:identifier");
         query.setParameter("identifier", identifier);
-
+        entityManager.find(User.class,identifier);
         final List<User> results = query.getResultList();
 
         if (!results.isEmpty()) {
@@ -78,4 +80,13 @@ public class UserRepositoryImpl implements UserRepository {
             entityManager.close();
         }
     }
+
+//    @Override
+//    @Transactional
+//    public User addFavoriteAnnouncement(User user, Long idAnnouncement) {
+//        Estate estate = (Estate) findByAttribute(ESTATE_ID_COLUMN_NAME, idAnnouncement ,Estate.class);
+//        user.getFavoriteAnnouncements().add(estate);
+//        entityManager.merge(user);
+//        return user;
+//    }
 }

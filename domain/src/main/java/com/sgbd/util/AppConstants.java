@@ -5,6 +5,6 @@ package com.sgbd.util;
  */
 public interface AppConstants {
 
-    String UPLOAD_PATH = "c:\\upload";
+    String UPLOAD_PATH = "C:\\upload";
 
 }
