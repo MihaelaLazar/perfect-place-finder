@@ -46,12 +46,13 @@
     <a>
         <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
     </a>
-
-    <div id="addPropertyInAddProperty" >
-        <button class="ui inverted blue button" onclick="document.getElementById('addPropModal').style.display='block'">Add property</button>
+    <div id="loggedIn-addProperty" style="display:none; margin-left:70%; margin-top:5px;">
+        <button id="loggedInButton-addProperty" class="ui inverted blue button" onclick="redirectToProfileAddProperty()"></button>
     </div>
+
+
     <div id="logoutAddProperty">
-        <button class="ui inverted blue button" onclick="document.getElementById('id02').style.display='block'" >Log out</button>
+        <button class="ui inverted blue button" onclick="redirectToSearchCity()" >Log out</button>
     </div>
 </div>
 

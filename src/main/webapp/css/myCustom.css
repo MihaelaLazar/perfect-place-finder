@@ -1,13 +1,25 @@
 #signup {
 	position: relative;
     left: 60%;
-		top: 5px;
+    top: 5px;
 }
 
 #login {
 	position: relative;
     left: 62%;
-		top: 5px;
+    top: 5px;
+}
+
+#loggedIn {
+	position: absolute;
+    left: 75%;
+	top: 5px;
+}
+
+#logout {
+    position: absolute;
+    left: 85%;
+    top: 5px;
 }
 
 body {

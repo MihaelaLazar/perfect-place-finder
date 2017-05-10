@@ -1,9 +1,9 @@
-/*#map2 {
+#map2 {
   margin-top: 0%;
   margin-left: 2%;
   height: 80%;
   width: 52%;
-  }*/
+  }
 #myButton {
 	display:  none
 }
@@ -12,17 +12,28 @@
   width: 60%;
 }
 
-
-#signup {
+#signup-estateDetails {
 	position: fixed;
     left: 70%;
 		top: 5px;
 }
 
-#login {
+#login-estateDetails {
 	position: fixed;
     left: 75.5%;
 		top:5px;
+}
+
+#loggedIn-estateDetails  {
+	position: absolute;
+    left: 69%;
+	top: 5px;
+}
+
+#logout-estateDetails  {
+    position: absolute;
+    left: 75%;
+    top: 5px;
 }
 
 #menuBar {
@@ -31,9 +42,9 @@
   right: 10%;
 }
 
-#addProperty{
-	position: fixed;
-    left: 62.5%;
+#addProperty-estateDetails{
+	position: absolute;
+    left: 61%;
 		top:5px;
 }
 

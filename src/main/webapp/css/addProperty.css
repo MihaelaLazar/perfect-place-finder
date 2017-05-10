@@ -1,12 +1,15 @@
-#myButton {
-	display:  none
-}
-
 #principal {
   width: 60%;
 }
 
-#logoutAddProperty {
+
+#signupAddProperty {
+	position: fixed;
+    left: 70%;
+		top: 5px;
+}
+
+#loginAddProperty {
 	position: fixed;
     left: 75.5%;
 		top:5px;
@@ -20,6 +23,12 @@
 
 #addPropertyInAddProperty{
 	position: fixed;
-    left: 67%;
+    left: 68%;
 		top:5px;
+}
+
+#logoutAddProperty {
+    position:fixed;
+    margin-left: 75%;
+    top:5px;
 }

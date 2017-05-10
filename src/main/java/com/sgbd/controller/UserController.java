@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -64,19 +66,11 @@ public class UserController {
     }
 
 
-    @RequestMapping(path = "/user/create", method = RequestMethod.POST)
+    @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
 
-//        try {
-//            OracleCon.getOracleCon().addUser(user);
-//        } catch (SQLException e) {
-//            return new ResponseEntity<>("DUPLICATE", HttpStatus.FORBIDDEN);
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        response.setContentType(JSON.getContentType());
-//        return new ResponseEntity<>("Added in database", HttpStatus.OK);
+
 
         try {
             userService.createUser(user);
@@ -91,39 +85,69 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/user/login", method = RequestMethod.POST)
+    @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> validateUser(Response response, Request request, @RequestBody LoginDTO loginDTO) {
-//        String[] emailAndPassword;
-//
-//        try {
-//            emailAndPassword = OracleCon.getOracleCon().validateUser(loginDTO);
-//        } catch (SQLException e) {
-//            return new ResponseEntity<>("INVALID USER/PASSWORD", HttpStatus.FORBIDDEN);
-//        } catch (ClassNotFoundException e) {
-//            return new ResponseEntity<>("THERE WAS A INTERNAL PROBLEM. PLEASE TRY AGAIN LATER !", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        HttpSession session = request.getSession();
-//        session.setAttribute("Username", emailAndPassword[0]);
-//        session.setAttribute("Password", emailAndPassword[1]);
-//
-//        return new ResponseEntity<>("Login succeed", HttpStatus.OK);
-
-        String[] emailAndPassword;
-//        request.getSession(true).setAttribute("token",);
-//        Cookie cookie = new Cookie("sessionID", );
-//        cookie.setSecure(true);
+        HttpSession session = request.getSession(true);
         try {
             User user = (User) userService.findByEmailAndPassword(loginDTO.getEmail(),loginDTO.getPassword());
-            if (user != null) {
-                return new ResponseEntity<>("Login succeed", HttpStatus.OK);
-            }else {
-                return new ResponseEntity<String>("INVALID EMAIL/PASSWORD", HttpStatus.CONFLICT);
-            }
-
+            String tokenID = session.getId();
+            session.setAttribute("username",user.getUsername());
+            session.setAttribute("tokenID", tokenID);
+            session.setMaxInactiveInterval(20 * 60);
+            request.getSession(false).setAttribute("username", user.getUsername());
+            request.getSession(false).setAttribute("tokenID", tokenID);
+            request.getSession(false).setAttribute("ID", user.getId());
+            return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
         }catch (EntityNotFoundException e){
+            session.removeAttribute("username");
+            session.removeAttribute("tokenID");
             return new ResponseEntity<String>("EMAIL NOT FOUND", HttpStatus.FORBIDDEN);
         }
+    }
+
+    @RequestMapping(path = "/user/getProfile", method = RequestMethod.GET)
+    public ResponseEntity<String> redirectToProfile(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+//                response.sendRedirect("/profile.html");
+            return new ResponseEntity<String>("/profile.html", HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<String>("Session not existent", HttpStatus.CONFLICT);
+        }
+    }
+
+    @RequestMapping(path = "/user/check/session", method = RequestMethod.GET)
+    public ResponseEntity<String> checkSession(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("username");
+            return new ResponseEntity<String>((String) session.getAttribute("username"),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("not existent",HttpStatus.CONFLICT);
+        }
+    }
+
+    @RequestMapping(path = "/user/logout", method = RequestMethod.GET)
+    public String invalidateSession (HttpServletRequest request) {
+        if (request.getSession(false) != null) {
+            request.getSession(false).invalidate();
+        }
+        return "invalidated";
+    }
+
+    @RequestMapping(path = "/user/addProperty", method = RequestMethod.GET)
+    public ResponseEntity<String> redirectToAddProperty (HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            return new ResponseEntity<String>("/addProperty.html", HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<String>("Session not existent", HttpStatus.CONFLICT);
+        }
+
     }
 
 //    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
@@ -153,28 +177,6 @@ public class UserController {
 //        }catch (EntityNotFoundException e){
 //            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
 //        }
-//    }
-
-    /**
-     * RARES:
-     *
-     */
-//    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
-//    public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UpdateDTO updateDTO ) {
-//        userService.updateUser(updateDTO);
-//    }
-
-    /**
-     *  RALUCA:
-     */
-
-//    @RequestMapping(path = "/user/get/announcements", method = RequestMethod.GET) // pui din JS in url parametrul : id= <id-ul userului>
-//    public ResponseEntity<Set<Estate>> getUserEstates (Request request, Response response) {
-//        Set<Estate> estates = userService.getUserEstates(Long.parseLong(request.getParameter("id")));
-//        return new ResponseEntity<Set<Estate>>(estates, HttpStatus.OK);
-//        //in caz de exceptie, prinzi exceptia si arunci un cod de stare :
-////         return new ResponseEntity<Set<Estate>>(null, HttpStatus.BAD_REQUEST);
-//
 //    }
 
 }

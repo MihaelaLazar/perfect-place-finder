@@ -31,11 +31,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
-    public Serializable findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException {
+    public User findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException {
         final Query query = entityManager.createQuery("SELECT o FROM " + modelClass.getSimpleName()
                 + " o WHERE o." + columnName + "=:identifier");
         query.setParameter("identifier", identifier);
-        entityManager.find(User.class,identifier);
+//        entityManager.find(User.class,identifier);
         final List<User> results = query.getResultList();
 
         if (!results.isEmpty()) {

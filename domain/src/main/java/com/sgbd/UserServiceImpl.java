@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Override
-    public Serializable findByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, email, User.class);
     }
 
     @Override
-    public Serializable findById (Long userId) {
+    public User findById (Long userId) {
         return userRepository.findByAttribute(USER_ID_COLUMN_NAME, userId, User.class);
     }
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByEmailAndPassword(String email, String password) {
         User user = (User) findByEmail(email);
-        if (user.getPassword() != password) {
+        if (!user.getPassword().equals(password)) {
             return null;
         }else {
             return user;
@@ -75,24 +75,6 @@ public class UserServiceImpl implements UserService{
 //    @Override
 //    public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
 //         return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
-//    }
-
-    /**
-     *
-     * RARES:
-     */
-//    void updateUser(UpdateDTO updateDTO) {
-//        User user = userRepository.findByAttribute("id", updateDTO.getID(), User.class);
-//        user.setEmail(updateDTO.getEmail());
-//    }
-
-    /**
-     * RALUCA:
-     */
-
-//    Set<Estate> getUserEstates(Long idUser) {
-//        User user = userRepository.findByAttribute("id", idUser, User.class);
-//        return user.getAnnouncements();
 //    }
 
 }

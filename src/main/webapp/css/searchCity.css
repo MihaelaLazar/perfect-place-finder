@@ -1,12 +1,12 @@
-#signup {
-	position: relative;
-    left: 54%;
+#signup-searchCity {
+	position: absolute;
+    left: 78%;
 		top: 5px;
 }
 
-#login {
-	position: relative;
-    left: 56%;
+#login-searchCity {
+	position: absolute;
+    left: 85%;
 		top:5px;
 }
 
@@ -17,9 +17,22 @@
 }
 
 #addProperty{
-	position: relative;
-    left: 52%;
+	position: absolute;
+    left: 69%;
 		top:5px;
+}
+
+#loggedIn-searchCity  {
+	position: absolute;
+    left: 78%;
+	top: 5px;
+	width:50px;
+}
+
+#logout-searchCity  {
+    position: absolute;
+    left: 85%;
+    top: 5px;
 }
 
 .modal {

@@ -10,13 +10,13 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * Created by mihae on 4/3/2017.
  */
 public interface UserService {
-    Serializable findByEmail(String email);
+    User findByEmail(String email);
 
     User getUser(String userEmail);
 
     String deleteUser(String userEmail);
 
-    Serializable findById (Long userId);
+    User findById (Long userId);
 
     User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException;
 

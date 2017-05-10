@@ -11,8 +11,103 @@ function getQueryVariableEstateDetails(variable) {
     return null;
 }
 
+/* This function checks if session exists */
+function checkSession() {
+//    $.ajax({
+//        url: '/user/check/session',
+//        type: 'GET',
+//        success: function(data) {
+//            if (data === "not existent") {
+//                console.log("not existent session");
+//                document.getElementById('login-estateDetails').style.display = 'block';
+//                document.getElementById('signup-estateDetails').style.display = 'block';
+//                document.getElementById('logout-estateDetails').style.display = 'none';
+//                document.getElementById('loggedIn-estateDetails').style.display = 'none';
+//            } else {
+//                console.log("session existent");
+//                console.log(data);
+//                document.getElementById('login-estateDetails').style.display = 'none';
+//                document.getElementById('signup-estateDetails').style.display = 'none';
+//                document.getElementById('logout-estateDetails').style.display = 'inline';
+//                document.getElementById('loggedIn-estateDetails').style.display = 'inline';
+//                $('#loggedInButton-estateDetails').text(data);
+//            }
+//        }
+//    });
+
+    var request = new XMLHttpRequest();
+    request.open('GET', '/user/check/session', false);  // `false` makes the request synchronous
+    request.send(" ");
+    var data = request.responseText;
+    if (request.status === 200) {
+          console.log("session existent");
+          console.log(data);
+          document.getElementById('login-estateDetails').style.display = 'none';
+          document.getElementById('signup-estateDetails').style.display = 'none';
+          document.getElementById('logout-estateDetails').style.display = 'inline';
+          document.getElementById('loggedIn-estateDetails').style.display = 'inline';
+          $('#loggedInButton-estateDetails').text(data);
+    } else {
+        console.log("not existent session");
+        document.getElementById('login-estateDetails').style.display = 'block';
+        document.getElementById('signup-estateDetails').style.display = 'block';
+        document.getElementById('logout-estateDetails').style.display = 'none';
+        document.getElementById('loggedIn-estateDetails').style.display = 'none';
+    }
+}
+
+/* This function invalidates session */
+function invalidateSessionEstateDetails() {
+     $.ajax ({
+         method: 'GET',
+         url: '/user/logout',
+         contentType: false,
+         success (data) {
+             console.log('session invalidated');
+             document.getElementById('logInEstateDetails').style.display='none';
+             document.getElementById('logInStatus-EstateDetails').style.display='none';
+             document.getElementById('login-estateDetails').style.display = 'block';
+             document.getElementById('signup-estateDetails').style.display = 'block';
+             document.getElementById('logout-estateDetails').style.display = 'none';
+             document.getElementById('loggedIn-estateDetails').style.display='none';
+         }
+     });
+}
+
+
+function redirectToAddPropertyEstateDetails() {
+    $.ajax ({
+        method: 'GET',
+        url: '/user/addProperty',
+        contentType: false,
+        success: function (data) {
+            window.location = data;
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Not logged in');
+        }
+    });
+}
+
+/* This function redirects tu user's profile page */
+function redirectToProfileEstateDetails() {
+    $.ajax ({
+        method: 'GET',
+        url: '/user/getProfile',
+        contentType: false,
+        success: function (data) {
+            window.location = data;
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Not logged in');
+        }
+    });
+}
 
 window.onload = function() {
+    checkSession();
     console.log("LOAD");
     var url = '/estate/getDetails?id=' + getQueryVariableEstateDetails('estate');
     console.log("estate id in LOAD: " + getQueryVariableEstateDetails('estate'));
@@ -129,9 +224,9 @@ function renderPhotosOfAnnouncement(estateDetails) {
         var imageNumber = index + 1;
         var newImage;
         if (index === 0) {
-            newImage = $("<div class='mySlides fade' style='display: initial;'> <div class='numbertext'>" + imageNumber + "/" + numberOfImages + " </div> <a class='example-image-link' href='" + estateDetails.estateAttachements[index].iconUri + "' data-lightbox='example-set' data-title='Click the right half of the image to move forward.'> <img class='ui big image' src='" + estateDetails.estateAttachements[index].iconUri + "' alt='' /> </a> <div class='text'>" + imageNumber + "/" + numberOfImages + "</div></div> ");
+            newImage = $("<div class='mySlides fade' style='display: initial;'>  <a class='example-image-link' href='" + estateDetails.estateAttachements[index].iconUri + "' data-lightbox='example-set' data-title='Click the right half of the image to move forward.'> <div style='width: 100%; height: 50%; border: lightblue; margin: auto;'>  <img class='ui big image' src='" + estateDetails.estateAttachements[index].iconUri + "' alt='' style='min-height:60%;height:381px; margin: auto;'/></div> </a> <div class='text'>" + imageNumber + "/" + numberOfImages + "</div></div> ");
         } else {
-            newImage = $("<div class='mySlides fade' style='background-color:#DCDCDC'> <div class='numbertext'>" + imageNumber + "/" + numberOfImages + " </div> <a class='example-image-link' href='" + estateDetails.estateAttachements[index].iconUri + "' data-lightbox='example-set' data-title='Click the right half of the image to move forward.'> <img class='ui big image' src='" + estateDetails.estateAttachements[index].iconUri + "' alt='' /> </a> <div class='text'>" + imageNumber + "/" + numberOfImages + "</div></div> ");
+            newImage = $("<div class='mySlides fade' style='background-color:#DCDCDC; '> <a class='example-image-link' href='" + estateDetails.estateAttachements[index].iconUri + "' data-lightbox='example-set' data-title='Click the right half of the image to move forward.'> <div style='width: 100%; height: 50%; border: lightblue; margin: auto;'> <img class='ui big image' src='" + estateDetails.estateAttachements[index].iconUri + "' alt='' style='min-height:60%;height:381px; margin: auto;'/></div> </a> <div class='text'>" + imageNumber + "/" + numberOfImages + "</div></div> ");
         }
         $('#slide-show').append(newImage);
     }
@@ -139,8 +234,6 @@ function renderPhotosOfAnnouncement(estateDetails) {
     var nextImageArrow = $("<a class='next' onclick='plusSlides(1)'>&#10095;</a>");
     $('#slide-show').append(previousImageArrow);
     $('#slide-show').append(nextImageArrow);
-
-
 }
 
 var globalMap2;
@@ -446,6 +539,32 @@ window.onclick = function(event) {
     }
 }
 
+function verifyLoginDataEstateDetails(loginData) {
+    console.log("In verifyData() " + JSON.stringify(loginData) );
+    $.ajax({
+        method: 'POST',
+        url: '/verify/user',
+        contentType: false,
+        data: JSON.stringify(loginData),
+        contentType: 'application/json',
+        success: function(data, textStatus, xhr) {
+                console.log('Status code ' + xhr.status + "data: " + data);
+                document.getElementById('logInEstateDetails').style.display='none';
+                document.getElementById('logInStatus-EstateDetails').style.display='block';
+                document.getElementById('login-estateDetails').style.display = 'none';
+                document.getElementById('signup-estateDetails').style.display = 'none';
+                document.getElementById('logout-estateDetails').style.display = 'inline';
+                document.getElementById('loggedIn-estateDetails').style.display = 'inline';
+                $('#loggedInButton-estateDetails').text(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            document.getElementById('logInStatus-EstateDetails').style.display='none';
+            document.getElementById('logInStatusFailed-EstateDetails').style.display='block';
+        }
+    });
+}
+
 /* POST request to server for user login.  */
 function logInPOSTEstateDetails() {
     $('#password-input-login-EstateDetails').removeClass('error');
@@ -480,25 +599,7 @@ function logInPOSTEstateDetails() {
         "email" : email
     };
     if (isValid === true ){
-        var async = true;
-        var request = new XMLHttpRequest();
-        var status;
-        var data;
-        request.onload = function () {
-            status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-            data = request.responseText; // Returned data, e.g., an HTML document.
-            if (data === 'INVALID USER/PASSWORD') {
-                console.log ("incorrect EMAIL");
-                document.getElementById('logInEstateDetails').style.display='none';
-                document.getElementById('logInStatusFailed-EstateDetails').style.display='block';
-            } else {
-                document.getElementById('logInEstateDetails').style.display='none';
-                document.getElementById('logInStatus-EstateDetails').style.display='block';
-            }
-        }
-        request.open(method, url,true);
-        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        request.send(JSON.stringify(postData));
+        verifyLoginDataEstateDetails(postData);
         document.getElementById('logInEstateDetails').style.display='none';
         $("#email-login-EstateDetails").val("");
         $("#password-login-EstateDetails").val("");

@@ -14,6 +14,10 @@ var addressLng = 0;
 var markersArray = [];
 var city;
 
+window.onload = function() {
+    checkSessionAddProperty();
+}
+
 // Initialize the map
 function initMap11() {
     var myLatLng = {lat:47, lng:27};
@@ -175,7 +179,6 @@ function addPropertyPOST(event) {
         hasParking = 0;
         floor = -1;
     }
-
     if (isValidLogin === true ){
         if(isForRent === 1){
             rent_price = price;
@@ -217,7 +220,7 @@ function addPropertyPOST(event) {
             status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
             data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
             console.log(status);
-            if (data === 'Could not add property' || status === 400 || status === 500) {
+            if (status !== 200) {
                 document.getElementById('addPropertyFailedModal').style.display='block';
             } else {
                 document.getElementById('addPropertySuccessfulModal').style.display='block';
@@ -360,3 +363,51 @@ $('#file1').change(function() {
         }
     } else console.log('This is not an image file!');
 });
+
+function redirectToSearchCity() {
+     $.ajax ({
+         method: 'GET',
+         url: '/user/logout',
+         contentType: false,
+         success (data) {
+            window.location = "./searchCity.html";
+         }
+     });
+}
+
+
+function checkSessionAddProperty() {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/user/check/session', false);  // `false` makes the request synchronous
+    request.send(" ");
+    var data = request.responseText;
+    if (request.status === 200) {
+        console.log("session existent");
+        console.log();
+        document.getElementById('logoutAddProperty').style.display = 'block';
+        document.getElementById('loggedIn-addProperty').style.display = 'block';
+        $('#loggedInButton-addProperty').text(data);
+    } else {
+        console.log("not existent session");
+
+        document.getElementById('logoutAddProperty').style.display = 'none';
+        document.getElementById('loggedIn-addProperty').style.display = 'none';
+    }
+}
+
+
+/* This function redirects tu user's profile page */
+function redirectToProfileAddProperty() {
+    $.ajax ({
+        method: 'GET',
+        url: '/user/getProfile',
+        contentType: false,
+        success: function (data) {
+            window.location = data;
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Not logged in');
+        }
+    });
+}

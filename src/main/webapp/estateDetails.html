@@ -51,17 +51,25 @@
     <a>
         <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png">
     </a>
-    <div id="addProperty">
+    <div id="addProperty-estateDetails">
         <form method="GET" action="/estate/add/property">
             <button class="ui inverted blue button" >Add property</button>
         </form>
     </div>
-    <div id="signup">
+    <div id="signup-estateDetails" style="display:none;">
         <button class="ui inverted blue button" onclick="document.getElementById('signUpEstateDetails').style.display='block'">Sign up</button>
     </div>
-    <div id="login">
+    <div id="login-estateDetails"style="display:none;">
         <button class="ui inverted blue button" onclick="document.getElementById('logInEstateDetails').style.display='block'">Log in</button>
     </div>
+    <div id="loggedIn-estateDetails" style="display:none;">
+        <button id="loggedInButton-estateDetails" class="ui inverted blue button" onclick="redirectToProfileEstateDetails()"></button>
+    </div>
+    <div id="logout-estateDetails" style="display:none;">
+        <button id="logoutButton-estateDetails" class="ui inverted blue button" onclick="invalidateSessionEstateDetails()">Log out</button>
+    </div>
+</div>
+
 </div>
 
 <script>
@@ -240,13 +248,6 @@
                 </div>
             </div>
         </div>
-        <!--<div class="three column row" style="margin-top:-2%;">-->
-        <!--<div class="column">-->
-        <!--<div class="ui image label" style="background-color:  #f1f1f2;">-->
-        <!--<h4 class="ui header" id="estate-name-address-city-zipCode"> Address, City, ZIP Code</h4>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="two column row" style="margin-top:-2%;">
             <div class="column">
                 <div class="ui image label" style="background-color: #f1f1f2;">
@@ -261,40 +262,41 @@
             </div>
         </div>
 
-        <div class="two wide fields" style="height:150px;">
-            <div class="field" style="max-width:65%;">
-                <div class="slideshow-container" id="slide-show" style="background-color:#DCDCDC;">
+        <div class="ui two column row">
+            <div class="eleven wide column">
+                <div class="slideshow-container" id="slide-show" style="background-color:#DCDCDC; margin-left:3%;width:96%;height:100%;">
+
                 </div>
             </div>
-
-            <div class="field" style="max-width:45%;">
-                <div class="ui raised  very padded  segment" style="position:absolute;margin-top:0%; margin-left: 70%; width:26%; height: 15%;">
-                    <div class="field">
-                        <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
-                            <h3>Contact this property</h3>
-                            <div class="lead-form-contact-callout">Call
-                                <strong class="tel" id="contact-number-form">(844) 563-8113</strong>
-                                or send an email
+            <div class="five wide column">
+                <div class="field" style="max-width:100%;max-height:100%;margin-left:3%;">
+                    <div class="ui raised  very padded  segment" style="height:100%;max-height:100%;">
+                        <div class="field">
+                            <div class="lead-form-header pdp-lead-header" style="margin-top:-4%;">
+                                <h3>Contact this property</h3>
+                                <div class="lead-form-contact-callout">Call
+                                    <strong class="tel" id="contact-number-form">(844) 563-8113</strong>
+                                    or send an email
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="field">
-                        <div class="ui raised inverted segment" style="background-color: #c2e2e8;position:relative; width: 100%;height: 73%;">
-                            <div class="field">
-                                <div class="row">
-                                    <div class="ui inverted form">
-                                        <div class="field">
-                                            <label>Move-in:</label>
-                                            <article>
-                                                <div class="ui mini input">
-                                                    <input type="text" id="date-picker-input-1" style="width:100%;"/>
-                                                </div>
-                                            </article>
+                        <div class="field">
+                            <div class="ui raised inverted segment" style="background-color: #c2e2e8;position:relative; width: 100%;height: 73%;">
+                                <div class="field">
+                                    <div class="row">
+                                        <div class="ui inverted form">
+                                            <div class="field">
+                                                <label>Move-in:</label>
+                                                <article>
+                                                    <div class="ui mini input">
+                                                        <input type="text" id="date-picker-input-1" style="width:100%;"/>
+                                                    </div>
+                                                </article>
 
-                                            <script src="js/jquery-1.9.1.js"></script>
-                                            <script src="js/jquery-ui-1.10.1.min.js"></script>
-                                            <script>
+                                                <script src="js/jquery-1.9.1.js"></script>
+                                                <script src="js/jquery-ui-1.10.1.min.js"></script>
+                                                <script>
                                                 $(function() {
                                                     $("#date-picker-input-1").datepicker({
                                                         inline: true,
@@ -303,29 +305,30 @@
                                                         .datepicker('widget').wrap('<div class="ll-skin-nigran"/>');
                                                 });
                                             </script>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label>From: </label>
-                                    <div class="field">
-                                        <div class="ui small fluid input field">
-                                            <input placeholder="Name" type="text">
+                                    <div class="row">
+                                        <label>From: </label>
+                                        <div class="field">
+                                            <div class="ui small fluid input field">
+                                                <input placeholder="Name" type="text">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="field" style="margin-top:1.5%;">
-                                        <div class="ui small fluid input field">
-                                            <input placeholder="Email address" type="text">
+                                    <div class="row">
+                                        <div class="field" style="margin-top:1.5%;">
+                                            <div class="ui small fluid input field">
+                                                <input placeholder="Email address" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="ui small fluid input field" style="margin-top:1.5%;">
+                                            <input placeholder="Phone" type="text">
                                         </div>
                                     </div>
-                                    <div class="ui small fluid input field" style="margin-top:1.5%;">
-                                        <input placeholder="Phone" type="text">
+                                    <div class="row">
+                                        <div class="ui fluid primary submit button" style="margin-top:1.5%;">Send</div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="ui fluid primary submit button" style="margin-top:1.5%;">Send</div>
                                 </div>
                             </div>
                         </div>
@@ -333,8 +336,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="one wide field" style="margin-top:33%; margin-left:-2.5%;">
+        <div class="ui one column row" style="margin-left: 1.2%;margin-right: -1%;">
             <div class="ui raised padded  segment" style="background-color: white;position:absolute; margin-left:0%;margin-top:0%; width: 98%;height:40px;">
                 <div class="ui three column grid" style="margin-top:-2%;">
                     <div class="column">
@@ -352,190 +354,190 @@
             </div>
         </div>
     </div>
-
-
-    <div id="properties" class="ui segments" style="background-color: white;position:absolute; margin-left:0%;margin-top:6%; width: 98%;height: 25%;">
-        <div class="ui blue segment">
-            <a href="#properties" style="font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Property details</a>
-            <a id="backToTheTop" href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
-        </div>
-        <div class="ui gray left segment">
-            <div class="ui grid">
-                <div class="seven column row">
-                    <div class="column"></div>
-                    <div class="column"><img class="ui tiny image"  src="/images/estateDetails/rooms.png"> </div>
-                    <div class="column"><img class="ui tiny image"  src="/images/estateDetails/surface.png"> </div>
-                    <div class="column"><img class="ui tiny image"  src="/images/estateDetails/division.png"> </div>
-                    <div class="column"><img class="ui tiny image"  src="/images/estateDetails/etaj.png"></div>
-                    <div class="column"><img class="ui tiny image"  src="/images/estateDetails/constructionYear.png"></div>
-                    <div class="column"></div>
-                </div>
-                <div class="seven column row">
-                    <div class="column"></div>
-                    <div class="column"><p style="font-weight: bold;" id="bedrooms-number-images" >Bedrooms: 2 </p> </div>
-                    <div class="column"><p style="font-weight: bold;" id="surface-images">Surface: 2 </p> </div>
-                    <div class="column"><p style="font-weight: bold;" id="division-images">Division: 2 </p> </div>
-                    <div class="column"><p style="font-weight: bold;" id="floor-images">Floor: 2 </p> </div>
-                    <div class="column"><p style="font-weight: bold;" id="construction-year-images">Construction year: 2 </p>  </div>
-                    <div class="column"></div>
-                </div>
+    <div class="ui one column row">
+        <div class="ui segments"  id="properties" style="background-color: white;position:absolute; margin-left:0%;margin-top:6%; width: 98%;height: 25%;">
+            <div class="ui blue segment">
+                <a href="#properties" style="font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Property details</a>
+                <a id="backToTheTop" href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
             </div>
-            <div class="ui grid">
-                <a class="header" style="font-weight: bold;"><h2 style="font-weight: bold;font-family:ProximaNova,sans-serif;">Characteristics: </h2> </a>
+            <div class="ui gray left segment">
+                <div class="ui grid">
+                    <div class="seven column row">
+                        <div class="column"></div>
+                        <div class="column"><img class="ui tiny image"  src="/images/estateDetails/rooms.png"> </div>
+                        <div class="column"><img class="ui tiny image"  src="/images/estateDetails/surface.png"> </div>
+                        <div class="column"><img class="ui tiny image"  src="/images/estateDetails/division.png"> </div>
+                        <div class="column"><img class="ui tiny image"  src="/images/estateDetails/etaj.png"></div>
+                        <div class="column"><img class="ui tiny image"  src="/images/estateDetails/constructionYear.png"></div>
+                        <div class="column"></div>
+                    </div>
+                    <div class="seven column row">
+                        <div class="column"></div>
+                        <div class="column"><p style="font-weight: bold;" id="bedrooms-number-images" >Bedrooms: 2 </p> </div>
+                        <div class="column"><p style="font-weight: bold;" id="surface-images">Surface: 2 </p> </div>
+                        <div class="column"><p style="font-weight: bold;" id="division-images">Division: 2 </p> </div>
+                        <div class="column"><p style="font-weight: bold;" id="floor-images">Floor: 2 </p> </div>
+                        <div class="column"><p style="font-weight: bold;" id="construction-year-images">Construction year: 2 </p>  </div>
+                        <div class="column"></div>
+                    </div>
+                </div>
+                <div class="ui grid">
+                    <a class="header" style="font-weight: bold;"><h2 style="font-weight: bold;font-family:ProximaNova,sans-serif;">Characteristics: </h2> </a>
 
-                <div class="three column row">
-                    <!--<div class="column"></div>-->
-                    <div class="column">
-                        <div class="ui relaxed divided list">
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="bedrooms-table">4</div>
+                    <div class="three column row">
+                        <!--<div class="column"></div>-->
+                        <div class="column">
+                            <div class="ui relaxed divided list">
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="bedrooms-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Rooms : </a>
+                                    </div>
                                 </div>
-                                <div class="content">
-                                    <a class="header">Rooms : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="surface-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Surface : </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="surface-table">4</div>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="division-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Division : </a>
+                                    </div>
                                 </div>
-                                <div class="content">
-                                    <a class="header">Surface : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="floor-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Floor : </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="division-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Division : </a>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="floor-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Floor : </a>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="utilities-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Utilities : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="utilities-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Utilities : </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="column">
-                        <div class="ui relaxed divided list">
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="year-table">4</div>
+                        <div class="column">
+                            <div class="ui relaxed divided list">
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="year-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header" >Year of construction : </a>
+                                    </div>
                                 </div>
-                                <div class="content">
-                                    <a class="header" >Year of construction : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="bathrooms-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Bathrooms : </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="bathrooms-table">4</div>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="parking-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Parking : </a>
+                                    </div>
                                 </div>
-                                <div class="content">
-                                    <a class="header">Bathrooms : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="garage-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Garage : </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="parking-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Parking : </a>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="garage-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Garage : </a>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="right floated content">
-                                    <div class="description" id="level-of-comfort-table">4</div>
-                                </div>
-                                <div class="content">
-                                    <a class="header">Level on comfort : </a>
+                                <div class="item">
+                                    <div class="right floated content">
+                                        <div class="description" id="level-of-comfort-table">4</div>
+                                    </div>
+                                    <div class="content">
+                                        <a class="header">Level on comfort : </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="column"></div>
                     </div>
-                    <div class="column"></div>
                 </div>
+
+                <br>
+                <a class="header" style="font-weight: bold;"><h2 style="font-weight: bold;font-family:ProximaNova, sans-serif;">Description: </h2> </a>
+                <p id="estate-description"></p>
+                <a class="header" style="font-weight: bold;"><h4 style="font-weight: bold;">Status:</h4> </a>
+                <p id="creation-date"></p>
+
             </div>
-
-            <br>
-            <a class="header" style="font-weight: bold;"><h2 style="font-weight: bold;font-family:ProximaNova, sans-serif;">Description: </h2> </a>
-            <p id="estate-description"></p>
-            <a class="header" style="font-weight: bold;"><h4 style="font-weight: bold;">Status:</h4> </a>
-            <p id="creation-date"></p>
-
         </div>
     </div>
 
-
-
-    <div id="neighbourhood" class="ui segments" style="background-color: white;position:absolute; margin-left:0%;margin-top:62%; width: 97%;height: 25%;">
-        <div class="ui blue segment">
-            <a href="#properties" style="font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Neighbourhood</a>
-            <a href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
-        </div>
-        <!--<div class="ui grid">-->
-        <div class="ui equal width center aligned padded grid">
-            <div class="column">
-                <div id="map2" style="height:200%;width:100%;"></div>
+    <div class="ui one column row" >
+        <div id="neighbourhood" class="ui segments" style="background-color: white;position:absolute; margin-left:0%;margin-top:62%; width: 97%;height: 25%;">
+            <div class="ui blue segment">
+                <a href="#properties" style="font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Neighbourhood</a>
+                <a href="#backToTop" style="font-family:ProximaNova, sans-serif;font-size:15px; font-weight: bold;margin-left:75%;">back to the top</a>
             </div>
-            <div class="column">
-                <div class="ui grid" >
-                    <div class="one column row">
-                        <div class="column">
-                            <div class="ui tertiary segment">
-                                <div class="ui checkbox">
-                                    <input id='schoolsLayerEstate' name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('schoolsLayerEstate')} unchecked={}/>
-                                    <label>SCHOOLS NEARBY</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column"></div>
-                    </div>
-                    <div class="one column row">
-                        <div class="column">
-                            <div class="ui tertiary segment">
-                                <div class="ui checkbox">
-                                    <input id="storesLayer" name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('storesLayer')} unchecked={}/>
-                                    <label>STORES NEARBY</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column"></div>
-                    </div>
-                    <div class="one column row">
-                        <div class="column">
-                            <div class="ui tertiary segment">
-                                <div class="ui checkbox">
-                                    <input id='parkingLayer' name="parkingLayer" type="checkbox" onChange={changeOverlayEstate('parkingLayer')} unchecked={}/>
-                                    <label>PARKINGS NEARBY</label>
-                                </div>
-                                <!--<a href="#" onclick="changeOverlayEstate('parkingLayer')"> <h4 style="color:gray;" >PARKINGS NEARBY</h4></a>-->
-                            </div>
-                        </div>
-                        <div class="column"></div>
-                    </div>
+            <!--<div class="ui grid">-->
+            <div class="ui equal width center aligned padded grid">
+                <div class="column">
+                    <div id="map2" style="height:200%;width:100%;"></div>
                 </div>
+                <div class="column">
+                    <div class="ui grid" >
+                        <div class="one column row">
+                            <div class="column">
+                                <div class="ui tertiary segment">
+                                    <div class="ui checkbox">
+                                        <input id='schoolsLayerEstate' name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('schoolsLayerEstate')} unchecked={}/>
+                                        <label>SCHOOLS NEARBY</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column"></div>
+                        </div>
+                        <div class="one column row">
+                            <div class="column">
+                                <div class="ui tertiary segment">
+                                    <div class="ui checkbox">
+                                        <input id="storesLayer" name="schoolsLayer" type="checkbox" onChange={changeOverlayEstate('storesLayer')} unchecked={}/>
+                                        <label>STORES NEARBY</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column"></div>
+                        </div>
+                        <div class="one column row">
+                            <div class="column">
+                                <div class="ui tertiary segment">
+                                    <div class="ui checkbox">
+                                        <input id='parkingLayer' name="parkingLayer" type="checkbox" onChange={changeOverlayEstate('parkingLayer')} unchecked={}/>
+                                        <label>PARKINGS NEARBY</label>
+                                    </div>
+                                    <!--<a href="#" onclick="changeOverlayEstate('parkingLayer')"> <h4 style="color:gray;" >PARKINGS NEARBY</h4></a>-->
+                                </div>
+                            </div>
+                            <div class="column"></div>
+                        </div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>

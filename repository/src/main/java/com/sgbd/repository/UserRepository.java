@@ -12,7 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  */
 public interface UserRepository {
 
-    Serializable findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
+    User findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
 
     void deleteUser(String userEmail);
 

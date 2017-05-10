@@ -63,3 +63,14 @@ function updateEstate(id) {
     $('#announcements').css("display", "none");
 
 }
+
+function redirectToSearchCity() {
+     $.ajax ({
+         method: 'GET',
+         url: '/user/logout',
+         contentType: false,
+         success (data) {
+            window.location = "./searchCity.html";
+         }
+     });
+}
