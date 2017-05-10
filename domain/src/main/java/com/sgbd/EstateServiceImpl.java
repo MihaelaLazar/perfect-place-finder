@@ -97,8 +97,9 @@ public class EstateServiceImpl implements EstateService {
 
     @Override
     @Transactional
-    public Serializable saveEstate(EstateDTO estateDTO) {
+    public Serializable saveEstate(EstateDTO estateDTO, Long idUser) {
         Estate estate = createEstate(estateDTO);
+        estate.setIdUser(idUser);
         if (estateDTO.getBuyPrice() != 0 ){
             estate.setTypeOfTransaction("RENT");
         } else {
@@ -114,6 +115,7 @@ public class EstateServiceImpl implements EstateService {
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
+
         estate.setEstateAttachements(announcementAttachements);
 
         return estateRepository.saveOrUpdate(estate);

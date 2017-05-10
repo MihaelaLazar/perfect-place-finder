@@ -63,6 +63,7 @@ public class EstateController {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
+        Long idUser = (Long)request.getSession(false).getAttribute("ID");
         if(estateDTO.getRealEstateType().equals("Commercial space")){
             estateDTO.setRealEstateType("space");
         }
@@ -70,7 +71,7 @@ public class EstateController {
             estateDTO.setRealEstateType("appartment");
         }
         try{
-            estateService.saveEstate(estateDTO);
+            estateService.saveEstate(estateDTO, idUser);
             return new ResponseEntity<>("Added property", HttpStatus.OK);
         } catch(PersistenceException e) {
             return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);

@@ -15,5 +15,5 @@ public interface EstateService {
 
     PaginatedEstatesDetails getEstatesByFilters(String queryString);
 
-    Serializable saveEstate(EstateDTO estateDTO) ;
+    Serializable saveEstate(EstateDTO estateDTO, Long idUser) ;
 }
