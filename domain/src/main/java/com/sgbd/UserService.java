@@ -1,10 +1,11 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 
-import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 /**
  * Created by mihae on 4/3/2017.
@@ -21,6 +22,8 @@ public interface UserService {
     User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException;
 
     User findByEmailAndPassword(String email, String password);
+
+    List<Estate> getUserAnnouncements(Long id);
 
 //    User setFavoriteAnnouncement(User user, Long idAnnouncement);
 }

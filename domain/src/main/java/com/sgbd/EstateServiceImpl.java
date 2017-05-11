@@ -5,7 +5,9 @@ import com.sgbd.dto.EstateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
+import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
+import com.sgbd.repository.UserRepository;
 import com.sgbd.util.AttachType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.sgbd.model.Estate.ESTATE_ID_COLUMN_NAME;
@@ -27,6 +31,9 @@ public class EstateServiceImpl implements EstateService {
 
     @Autowired
     EstateRepository estateRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public Serializable findById (Long userId) {
@@ -98,14 +105,17 @@ public class EstateServiceImpl implements EstateService {
     @Override
     @Transactional
     public Serializable saveEstate(EstateDTO estateDTO, Long idUser) {
-        Estate estate = createEstate(estateDTO);
-        estate.setIdUser(idUser);
+
+        Estate estate = new Estate();
+        // persist announcement
+        estate = createEstate(estateDTO, idUser);
         if (estateDTO.getBuyPrice() != 0 ){
             estate.setTypeOfTransaction("RENT");
         } else {
             estate.setTypeOfTransaction("SALE");
         }
         estate = (Estate) estateRepository.save(estate, Estate.class);
+
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateDTO.getAnnouncementImagesArray().toArray(new String[estateDTO.getAnnouncementImagesArray().size()]);
         String[] announcementAttachementsImagesIconURI = estateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateDTO.getAnnouncementImagesIconsURIArray().size()]);
@@ -115,13 +125,48 @@ public class EstateServiceImpl implements EstateService {
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
-
         estate.setEstateAttachements(announcementAttachements);
 
         return estateRepository.saveOrUpdate(estate);
+        /*
+        User user = userRepository.findByAttribute(User.USER_ID_COLUMN_NAME, idUser, User.class);
+        Estate estate = createEstate(estateDTO, idUser);
+//        estate.setIdUser(idUser);
+        if (estateDTO.getBuyPrice() != 0 ){
+            estate.setTypeOfTransaction("RENT");
+        } else {
+            estate.setTypeOfTransaction("SALE");
+        }
+        user.getAnnouncements().add(estate);
+        userRepository.saveOrUpdate(user);
+
+        estate = (Estate) estateRepository.findByAttribute("address", estate.getAddress(), Estate.class);
+
+//        estate = (Estate) estateRepository.save(estate, Estate.class);
+        Set<Attachement> announcementAttachements = new HashSet<>();
+        String[] announcementAttachementsImagesNames = estateDTO.getAnnouncementImagesArray().toArray(new String[estateDTO.getAnnouncementImagesArray().size()]);
+        String[] announcementAttachementsImagesIconURI = estateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateDTO.getAnnouncementImagesIconsURIArray().size()]);
+//        estate.setIdUser(user.getId());
+//        estate = (Estate) estateRepository.save(estate, Estate.class);
+        for(int index = 0; index < announcementAttachementsImagesNames.length; index ++){
+            Attachement attachement = new Attachement(UPLOAD_PATH + File.separator + announcementAttachementsImagesNames[index], AttachType.JPEG);
+            attachement.setIconUri(announcementAttachementsImagesIconURI[index]);
+//            attachement.setIdAnnouncement(estate.getID());
+            announcementAttachements.add(attachement);
+        }
+
+        estate.setEstateAttachements(announcementAttachements);
+        user.getAnnouncements().add(estate);
+//        estate = estateRepository.saveOrUpdate(estate);
+
+//        estate = (Estate)estateRepository.findByAttribute("address", estate.getAddress(), Estate.class);
+//        user.getAnnouncements().add(estate);
+        userRepository.saveOrUpdate(user);
+//        return estateRepository.saveOrUpdate(estate);
+        return estate;*/
     }
 
-    private Estate createEstate(EstateDTO estateDTO) {
+    private Estate createEstate(EstateDTO estateDTO, Long idUser) {
         Long price = -1l;
         String estateTransactionType = "";
         if (estateDTO.getBuyPrice() != 0) {
@@ -134,7 +179,7 @@ public class EstateServiceImpl implements EstateService {
         Estate estate = new Estate(estateDTO.getRealEstateType(),estateDTO.getAddressLat() + " " + estateDTO.getAddressLng(),
                 estateDTO.getSurface(),estateDTO.getRoomsNumber(),estateDTO.getRentPrice(),estateDTO.getBuyPrice(),
                 estateDTO.getDivision(),estateDTO.getConstructionYear(),estateDTO.getDescription(),
-                date,date,estateDTO.getCity(),estateDTO.getContactNumber(), 1,estateDTO.getUtilities(), estateTransactionType,
+                date,date,estateDTO.getCity(),estateDTO.getContactNumber(), idUser,estateDTO.getUtilities(), estateTransactionType,
                 estateDTO.getLevelOfComfort(), estateDTO.getBathrooms(), estateDTO.getCarDisposal(), estateDTO.getFloor());
        return estate;
     }

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Set;
 
 import static com.sgbd.util.ContentType.JSON;
@@ -150,19 +151,22 @@ public class UserController {
 
     }
 
-//    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
-//    @ResponseBody
-//    public ResponseEntity<Set<Estate>> getAnnouncements(Response response, Request request) {
-//        Long id = Long.parseLong(request.getParameter("id"));
-//        Set<Estate> userAnnouncements = null;
-//        try {
-//            User user = (User) userService.findById(id);
-//            return new ResponseEntity<>(user.getAnnouncements(), HttpStatus.OK);
-//
-//        }catch (EntityNotFoundException e){
-//            return new ResponseEntity<>(userAnnouncements, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<Estate>> getAnnouncements(Response response, Request request) {
+        HttpSession session = request.getSession();
+        Long id = (Long) session.getAttribute("ID");
+        List<Estate> userAnnouncements = null;
+        try {
+            User user = (User) userService.findById(id);
+            userAnnouncements = userService.getUserAnnouncements(id);
+//            userAnnouncements = user.getAnnouncements();
+            return new ResponseEntity<>(userAnnouncements, HttpStatus.OK);
+
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(userAnnouncements, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 //    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.GET)
 //    @ResponseBody
@@ -178,5 +182,7 @@ public class UserController {
 //            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
 //        }
 //    }
+
+
 
 }

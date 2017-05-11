@@ -14,6 +14,8 @@ public interface UserRepository {
 
     User findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
 
+    User saveOrUpdate(User user);
+
     void deleteUser(String userEmail);
 
     User createUser(User user) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException;

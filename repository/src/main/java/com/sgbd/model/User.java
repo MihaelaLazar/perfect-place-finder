@@ -1,11 +1,14 @@
 package com.sgbd.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.*;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Lazarm

@@ -1,3 +1,14 @@
+window.onload = function () {
+     $.ajax ({
+             method: 'GET',
+             url: '/user/getAnnouncements',
+             contentType: false,
+             success (data) {
+                console.log(data);
+             }
+         });
+}
+
 /* This function changes the tab in the section of user's account settings (from change password to change username and viceversa).*/
 function changeTab() {
     if($('#firstItem').hasClass('active') === false ){

@@ -5,6 +5,7 @@ import com.sgbd.model.Estate;
 
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by mihae on 4/8/2017.
@@ -18,4 +19,6 @@ public interface EstateRepository {
     Serializable save(Serializable entity, Class modelClass) throws PersistenceException;
 
     Estate saveOrUpdate(Estate estate) throws PersistenceException;
+
+    List<Estate> getUserAnnouncements(Long id);
 }

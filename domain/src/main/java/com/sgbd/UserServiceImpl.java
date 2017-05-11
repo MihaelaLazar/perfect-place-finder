@@ -3,13 +3,14 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
+import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    EstateRepository estateRepository;
 
     @Override
     public User findByEmail(String email) {
@@ -40,6 +44,10 @@ public class UserServiceImpl implements UserService{
         return (User) userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class);
     }
 
+    @Override
+    public List<Estate> getUserAnnouncements(Long id) {
+        return estateRepository.getUserAnnouncements(id);
+    }
 
     @Override
     public String deleteUser(String userEmail) {

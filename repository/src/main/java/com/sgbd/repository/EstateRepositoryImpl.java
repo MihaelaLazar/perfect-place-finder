@@ -57,7 +57,13 @@ public class EstateRepositoryImpl implements EstateRepository {
 
     @Override
     public Estate saveOrUpdate(Estate estate) {
-        entityManager.merge(estate);
-        return estate;
+        return entityManager.merge(estate);
+    }
+
+    @Override
+    public List<Estate> getUserAnnouncements(Long id) {
+        Query query = entityManager.createQuery("from Estate WHERE id_user = " + id);
+        List<Estate> estates = (List<Estate>) query.getResultList();
+        return estates;
     }
 }
