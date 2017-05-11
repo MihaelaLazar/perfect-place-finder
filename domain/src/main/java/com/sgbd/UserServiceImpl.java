@@ -80,9 +80,9 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-//    @Override
-//    public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
-//         return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
-//    }
+    @Override
+    public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
+         return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
+    }
 
 }

@@ -1,8 +1,5 @@
 package com.sgbd.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.springframework.data.annotation.*;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
@@ -39,6 +36,13 @@ public class User implements Serializable {
 
     @Column(name="PASSWORD", nullable = false)
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name="PF_FAV_ANNOUNCEMENTS",
+            joinColumns = { @JoinColumn(name = "ID_USER")},
+            inverseJoinColumns = {@JoinColumn(name="ID_ANNOUNCEMENT")}
+    )
+    private Set<Estate> favoriteAnnouncements;
 
     @Transient
     private boolean enabled;
@@ -116,6 +120,14 @@ public class User implements Serializable {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public Set<Estate> getFavoriteAnnouncements() {
+        return favoriteAnnouncements;
+    }
+
+    public void setFavoriteAnnouncements(Set<Estate> favoriteAnnouncements) {
+        this.favoriteAnnouncements = favoriteAnnouncements;
     }
 
     @Override

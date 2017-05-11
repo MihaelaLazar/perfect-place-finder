@@ -25,5 +25,5 @@ public interface UserService {
 
     List<Estate> getUserAnnouncements(Long id);
 
-//    User setFavoriteAnnouncement(User user, Long idAnnouncement);
+    User setFavoriteAnnouncement(User user, Long idAnnouncement);
 }

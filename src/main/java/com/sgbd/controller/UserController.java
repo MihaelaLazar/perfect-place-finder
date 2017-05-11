@@ -168,20 +168,20 @@ public class UserController {
         }
     }
 
-//    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.GET)
-//    @ResponseBody
-//    public ResponseEntity<User> addFavAnnouncement(Response response, Request request) {
-//        Long id = Long.parseLong(request.getParameter("id"));
-//        User user = null;
-//        try {
-//            user = (User) userService.findById(id);
-//            userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//
-//        }catch (EntityNotFoundException e){
-//            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<User> addFavAnnouncement(Response response, Request request) {
+        Long id = Long.parseLong(request.getParameter("id"));
+        User user = null;
+        try {
+            user = (User) userService.findById(id);
+            userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

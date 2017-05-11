@@ -18,7 +18,7 @@
             crossorigin="anonymous"></script>
     <script src="semantic-ui-css/semantic.min.js"></script>
     <script src="semantic-ui-css/semantic.js"></script>
-    <script src="js/estates.js"></script>
+    <script src="js/favoriteAnnouncements.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -126,13 +126,11 @@
 
                 <div id="announcements" class="field" style="display:block;">
                     <div class="ui huge header"  style="color:#1C7CD7;">Your announcements</div>
-                    <div class="column" id="scrolling" onscroll="loadmore()" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
+                    <div class="column" id="scrolling" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
                         <div id="estatesProfile" class="ui left aligned grid" style="width:544px;float: left">
+
                         </div>
                     </div>
-                    <script>
-
-                    </script>
                 </div>
 
                 <div id="messages" class="field" style="display:none;">
@@ -140,7 +138,27 @@
                 </div>
 
                 <div id="favouritesEstates" class="field" style="display:none;">
-                    <div class="ui huge header" style="color:#1C7CD7;">Your favorite announcements</div>
+                    <!--<div  class="ui huge header" style="color:#1C7CD7; width:75%;">Your favorite announcements</div>-->
+                    <div class="ui grid" >
+                        <div class="ui two column row">
+                            <div class="eleven wide column">
+                                <div  class="ui huge header" style="color:#1C7CD7; ">Your favorite announcements</div>
+                            </div>
+                            <div class="four wide column" >
+                                <div class="item" style="margin-top:8%;">
+                                    <a href="#" style="margin-left:80%;font-family:ProximaNova, sans-serif;font-size:20px; font-weight: bold;">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="column"  style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
+                        <div id="favouritesEstatesList" class="ui celled list">
+
+                        </div>
+                    </div>
+
                 </div>
 
                 <div id="updateAnnouncement" class="field" style="display:none;">

@@ -2,6 +2,7 @@ package com.sgbd.repository;
 
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    EstateRepository estateRepository;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -85,12 +89,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-//    @Override
-//    @Transactional
-//    public User addFavoriteAnnouncement(User user, Long idAnnouncement) {
-//        Estate estate = (Estate) findByAttribute(ESTATE_ID_COLUMN_NAME, idAnnouncement ,Estate.class);
-//        user.getFavoriteAnnouncements().add(estate);
-//        entityManager.merge(user);
-//        return user;
-//    }
+    @Override
+    @Transactional
+    public User addFavoriteAnnouncement(User user, Long idAnnouncement) {
+        Estate estate = (Estate) estateRepository.findByAttribute(ESTATE_ID_COLUMN_NAME, idAnnouncement ,Estate.class);
+        user.getFavoriteAnnouncements().add(estate);
+        entityManager.merge(user);
+        return user;
+    }
 }

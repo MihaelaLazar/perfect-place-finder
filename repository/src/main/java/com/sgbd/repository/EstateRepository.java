@@ -2,6 +2,7 @@ package com.sgbd.repository;
 
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
@@ -21,4 +22,6 @@ public interface EstateRepository {
     Estate saveOrUpdate(Estate estate) throws PersistenceException;
 
     List<Estate> getUserAnnouncements(Long id);
+
+    List<Estate> getUserFavouriteAnnouncements(Long id);
 }

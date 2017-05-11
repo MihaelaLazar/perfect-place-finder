@@ -107,17 +107,17 @@ paths:
           description: Session inexistent
 
 
-  /estates:
+  /favoriteAnnouncements:
     get:
-      summary: Get estates by filters
+      summary: Get favoriteAnnouncements by filters
       description: >
-        Get the estates by filters written in query string.
+        Get the favoriteAnnouncements by filters written in query string.
       parameters:
 
         - name: city
           in: query
           required: true
-          description: The announcements/estates in the given city.
+          description: The announcements/favoriteAnnouncements in the given city.
 
         - name : transactionType
           in: query
@@ -150,7 +150,7 @@ paths:
         401:
           description: You tried to log someone else out, and you're not the "admin" user.
 
-  /estates/add:
+  /favoriteAnnouncements/add:
     post:
       summary: Adds an annoucement.
       description: >
@@ -200,7 +200,7 @@ paths:
           description: You tried to add an announcement that already exists(address).
 
 
-  /estates/details{id}:
+  /favoriteAnnouncements/details{id}:
     get:
       summary: Details about estate.
       description: >
