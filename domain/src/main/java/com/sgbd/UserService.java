@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UpdateUserDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 
@@ -26,4 +27,6 @@ public interface UserService {
     List<Estate> getUserAnnouncements(Long id);
 
     User setFavoriteAnnouncement(User user, Long idAnnouncement);
+
+    //User updateUser(UpdateUserDTO updateDTO);
 }

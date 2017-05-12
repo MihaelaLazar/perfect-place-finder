@@ -183,6 +183,9 @@ public class UserController {
         }
     }
 
-
+//    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
+//    public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UpdateDTO updateDTO ) {
+//      userService.updateUser(updateDTO);
+//    }
 
 }

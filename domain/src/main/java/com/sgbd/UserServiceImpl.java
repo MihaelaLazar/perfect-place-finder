@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UpdateUserDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
@@ -84,5 +85,13 @@ public class UserServiceImpl implements UserService{
     public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
          return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
     }
+
+//    @Override
+//    public User updateUser(UpdateUserDTO updateDTO) {
+//        User user = userRepository.findByAttribute("id", updateDTO.getEmail(), User.class);
+//        user.setFirstName(updateDTO.getFirstName());
+//        user.setLastName(updateDTO.getLastName());
+//        user.setEmail(updateDTO.getEmail());
+//    }
 
 }
