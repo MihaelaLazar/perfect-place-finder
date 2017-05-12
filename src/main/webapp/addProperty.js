@@ -161,14 +161,9 @@ function addPropertyPOST(event) {
         console.log("phoneNumber null");
         isValidLogin = false;
     }
-    if (furniture === "" && category !== "space") {
-        isValidLogin = false;
-    }
-
     if (category === "appartment" && floor === ""){
         isValidLogin = false;
     }
-
     if (category === "space"){
         rooms = 0;
         year = 0;

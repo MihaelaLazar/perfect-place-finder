@@ -2,10 +2,7 @@ package com.sgbd.controller;
 
 import com.sgbd.EstateService;
 import com.sgbd.OracleCon;
-import com.sgbd.dto.CitiesDTO;
-import com.sgbd.dto.EstateDTO;
-import com.sgbd.dto.ImageDTO;
-import com.sgbd.dto.PaginatedEstatesDetails;
+import com.sgbd.dto.*;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.util.ImageUtil;
@@ -187,6 +184,17 @@ public class EstateController {
             }
         }
         return new ImageDTO();
+    }
+
+    @RequestMapping(path = "/update/property",headers = "Accept=application/json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> updateProperty(Request request, Response response, @RequestBody EstateUpdateDTO estateUpdateDTO) {
+        try{
+            estateService.updateEstate(estateUpdateDTO);
+            return new ResponseEntity<>("Added property", HttpStatus.OK);
+        } catch(PersistenceException e) {
+            return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);
+        }
     }
 
 }

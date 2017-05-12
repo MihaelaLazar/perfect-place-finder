@@ -76,13 +76,134 @@ function getField(id) {
 
 }
 
+var categoryProfile;
+var estateIdProfile;
+var idUser;
+var isForSaleProfile = 0;
+var isForRentProfile = 0;
+var hasParkingProfile = -1;
 
 /* This function display the section of updating the chosen announcement(triggered when clicking "Update" button). */
 function updateEstate(id) {
     $('#updateAnnouncement').css("display", "block");
     $('#announcements').css("display", "none");
+    var url = '/estate/getDetails?id=' + id;
+    $.ajax ({
+        method: 'GET',
+        url: url,
+        processData: false,
+        cache: false,
+        success : function(data) {
+            var estateDetails = data;
+            console.log(estateDetails);
+            if (estateDetails.buyPrice !== 0){
+                $('#price-input-profile').val(estateDetails.buyPrice);
+                $('#transaction-type-sale-input-profile').prop("checked", true);
+                isForSaleProfile = 1;
+            } else {
+                $('#price-input-profile').val(estateDetails.rentPrice);
+                $('#transaction-type-rent-input-profile').prop("checked", true);
+                isForRentProfile = 1;
+            }
+            $('#level-of-comfort-input-profile').val(estateDetails.levelOfComfort);
+            $('#usable-surface-input-profile').val(estateDetails.surface);
+            $('#bathrooms-input-profile').val(estateDetails.bathrooms);
+            $('#rooms-input-profile').val(estateDetails.rooms);
+            $('#floor-input-profile').val(estateDetails.floor);
+            if (estateDetails.car === 1) {
+                $('#parking-profile').prop("checked", true);
+                hasParkingProfile = 1;
+            } else {
+                if (estateDetails.car === 2) {
+                    $('#garage-profile').prop("checked", true);
+                    hasParkingProfile = 2;
+                } else {
+                    $('#none-profile').prop("checked", true);
+                }
+            }
+            $('#description-profile').text(estateDetails.description);
+            if (estateDetails.estateAttachements.length > 0) {
+                for (var index = 0; index < estateDetails.estateAttachements.length; index ++) {
+                    var newImage = $("<div class='ui fluid image' id='" + estateDetails.estateAttachements[index].pathToFile + "' style='margin-top:-0.5%;'><a onclick={deleteImageProfile('" + estateDetails.estateAttachements[index].pathToFile + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + estateDetails.estateAttachements[index].iconUri +"'></div></div> ");
+                    $('#list-of-images-profile').append(newImage);
+                }
+            }
+            categoryProfile = estateDetails.type;
+            estateIdProfile = estateDetails.id;
+            idUser = estateDetails.idUser;
+        }
+    });
+}
 
+$('#file-profile').change(function() {
+    if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
+        if(this.files[0].size>1048576) {
+            console.log('File size is larger than 1MB!');
+        } else {
+            var reader = new FileReader();
+            reader.onload = function (e){
+                result = e.target.result;
+                $('#image-profile').attr('src', result);
+            }
+            reader.readAsDataURL(this.files[0]);
+            var frm = new FormData();
+            frm.append('image', this.files[0]);
+            $.ajax({
+                method: 'POST',
+                url: '/estate/save/image',
+                data: frm,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                cache: false,
+                success : function(data) {
+                    $('#image-profile').attr('src','/images/image.png');
+                    console.log("image added: " + data.imageName);
+                    var newImage = $("<div class='ui fluid image' id='" + data.imageName + "' style='margin-top:-0.5%;'><a onclick={deleteImage('" + data.imageName + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + data.imageURI +"'></div></div> ");
+                    $('#list-of-images-profile').append(newImage);
+                    announcementImagesArrayProfile[announcementImagesArrayCountProfile] = data.imageName;
+                    announcementImagesIconsURIArrayProfile[announcementImagesArrayCountProfile] = data.imageURI.toString();
+                    announcementImagesArrayCountProfile = announcementImagesArrayCountProfile + 1;
+                }
+            });
+        }
+    } else console.log('This is not an image file!');
+});
 
+var announcementImagesArrayProfile = [];
+var announcementImagesIconsURIArrayProfile = [];
+var announcementImagesArrayCountProfile = 0;
+
+function deleteImageProfile(id) {
+    for(var i = announcementImagesArrayProfile.length - 1; i >= 0; i--) {
+        if(announcementImagesArrayProfile[i] === id) {
+            announcementImagesArrayProfile.splice(i, 1);
+            announcementImagesArrayProfile.splice(i, 1);
+            announcementImagesArrayProfile = announcementImagesArrayCountProfile - 1;
+            $('#list-of-images-profile').remove("#" + id);
+            var imageToDelete = document.getElementById(id);
+            imageToDelete.parentNode.removeChild(imageToDelete);
+        }
+    }
+}
+
+/* This function saves the value checked on the transaction type checkbox */
+function setCheckboxProfile(id) {
+    if(document.getElementById(id).checked) {
+        if(id ==="transaction-type-sale-input-profile")
+            isForSaleProfile = 1;
+        if(id ==="transaction-type-rent-input-profile")
+            isForRentProfile = 1;
+        if (id === "parking-profile") {
+            hasParkingProfile = 1;
+        }
+        if (id === "garage-profile") {
+            hasParkingProfile = 2;
+        }
+        if (id === "none-profile") {
+            hasParkingProfile = 0;
+        }
+    }
 }
 
 function redirectToSearchCity() {
@@ -98,14 +219,113 @@ function redirectToSearchCity() {
 
 /* This function makes the top menu bar stay fixed when scrolling */
 $(window).scroll(function(){
-    var stickyHeaderProfilePage = $('#topProfilePage').offset().top;
-    if( $(window).scrollTop() > stickyHeaderProfilePage ) {
+    if( $(window).scrollTop() > 0 ) {
         $('#topProfilePage').css({position: 'fixed', top: '0px'});
         $('#topProfilePage').css('width','100%');
         $('#topProfilePage').css('display', 'block');
         $('#topProfilePage').css('z-index','999999');
     } else {
+        $('#topProfilePage').removeClass('fixed');
         $('#topProfilePage').css({position: 'static', top: '0px'});
-//        $('#backToTopProfilePage').css({margin-top: '10%'});
+        $('#topProfilePage').css('display', 'block');
     }
-    });
+});
+
+function updatePropertyPOST(event) {
+    event.preventDefault();
+    console.log('addPropertyPOST');
+    var isValidUpdate = true;
+    var methodUpdate = "POST";
+    var urlUpdate= "/estate/update/property";
+    var priceInputProfile = document.getElementById('price-input-profile');
+    var priceProfile = priceInputProfile.value;
+    var levelOfComfortSelect = document.getElementById('level-of-comfort-input-profile');
+    var levelOfComfortProfile = levelOfComfortSelect.value;
+    var rent_price_profile = 0;
+    var buy_price_profile = 0;
+    if(isForRentProfile === 1){
+        rent_price_profile = priceProfile;
+        buy_price_profile = 0;
+    }
+    if(isForSaleProfile === 1){
+        buy_price_profile = priceProfile;
+        rent_price_profile = 0;
+    }
+    var surfaceInputProfile = document.getElementById('usable-surface-input-profile');
+    var surfaceProfile = surfaceInputProfile.value;
+    var bathroomsInputProfile = document.getElementById('bathrooms-input-profile');
+    var bathroomsProfile = bathroomsInputProfile.value;
+    var roomsInputProfile = document.getElementById('rooms-input-profile');
+    var roomsProfile = roomsInputProfile.value;
+    var floorInputProfile = document.getElementById('floor-input-profile');
+    var floorProfile = floorInputProfile.value;
+    var descriptionInputProfile = document.getElementById('description-profile');
+    var descriptionProfile = descriptionInputProfile.value;
+    var furnitureInputProfile = document.getElementById('furniture-profile');
+    var furnitureProfile = furnitureInputProfile.value;
+    if (priceProfile === "") {
+        isValidUpdate = false;
+    }
+    if (levelOfComfortProfile === "" && categoryProfile !== "space" ) {
+        isValidUpdate = false;
+    }
+    if (bathroomsProfile === "" && categoryProfile !== "space") {
+        console.log("bathrooms null");
+        isValidUpdate = false;
+    }
+    if (roomsProfile === "" && categoryProfile !== "space") {
+        console.log("rooms null");
+        isValidUpdate = false;
+    }
+    if (surfaceProfile === "") {
+        console.log("surface null");
+        isValidUpdate = false;
+    }
+    if (descriptionProfile === "") {
+        console.log("description null");
+        categoryProfile = false;
+    }
+    if (categoryProfile === "appartment" && floorProfile === ""){
+        isValidUpdate = false;
+    }
+    if (furnitureProfile === "" && categoryProfile !== "space") {
+        console.log("furniture null");
+        isValidUpdate = false;
+    }
+
+    if (isValidUpdate === true) {
+        var postDataPropertyUpdate = {
+            "idEstate" : estateIdProfile,
+            "surface" : surfaceProfile,
+            "roomsNumber" : roomsProfile,
+            "rentPrice" : rent_price_profile,
+            "buyPrice" : buy_price_profile,
+            "description" : descriptionProfile,
+            "utilities" : furnitureProfile,
+            "levelOfComfort" : levelOfComfortProfile,
+            "bathrooms" : bathroomsProfile,
+            "carDisposal" : hasParkingProfile,
+            "floor" : floorProfile,
+            "announcementImagesArray": announcementImagesArrayProfile,
+            "announcementImagesIconsURIArray" : announcementImagesIconsURIArrayProfile,
+            "idUser" : idUser
+        };
+        console.log(postDataPropertyUpdate);
+        $.ajax ({
+            method: methodUpdate,
+            url: urlUpdate,
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(postDataPropertyUpdate),
+            success (data) {
+                console.log(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError,textStatus) {
+                console.log('error Status code ' + xhr.status);
+                console.log('Text status: ' + textStatus);
+            }
+        });
+    }
+
+
+
+}

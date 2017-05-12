@@ -1,7 +1,6 @@
 package com.sgbd;
-
-//import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.dto.EstateDTO;
+import com.sgbd.dto.EstateUpdateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
@@ -128,42 +127,42 @@ public class EstateServiceImpl implements EstateService {
         estate.setEstateAttachements(announcementAttachements);
 
         return estateRepository.saveOrUpdate(estate);
-        /*
-        User user = userRepository.findByAttribute(User.USER_ID_COLUMN_NAME, idUser, User.class);
-        Estate estate = createEstate(estateDTO, idUser);
-//        estate.setIdUser(idUser);
-        if (estateDTO.getBuyPrice() != 0 ){
-            estate.setTypeOfTransaction("RENT");
+    }
+
+    @Override
+    @Transactional(noRollbackFor = Exception.class)
+    public Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) {
+        Estate estate = (Estate) estateRepository.findByAttribute("id", estateUpdateDTO.getIdEstate(), Estate.class );
+        estate.setBathrooms(estateUpdateDTO.getBathrooms());
+        estate.setBuyPrice(estateUpdateDTO.getBuyPrice());
+        estate.setRentPrice(estateUpdateDTO.getRentPrice());
+        estate.setCarDisposal(estateUpdateDTO.getCarDisposal());
+        estate.setLastUpdate(new Date());
+        estate.setDescription(estateUpdateDTO.getDescription());
+        estate.setFloor(estateUpdateDTO.getFloor());
+        estate.setLevelOfComfort(estateUpdateDTO.getLevelOfComfort());
+        estate.setSurface(estateUpdateDTO.getSurface());
+        estate.setRooms(estateUpdateDTO.getRoomsNumber());
+        estate.setUtilities(estateUpdateDTO.getUtilities());
+        String estateTransactionType = "";
+        if (estateUpdateDTO.getBuyPrice() != 0) {
+            estateTransactionType = "sale";
         } else {
-            estate.setTypeOfTransaction("SALE");
+            estateTransactionType = "rent";
         }
-        user.getAnnouncements().add(estate);
-        userRepository.saveOrUpdate(user);
-
-        estate = (Estate) estateRepository.findByAttribute("address", estate.getAddress(), Estate.class);
-
-//        estate = (Estate) estateRepository.save(estate, Estate.class);
+        estate.setTypeOfTransaction(estateTransactionType);
         Set<Attachement> announcementAttachements = new HashSet<>();
-        String[] announcementAttachementsImagesNames = estateDTO.getAnnouncementImagesArray().toArray(new String[estateDTO.getAnnouncementImagesArray().size()]);
-        String[] announcementAttachementsImagesIconURI = estateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateDTO.getAnnouncementImagesIconsURIArray().size()]);
-//        estate.setIdUser(user.getId());
-//        estate = (Estate) estateRepository.save(estate, Estate.class);
+        String[] announcementAttachementsImagesNames = estateUpdateDTO.getAnnouncementImagesArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesArray().size()]);
+        String[] announcementAttachementsImagesIconURI = estateUpdateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesIconsURIArray().size()]);
         for(int index = 0; index < announcementAttachementsImagesNames.length; index ++){
             Attachement attachement = new Attachement(UPLOAD_PATH + File.separator + announcementAttachementsImagesNames[index], AttachType.JPEG);
             attachement.setIconUri(announcementAttachementsImagesIconURI[index]);
-//            attachement.setIdAnnouncement(estate.getID());
+            attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
-
-        estate.setEstateAttachements(announcementAttachements);
-        user.getAnnouncements().add(estate);
 //        estate = estateRepository.saveOrUpdate(estate);
-
-//        estate = (Estate)estateRepository.findByAttribute("address", estate.getAddress(), Estate.class);
-//        user.getAnnouncements().add(estate);
-        userRepository.saveOrUpdate(user);
-//        return estateRepository.saveOrUpdate(estate);
-        return estate;*/
+        estate.setEstateAttachements(announcementAttachements);
+        return estateRepository.saveOrUpdate(estate);
     }
 
     private Estate createEstate(EstateDTO estateDTO, Long idUser) {

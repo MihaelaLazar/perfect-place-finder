@@ -36,7 +36,7 @@
         <img class="ui mini image" style="position:absolute;left: 20%; top:5px;" src="images/place-finder.png">
     </a>
 
-    <a> <img class="ui medium image" style="position:absolute;margin-left: 23%;" src="images/logo.png"></a>
+    <a> <img class="ui medium image" style="position:fixed;margin-left: 23%;" src="images/logo.png"></a>
     <button class="ui inverted blue button" onclick="redirectToSearchCity()" style="position:absolute;margin-left:75%; margin-top:5px;">Log out</button>
 </div>
 
@@ -168,19 +168,25 @@
                             <div class="four wide column" >
                                 <label>Price</label>
                                 <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Price"  type="number" required min="1">
+                                    <input id="price-input-profile" placeholder="Price"  type="number" required min="1">
                                 </div>
                             </div>
                             <div class="four wide column">
                                 <label>Furniture/Utilities</label>
-                                <div  class="ui input">
-                                    <input placeholder="Furniture/Utilities" type="text">
-                                </div>
+                                <!--<div  class="ui input">-->
+                                    <!--<input placeholder="Furniture/Utilities" type="text">-->
+                                <!--</div>-->
+                                <select name="furniture-profile" style="height:37px; width:100%;border-radius: 3px; border-color: #D4D2D2" id="furniture-profile" required>
+                                    <option value="" disabled selected>Choose</option>
+                                    <option value="1">Complete</option>
+                                    <option value="2">Partial</option>
+                                    <option value="3">None</option>
+                                </select>
                             </div>
                             <div class="four wide column">
                                 <label>Level on comfort:</label>
                                 <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Level on comfort"  type="number" required min="1" max="3">
+                                    <input id="level-of-comfort-input-profile" placeholder="Level on comfort"  type="number" required min="1" max="3">
                                 </div>
                             </div>
                             <div class="four wide column" >
@@ -188,13 +194,13 @@
                                     <label >Transaction type:</label>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
+                                            <input id="transaction-type-rent-input-profile" name="fruit" tabindex="0" type="radio" onChange={setCheckboxProfile('transaction-type-rent-input-profile')} unchecked={} required>
                                             <label>Rent</label>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input id="transaction-type-sale-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-sale-input')} unchecked={}>
+                                            <input id="transaction-type-sale-input-profile" name="fruit" tabindex="0" type="radio" onChange={setCheckboxProfile('transaction-type-sale-input-profile')} unchecked={}>
                                             <label>Sale</label>
                                         </div>
                                     </div>
@@ -204,28 +210,28 @@
                             <div class="four wide column">
                                 <label>Usable surface:</label>
                                 <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Usable surface"  type="number" required min="1" >
+                                    <input id="usable-surface-input-profile" placeholder="Usable surface"  type="number" required min="1" >
                                 </div>
                             </div>
 
                             <div class="four wide column">
                                 <label>Bathrooms</label>
                                 <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Bathrooms"  type="number" required min="1">
+                                    <input id="bathrooms-input-profile" placeholder="Bathrooms"  type="number" required min="1">
                                 </div>
                             </div>
 
                             <div class="four wide column">
                                 <label>Rooms</label>
-                                <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Rooms"  type="number" required min="1">
+                                <div class="ui input" style="width:100%;">
+                                    <input id="rooms-input-profile" placeholder="Rooms"  type="number" required min="1">
                                 </div>
                             </div>
 
                             <div class="four wide column">
                                 <label>Floor</label>
                                 <div  class="ui input" style="width:100%;">
-                                    <input placeholder="Floor"  type="number" required min="1">
+                                    <input id="floor-input-profile" placeholder="Floor"  type="number" required min="1">
                                 </div>
                             </div>
 
@@ -234,19 +240,19 @@
                                 <div class="inline fields">
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input tabindex="0" id="parking" name="car" type="radio" onChange={setCheckbox('parking')} unchecked={}>
+                                            <input tabindex="0" id="parking-profile" name="car" type="radio" onChange={setCheckboxProfile('parking-profile')} unchecked={}>
                                             <label>Parking</label>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input tabindex="0" id="garage" name="car" type="radio" onChange={setCheckbox('garage')} unchecked={}>
+                                            <input tabindex="0" id="garage-profile" name="car" type="radio" onChange={setCheckboxProfile('garage-profile')} unchecked={}>
                                             <label>Garage</label>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input tabindex="0" id="none" name="car" type="radio" onChange={setCheckbox('none')} unchecked={}>
+                                            <input tabindex="0" id="none-profile" name="car" type="radio" onChange={setCheckboxProfile('none-profile')} unchecked={}>
                                             <label>None</label>
                                         </div>
                                     </div>
@@ -260,7 +266,7 @@
                     <div class="field" style="width:100%;">
                         <label>Description</label>
                         <div id="description-textarea" class="ui form">
-                            <textarea id="description" placeholder="Add a drescription here.." required></textarea>
+                            <textarea id="description-profile" placeholder="Add a drescription here.." required></textarea>
                         </div>
                     </div>
                     <br>
@@ -268,12 +274,19 @@
                     <div class="field" style="width:100%;">
                         <label>Photos</label>
                         <div class="field" style="border: 1px dashed #c1cce1;border-radius: 3px;
-                        padding: 15px;margin: 30px 8px 50px 8px; overflow: hidden;position: relative;"><div class="ui inverted blue button">photos</div></div>
+                        padding: 15px;margin: 30px 8px 50px 8px; overflow: hidden;position: relative;overflow-y: scroll; height:200px;">
+                            <div id="list-of-images-profile" class="ui small images">
+                                <label for="file-profile" class="ui large image">
+                                    <img id="image-profile" src="/images/image.png">
+                                </label>
+                                <input accept=".jpg, .jpeg, .png" multiple type="file" id="file-profile" style="display:none" >
+                            </div>
+                        </div>
                     </div>
 
                     <br>
                     <div class="field" style="width:100%;">
-                        <div class="ui inverted blue button">Submit change</div>
+                        <div class="ui inverted blue button" onclick="updatePropertyPOST(event)">Submit change</div>
                     </div>
                 </div>
             </div>

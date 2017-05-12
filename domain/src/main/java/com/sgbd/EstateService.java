@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.EstateDTO;
+import com.sgbd.dto.EstateUpdateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 
 import java.io.Serializable;
@@ -16,4 +17,7 @@ public interface EstateService {
     PaginatedEstatesDetails getEstatesByFilters(String queryString);
 
     Serializable saveEstate(EstateDTO estateDTO, Long idUser) ;
+
+    Serializable updateEstate(EstateUpdateDTO estateUpdateDTO);
+
 }
