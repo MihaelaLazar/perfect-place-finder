@@ -82,6 +82,7 @@ function updateEstate(id) {
     $('#updateAnnouncement').css("display", "block");
     $('#announcements').css("display", "none");
 
+
 }
 
 function redirectToSearchCity() {
@@ -94,3 +95,17 @@ function redirectToSearchCity() {
          }
      });
 }
+
+/* This function makes the top menu bar stay fixed when scrolling */
+$(window).scroll(function(){
+    var stickyHeaderProfilePage = $('#topProfilePage').offset().top;
+    if( $(window).scrollTop() > stickyHeaderProfilePage ) {
+        $('#topProfilePage').css({position: 'fixed', top: '0px'});
+        $('#topProfilePage').css('width','100%');
+        $('#topProfilePage').css('display', 'block');
+        $('#topProfilePage').css('z-index','999999');
+    } else {
+        $('#topProfilePage').css({position: 'static', top: '0px'});
+//        $('#backToTopProfilePage').css({margin-top: '10%'});
+    }
+    });

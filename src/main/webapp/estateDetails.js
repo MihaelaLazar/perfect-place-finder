@@ -13,28 +13,6 @@ function getQueryVariableEstateDetails(variable) {
 
 /* This function checks if session exists */
 function checkSession() {
-//    $.ajax({
-//        url: '/user/check/session',
-//        type: 'GET',
-//        success: function(data) {
-//            if (data === "not existent") {
-//                console.log("not existent session");
-//                document.getElementById('login-estateDetails').style.display = 'block';
-//                document.getElementById('signup-estateDetails').style.display = 'block';
-//                document.getElementById('logout-estateDetails').style.display = 'none';
-//                document.getElementById('loggedIn-estateDetails').style.display = 'none';
-//            } else {
-//                console.log("session existent");
-//                console.log(data);
-//                document.getElementById('login-estateDetails').style.display = 'none';
-//                document.getElementById('signup-estateDetails').style.display = 'none';
-//                document.getElementById('logout-estateDetails').style.display = 'inline';
-//                document.getElementById('loggedIn-estateDetails').style.display = 'inline';
-//                $('#loggedInButton-estateDetails').text(data);
-//            }
-//        }
-//    });
-
     var request = new XMLHttpRequest();
     request.open('GET', '/user/check/session', false);  // `false` makes the request synchronous
     request.send(" ");
