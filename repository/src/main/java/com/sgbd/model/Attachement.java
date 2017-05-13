@@ -17,7 +17,7 @@ public class Attachement {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(name = "ID_ANNOUNCEMENT", nullable = false)
+    @Column(name = "ID_ANNOUNCEMENT")
     private Long idAnnouncement;
 
     @Column(name = "PATH_TO_FILE", nullable = false)
@@ -29,14 +29,18 @@ public class Attachement {
     @Column(name = "ICON_URI", nullable = true)
     private String iconUri;
 
+    @Column(name = "IMAGE_NAME")
+    private String imageName;
+
     public Attachement() {
     }
 
-    public Attachement(Long idAnnouncement, String pathToFile, AttachType attachType, String iconUri) {
+    public Attachement(Long idAnnouncement, String pathToFile, AttachType attachType, String iconUri, String imageName) {
         this.idAnnouncement = idAnnouncement;
         this.pathToFile = pathToFile;
         this.attachType = attachType;
         this.iconUri = iconUri;
+        this.imageName = imageName;
     }
 
     public Attachement(String pathToFile, AttachType attachType) {
@@ -83,5 +87,13 @@ public class Attachement {
 
     public void setIconUri(String iconUri) {
         this.iconUri = iconUri;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

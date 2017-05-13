@@ -1,5 +1,6 @@
 package com.sgbd.model;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
@@ -85,6 +86,11 @@ public class Estate implements Serializable {
     private Set<Message> estateMessages;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "ID_ANNOUNCEMENT")
     private Set<Attachement> estateAttachements;
@@ -268,7 +274,11 @@ public class Estate implements Serializable {
     }
 
     public void setEstateAttachements(Set<Attachement> estateAttachements) {
-        this.estateAttachements = estateAttachements;
+        this.estateAttachements = new HashSet<>();
+        for(Attachement attachement: estateAttachements) {
+            this.estateAttachements.add(attachement);
+        }
+//        this.estateAttachements = estateAttachements;
     }
 
     public String getContactNumber() {

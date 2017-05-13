@@ -75,5 +75,10 @@ public class EstateRepositoryImpl implements EstateRepository {
         return null;
     }
 
+    @Override
+    public void deleteAnnoundement(Serializable entity, Class modelClass) {
+        entityManager.remove(entity);
+    }
+
 
 }

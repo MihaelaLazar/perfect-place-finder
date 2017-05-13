@@ -4,13 +4,15 @@ public class ImageDTO {
 
     private String imageName;
     private String imageURI;
+    private String iconPathname;
 
     public ImageDTO() {
     }
 
-    public ImageDTO(String imageName, String imageURI) {
+    public ImageDTO(String iconPathname, String imageName, String imageURI) {
         this.imageName = imageName;
         this.imageURI = imageURI;
+        this.iconPathname = iconPathname;
     }
 
     public String getImageName() {
@@ -27,5 +29,13 @@ public class ImageDTO {
 
     public void setImageURI(String imageURI) {
         this.imageURI = imageURI;
+    }
+
+    public String getIconPathname() {
+        return iconPathname;
+    }
+
+    public void setIconPathname(String iconPathname) {
+        this.iconPathname = iconPathname;
     }
 }

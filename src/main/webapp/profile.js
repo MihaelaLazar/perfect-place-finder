@@ -10,16 +10,34 @@ window.onload = function () {
             var favoriteAnnouncement;
             for (var i = 0; i < userEstates.length; i ++){
                  if (userEstates[i].estateAttachements. length > 0) {
-                    currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + userEstates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + userEstates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><form method='get' action='estateDetails.html?estate=" + userEstates[i].id  +"' ><button class='ui basic black button' type='submit'>Delete</button></form></div></div><div class='two wide column'><button id='heart"+ userEstates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ userEstates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                    currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + userEstates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + userEstates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'><button id='heart"+ userEstates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ userEstates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
                     favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='"+ userEstates[i].estateAttachements[0].iconUri + "'onclick='bounce()'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Additional Details</div></div></div>");
                  } else {
-                     currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + userEstates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><form method='get' action='estateDetails.html?estate=" + userEstates[i].id  +"' ><button class='ui basic black button' type='submit'>Delete</button></form></div></div><div class='two wide column'><button id='heart"+ userEstates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ userEstates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                     currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + userEstates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'><button id='heart"+ userEstates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ userEstates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
                       favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='./images/house-logo-md.png'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Details</div></div></div>");
                  }
                  $("#estatesProfile").append(currentDiv);
                  $("#favouritesEstatesList").append(favoriteAnnouncement);
             }
          }
+    });
+}
+
+/* This function deletes the announcement with given id*/
+function deleteEstate(id) {
+    console.log('ID estate to delete: ' + id)
+    $.ajax ({
+        method: 'POST',
+        url: '/estate/delete/property',
+        contentType: 'application/json;charset=UTF-8',
+        data: id.toString(),
+        success (data) {
+            console.log(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + textStatus);
+        }
     });
 }
 
@@ -82,6 +100,9 @@ var idUser;
 var isForSaleProfile = 0;
 var isForRentProfile = 0;
 var hasParkingProfile = -1;
+var announcementImagesArrayProfile = [];
+var announcementImagesArrayProfilePathToFile = [];
+var announcementImagesArrayCountProfile = 0;
 
 /* This function display the section of updating the chosen announcement(triggered when clicking "Update" button). */
 function updateEstate(id) {
@@ -93,6 +114,7 @@ function updateEstate(id) {
         url: url,
         processData: false,
         cache: false,
+        enctype: 'multipart/form-data',
         success : function(data) {
             var estateDetails = data;
             console.log(estateDetails);
@@ -124,10 +146,35 @@ function updateEstate(id) {
             $('#description-profile').text(estateDetails.description);
             if (estateDetails.estateAttachements.length > 0) {
                 for (var index = 0; index < estateDetails.estateAttachements.length; index ++) {
-                    var newImage = $("<div class='ui fluid image' id='" + estateDetails.estateAttachements[index].pathToFile + "' style='margin-top:-0.5%;'><a onclick={deleteImageProfile('" + estateDetails.estateAttachements[index].pathToFile + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + estateDetails.estateAttachements[index].iconUri +"'></div></div> ");
+                    var imageName;
+                    var indexImageName = estateDetails.estateAttachements[index].pathToFile.size -1;
+                    var newImage = $("<div class='ui fluid image' id='" + estateDetails.estateAttachements[index].imageName + "' style='margin-top:-0.5%;'><a onclick={deleteImageProfile('" + estateDetails.estateAttachements[index].imageName + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + estateDetails.estateAttachements[index].iconUri +"'></div></div> ");
                     $('#list-of-images-profile').append(newImage);
+                    announcementImagesArrayProfile[index] = estateDetails.estateAttachements[index].imageName;
+                    announcementImagesArrayProfilePathToFile[index] = estateDetails.estateAttachements[index].pathToFile;
+//                    announcementImagesIconsURIArrayProfile[index] = estateDetails.estateAttachements[index].iconURI;
+                    console.log('DATA URI: ' + estateDetails.estateAttachements[index].iconURI);
                 }
             }
+            if (estateDetails.utilities !== 0) {
+                if (estateDetails.utilities === 1) {
+                    $('#furniture-profile').filter(function() {
+                        return $(this).text() == '1';
+                    }).attr('selected', true);
+                } else {
+                     if (estateDetails.utilities === 3) {
+                        $('#furniture-profile').filter(function() {
+                            return $(this).text() == '3';
+                        }).attr('selected', true);
+                     } else {
+                           $('#furniture-profile').filter(function() {
+                                return $(this).text() == '2';
+                            }).attr('selected', true);
+                     }
+
+                }
+            }
+            announcementImagesArrayCountProfile = estateDetails.estateAttachements.length;
             categoryProfile = estateDetails.type;
             estateIdProfile = estateDetails.id;
             idUser = estateDetails.idUser;
@@ -153,16 +200,16 @@ $('#file-profile').change(function() {
                 url: '/estate/save/image',
                 data: frm,
                 contentType: false,
-                enctype: 'multipart/form-data',
                 processData: false,
                 cache: false,
                 success : function(data) {
                     $('#image-profile').attr('src','/images/image.png');
-                    console.log("image added: " + data.imageName);
+                    console.log("image added: " + data.iconPathname);
                     var newImage = $("<div class='ui fluid image' id='" + data.imageName + "' style='margin-top:-0.5%;'><a onclick={deleteImage('" + data.imageName + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + data.imageURI +"'></div></div> ");
                     $('#list-of-images-profile').append(newImage);
                     announcementImagesArrayProfile[announcementImagesArrayCountProfile] = data.imageName;
-                    announcementImagesIconsURIArrayProfile[announcementImagesArrayCountProfile] = data.imageURI.toString();
+                    announcementImagesArrayProfilePathToFile[announcementImagesArrayCountProfile] = data.iconPathname;
+//                    announcementImagesIconsURIArrayProfile[announcementImagesArrayCountProfile] = data.imageURI.toString();
                     announcementImagesArrayCountProfile = announcementImagesArrayCountProfile + 1;
                 }
             });
@@ -170,15 +217,14 @@ $('#file-profile').change(function() {
     } else console.log('This is not an image file!');
 });
 
-var announcementImagesArrayProfile = [];
-var announcementImagesIconsURIArrayProfile = [];
-var announcementImagesArrayCountProfile = 0;
 
 function deleteImageProfile(id) {
+    console.log("IMAGE TO DELETE: " + id);
     for(var i = announcementImagesArrayProfile.length - 1; i >= 0; i--) {
         if(announcementImagesArrayProfile[i] === id) {
             announcementImagesArrayProfile.splice(i, 1);
-            announcementImagesArrayProfile.splice(i, 1);
+            announcementImagesArrayProfilePathToFile.splice(i, 1);
+//            announcementImagesArrayProfilePathToFile = announcementImagesArrayProfilePathToFile - 1;
             announcementImagesArrayProfile = announcementImagesArrayCountProfile - 1;
             $('#list-of-images-profile').remove("#" + id);
             var imageToDelete = document.getElementById(id);
@@ -290,8 +336,11 @@ function updatePropertyPOST(event) {
     }
     if (furnitureProfile === "" && categoryProfile !== "space") {
         console.log("furniture null");
+        furnitureProfile = 0;
         isValidUpdate = false;
     }
+
+
 
     if (isValidUpdate === true) {
         var postDataPropertyUpdate = {
@@ -306,11 +355,10 @@ function updatePropertyPOST(event) {
             "bathrooms" : bathroomsProfile,
             "carDisposal" : hasParkingProfile,
             "floor" : floorProfile,
-            "announcementImagesArray": announcementImagesArrayProfile,
-            "announcementImagesIconsURIArray" : announcementImagesIconsURIArrayProfile,
+            "announcementImagesArray": announcementImagesArrayProfilePathToFile,
+//            "announcementImagesIconsURIArray" : announcementImagesIconsURIArrayProfile,
             "idUser" : idUser
         };
-        console.log(postDataPropertyUpdate);
         $.ajax ({
             method: methodUpdate,
             url: urlUpdate,

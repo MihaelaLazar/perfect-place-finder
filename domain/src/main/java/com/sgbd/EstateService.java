@@ -4,6 +4,7 @@ import com.sgbd.dto.EstateDTO;
 import com.sgbd.dto.EstateUpdateDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -18,6 +19,7 @@ public interface EstateService {
 
     Serializable saveEstate(EstateDTO estateDTO, Long idUser) ;
 
-    Serializable updateEstate(EstateUpdateDTO estateUpdateDTO);
+    Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws IOException;
 
+    void deleteEstate(Long estateId);
 }

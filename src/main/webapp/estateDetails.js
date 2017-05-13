@@ -229,12 +229,12 @@ function initMap2() {
     console.log("initMap2");
     var idEstate = getQueryVariableEstateDetails('estate');
     console.log('estate id(query): ' + idEstate );
-    for (var i = 0; i < estates.length; i ++) {
-        if (estates[i].id == idEstate) {
-            estatePosition = new google.maps.LatLng(estates[i].coordinates.lat, estates[i].coordinates.lng);
-            console.log('found ' + estates[i].coordinates.lat);
-        }
-    }
+//    for (var i = 0; i < estates.length; i ++) {
+//        if (estates[i].id == idEstate) {
+//            estatePosition = new google.maps.LatLng(estates[i].coordinates.lat, estates[i].coordinates.lng);
+//            console.log('found ' + estates[i].coordinates.lat);
+//        }
+//    }
 //      console.log('estate id: ' + estatePosition.lat() );
     geocoder = new google.maps.Geocoder();
     globalMap2 = new google.maps.Map(document.getElementById('map2'), {

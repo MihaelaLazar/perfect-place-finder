@@ -160,7 +160,7 @@ public class EstateController {
                 String originalImagePathname = UPLOAD_PATH + File.separator + fileNameDateStamp;
                 String iconPathname = ImageUtil.generateIcon(originalImagePathname, fileNameDateStamp);
                 String imageURI = ImageUtil.convertToURI(iconPathname);
-                ImageDTO imageDTO = new ImageDTO(fileNameDateStamp,imageURI);
+                ImageDTO imageDTO = new ImageDTO(iconPathname,fileNameDateStamp,imageURI);
                 return imageDTO;
             } catch (FileNotFoundException fne) {
             } finally {
@@ -191,9 +191,23 @@ public class EstateController {
     public ResponseEntity<String> updateProperty(Request request, Response response, @RequestBody EstateUpdateDTO estateUpdateDTO) {
         try{
             estateService.updateEstate(estateUpdateDTO);
-            return new ResponseEntity<>("Added property", HttpStatus.OK);
+            return new ResponseEntity<>("Updated property", HttpStatus.OK);
         } catch(PersistenceException e) {
-            return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @RequestMapping(path = "/delete/property", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> deleteProperty(Request request, Response response, @RequestBody Long estateId) {
+        try{
+            estateService.deleteEstate(estateId);
+            return new ResponseEntity<>("Deleted property", HttpStatus.OK);
+        } catch(PersistenceException e) {
+            return new ResponseEntity<>("Could not delete property", HttpStatus.FORBIDDEN);
         }
     }
 

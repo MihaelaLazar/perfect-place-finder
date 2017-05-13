@@ -5,14 +5,17 @@ import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.model.User;
+import com.sgbd.repository.AttachementRepository;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import com.sgbd.util.AttachType;
+import com.sgbd.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,9 @@ public class EstateServiceImpl implements EstateService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AttachementRepository attachementRepository;
 
     @Override
     public Serializable findById (Long userId) {
@@ -121,6 +127,7 @@ public class EstateServiceImpl implements EstateService {
         for(int index = 0; index < announcementAttachementsImagesNames.length; index ++){
             Attachement attachement = new Attachement(UPLOAD_PATH + File.separator + announcementAttachementsImagesNames[index], AttachType.JPEG);
             attachement.setIconUri(announcementAttachementsImagesIconURI[index]);
+            attachement.setImageName(announcementAttachementsImagesNames[index]);
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
@@ -130,8 +137,8 @@ public class EstateServiceImpl implements EstateService {
     }
 
     @Override
-    @Transactional(noRollbackFor = Exception.class)
-    public Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) {
+    @Transactional
+    public Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws IOException {
         Estate estate = (Estate) estateRepository.findByAttribute("id", estateUpdateDTO.getIdEstate(), Estate.class );
         estate.setBathrooms(estateUpdateDTO.getBathrooms());
         estate.setBuyPrice(estateUpdateDTO.getBuyPrice());
@@ -153,16 +160,41 @@ public class EstateServiceImpl implements EstateService {
         estate.setTypeOfTransaction(estateTransactionType);
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateUpdateDTO.getAnnouncementImagesArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesArray().size()]);
-        String[] announcementAttachementsImagesIconURI = estateUpdateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesIconsURIArray().size()]);
-        for(int index = 0; index < announcementAttachementsImagesNames.length; index ++){
-            Attachement attachement = new Attachement(UPLOAD_PATH + File.separator + announcementAttachementsImagesNames[index], AttachType.JPEG);
-            attachement.setIconUri(announcementAttachementsImagesIconURI[index]);
+//        String[] announcementAttachementsImagesIconURI = estateUpdateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesIconsURIArray().size()]);
+//        for (Attachement attachement: estate.getEstateAttachements()) {
+////            attachementRepository.delete(attachement);
+//            estate.getEstateAttachements().remove(attachement);
+//        }
+
+        Iterator<Attachement> it = estate.getEstateAttachements().iterator();
+        while(it.hasNext()){
+            Attachement attachement = it.next();
+//            attachement.setIdAnnouncement(null);
+            it.remove(); //<--- iterator safe remove
+        }
+
+//        estate.getEstateAttachements().clear();
+        estate = estateRepository.saveOrUpdate(estate);
+        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
+
+        for(int index = 0; index < announcementAttachementsImagesNames.length; index ++) {
+            Attachement attachement = new Attachement( announcementAttachementsImagesNames[index], AttachType.JPEG);
+            attachement.setIconUri(ImageUtil.convertToURI(announcementAttachementsImagesNames[index]));
+            char regex = '\\';
+            attachement.setImageName(announcementAttachementsImagesNames[index].split("\\\\")[2]);
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
-//        estate = estateRepository.saveOrUpdate(estate);
-        estate.setEstateAttachements(announcementAttachements);
+//        System.out.println("lalalalallal");
+////        estate = estateRepository.saveOrUpdate(estate);
+        estate.getEstateAttachements().addAll(announcementAttachements);
         return estateRepository.saveOrUpdate(estate);
+    }
+
+    @Override
+    public void deleteEstate(Long estateId) {
+        Estate estate = (Estate) estateRepository.findByAttribute("id", estateId, Estate.class);
+        estateRepository.deleteAnnoundement(estate, Estate.class);
     }
 
     private Estate createEstate(EstateDTO estateDTO, Long idUser) {
@@ -182,5 +214,7 @@ public class EstateServiceImpl implements EstateService {
                 estateDTO.getLevelOfComfort(), estateDTO.getBathrooms(), estateDTO.getCarDisposal(), estateDTO.getFloor());
        return estate;
     }
+
+
 
 }

@@ -20,7 +20,7 @@ public class EstateUpdateDTO {
     private Long carDisposal;
     private Long floor;
     private Set<String> announcementImagesArray ;
-    private Set<String> announcementImagesIconsURIArray;
+//    private Set<String> announcementImagesIconsURIArray;
     private Long idEstate;
     private Long idUser;
 
@@ -30,8 +30,7 @@ public class EstateUpdateDTO {
     public EstateUpdateDTO( Long surface, Long roomsNumber, Long rentPrice,
                            Long buyPrice, String description, Long utilities, Long idUser,
                             Long levelOfComfort, Long bathrooms,
-                           Long carDisposal, Long floor, Set<String> announcementImagesArray,
-                           Set<String> announcementImagesIconsURIArray, Long idEstate) {
+                           Long carDisposal, Long floor, Set<String> announcementImagesArray, Long idEstate) {
         this.surface = surface;
         this.roomsNumber = roomsNumber;
         this.rentPrice = rentPrice;
@@ -43,7 +42,6 @@ public class EstateUpdateDTO {
         this.carDisposal = carDisposal;
         this.floor = floor;
         this.announcementImagesArray = announcementImagesArray;
-        this.announcementImagesIconsURIArray = announcementImagesIconsURIArray;
         this.idEstate = idEstate;
         this.idUser = idUser;
     }
@@ -142,14 +140,6 @@ public class EstateUpdateDTO {
 
     public void setAnnouncementImagesArray(Set<String> announcementImagesArray) {
         this.announcementImagesArray = announcementImagesArray;
-    }
-
-    public Set<String> getAnnouncementImagesIconsURIArray() {
-        return announcementImagesIconsURIArray;
-    }
-
-    public void setAnnouncementImagesIconsURIArray(Set<String> announcementImagesIconsURIArray) {
-        this.announcementImagesIconsURIArray = announcementImagesIconsURIArray;
     }
 
     public Long getIdEstate() {

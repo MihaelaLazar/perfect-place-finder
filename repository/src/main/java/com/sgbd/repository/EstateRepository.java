@@ -24,4 +24,6 @@ public interface EstateRepository {
     List<Estate> getUserAnnouncements(Long id);
 
     List<Estate> getUserFavouriteAnnouncements(Long id);
+
+    void deleteAnnoundement(Serializable entity, Class modelClass);
 }
