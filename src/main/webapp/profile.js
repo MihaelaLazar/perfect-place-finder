@@ -51,7 +51,9 @@ function removeMessage(id, idAnnouncement) {
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(messageToDelete),
             success(data) {
-
+                $('#userMessages').remove("#" + id);
+                var elementToDelete = document.getElementById(id);
+                elementToDelete.parentNode.removeChild(elementToDelete);
             }
     });
 }

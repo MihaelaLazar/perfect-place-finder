@@ -225,9 +225,31 @@ public class EstateServiceImpl implements EstateService {
     @Transactional
     public void deleteMessage(MessageToDeleteDTO messageToDeleteDTO) {
         Estate estate = (Estate) estateRepository.findByAttribute("id", messageToDeleteDTO.getIdAnnouncement(), Estate.class);
-        estate.getEstateMessages()
-                .remove(estate.getEstateMessages().stream()
-                        .filter(message -> message.getId() == messageToDeleteDTO.getIdMessage()));
+        List<Message> messages = new ArrayList<>();
+        for(Message message : estate.getEstateMessages()) {
+            Message messageToAdd = new Message(message.getIdAnnouncement(), message.getText(),
+                    message.getSecondPartText(), message.getCreatedAt());
+            messageToAdd.setId(message.getId());
+            messages.add(messageToAdd);
+        }
+        Set<Message> messagesToKeep = new HashSet<>();
+        for (int index = 0; index < messages.size(); index ++){
+            if (!Objects.equals(messages.get(index).getId(), messageToDeleteDTO.getIdMessage())){
+//                messagesToKeep.add(messages.get(index));
+                messagesToKeep.add(new Message(messages.get(index).getIdAnnouncement(), messages.get(index).getText(),
+                        messages.get(index).getSecondPartText(), messages.get(index).getCreatedAt()));
+            }
+        }
+        Iterator<Message> it = estate.getEstateMessages().iterator();
+//        while(it.hasNext()){
+//            it.remove(); //<--- iterator safe remove
+//        }
+        estate.getEstateMessages().clear();
+
+        estate = estateRepository.saveOrUpdate(estate);
+        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
+        estate.getEstateMessages().addAll(messagesToKeep);
+//        estate.setEstateMessages(messagesToKeep);
         estateRepository.saveOrUpdate(estate);
     }
 

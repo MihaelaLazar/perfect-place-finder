@@ -16,10 +16,10 @@ public class Message {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(name = "ID_ANNOUNCEMENT", nullable = false)
+    @Column(name = "ID_ANNOUNCEMENT")
     private Long idAnnouncement;
 
-    @Column(name = "TEXT", nullable = false)
+    @Column(name = "TEXT")
     private String text;
 
     @Column(name ="SECOND_PART_TEXT")

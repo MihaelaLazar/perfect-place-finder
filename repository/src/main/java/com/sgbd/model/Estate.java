@@ -81,6 +81,11 @@ public class Estate implements Serializable {
     private Long utilities;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+            org.hibernate.annotations.CascadeType.DELETE,
+            org.hibernate.annotations.CascadeType.MERGE,
+            org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "ID_ANNOUNCEMENT")
     private Set<Message> estateMessages;
