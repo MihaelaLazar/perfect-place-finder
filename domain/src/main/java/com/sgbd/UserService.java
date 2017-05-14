@@ -3,6 +3,7 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import com.sgbd.model.User;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -27,6 +28,8 @@ public interface UserService {
     List<Estate> getUserAnnouncements(Long id);
 
     User setFavoriteAnnouncement(User user, Long idAnnouncement);
+
+    List<Message> getUserMessages(Long id);
 
     User updateUser(UserUpdateDTO updateDTO);
 }

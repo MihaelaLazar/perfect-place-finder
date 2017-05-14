@@ -38,6 +38,17 @@ public class EstateRepositoryImpl implements EstateRepository {
 
     @Override
     @Transactional
+    public List<Estate> getUserEstates(Serializable id) {
+        final Query query = entityManager.createQuery("SELECT o FROM " + Estate.class.getSimpleName()
+                + " o WHERE o.idUser =:identifier");
+        query.setParameter("identifier", id);
+        final List<Estate> results = query.getResultList();
+        return results;
+    }
+
+
+    @Override
+    @Transactional
     public PaginatedEstatesDetails getEstatesByFilters(String queryFilters, Integer offset){
         List estates = entityManager.createQuery("from Estate WHERE " + queryFilters).setFirstResult(offset).setMaxResults(offset + 10).getResultList();
         PaginatedEstatesDetails paginatedEstatesDetails = new PaginatedEstatesDetails();
@@ -76,7 +87,7 @@ public class EstateRepositoryImpl implements EstateRepository {
     }
 
     @Override
-    public void deleteAnnoundement(Serializable entity, Class modelClass) {
+    public void deleteAnnouncement(Serializable entity, Class modelClass) {
         entityManager.remove(entity);
     }
 

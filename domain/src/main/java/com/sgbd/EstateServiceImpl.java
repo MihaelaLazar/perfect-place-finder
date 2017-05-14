@@ -1,9 +1,11 @@
 package com.sgbd;
 import com.sgbd.dto.EstateDTO;
 import com.sgbd.dto.EstateUpdateDTO;
+import com.sgbd.dto.MessageDTO;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import com.sgbd.model.User;
 import com.sgbd.repository.AttachementRepository;
 import com.sgbd.repository.EstateRepository;
@@ -45,6 +47,10 @@ public class EstateServiceImpl implements EstateService {
         return estateRepository.findByAttribute(ESTATE_ID_COLUMN_NAME, userId, Estate.class);
     }
 
+    @Override
+    public List<Estate> getUserEstates(Long id){
+        return estateRepository.getUserEstates(id);
+    }
 
     @Override
     public PaginatedEstatesDetails getEstatesByFilters(String queryString){
@@ -160,20 +166,12 @@ public class EstateServiceImpl implements EstateService {
         estate.setTypeOfTransaction(estateTransactionType);
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateUpdateDTO.getAnnouncementImagesArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesArray().size()]);
-//        String[] announcementAttachementsImagesIconURI = estateUpdateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesIconsURIArray().size()]);
-//        for (Attachement attachement: estate.getEstateAttachements()) {
-////            attachementRepository.delete(attachement);
-//            estate.getEstateAttachements().remove(attachement);
-//        }
 
         Iterator<Attachement> it = estate.getEstateAttachements().iterator();
         while(it.hasNext()){
-            Attachement attachement = it.next();
-//            attachement.setIdAnnouncement(null);
             it.remove(); //<--- iterator safe remove
         }
 
-//        estate.getEstateAttachements().clear();
         estate = estateRepository.saveOrUpdate(estate);
         estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
 
@@ -185,8 +183,6 @@ public class EstateServiceImpl implements EstateService {
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
-//        System.out.println("lalalalallal");
-////        estate = estateRepository.saveOrUpdate(estate);
         estate.getEstateAttachements().addAll(announcementAttachements);
         return estateRepository.saveOrUpdate(estate);
     }
@@ -194,7 +190,7 @@ public class EstateServiceImpl implements EstateService {
     @Override
     public void deleteEstate(Long estateId) {
         Estate estate = (Estate) estateRepository.findByAttribute("id", estateId, Estate.class);
-        estateRepository.deleteAnnoundement(estate, Estate.class);
+        estateRepository.deleteAnnouncement(estate, Estate.class);
     }
 
     private Estate createEstate(EstateDTO estateDTO, Long idUser) {
@@ -212,9 +208,20 @@ public class EstateServiceImpl implements EstateService {
                 estateDTO.getDivision(),estateDTO.getConstructionYear(),estateDTO.getDescription(),
                 date,date,estateDTO.getCity(),estateDTO.getContactNumber(), idUser,estateDTO.getUtilities(), estateTransactionType,
                 estateDTO.getLevelOfComfort(), estateDTO.getBathrooms(), estateDTO.getCarDisposal(), estateDTO.getFloor());
-       return estate;
+        return estate;
     }
 
-
+    @Override
+    public void sendMessage(MessageDTO messageDTO) {
+        Estate estate = (Estate) estateRepository.findByAttribute("id", messageDTO.getEstateId(), Estate.class);
+        if (estate != null) {
+            String text = "Hello,I'm "+ messageDTO.getName() +", I found this announcement on your site. Please, give me more details about ID " + messageDTO.getEstateId()
+                    + ".  I will be available to achieve/move in from " + messageDTO.getDateToMove() + "." ;
+            String secondPartText = "Call me on: " + messageDTO.getPhone() + " or email me on: " + messageDTO.getEmail() + ".";
+            Message message = new Message(messageDTO.getEstateId(), text,secondPartText, new Date());
+            estate.getEstateMessages().add(message);
+            estateRepository.saveOrUpdate(estate);
+        }
+    }
 
 }

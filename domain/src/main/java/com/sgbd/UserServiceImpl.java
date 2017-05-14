@@ -3,6 +3,7 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -84,6 +86,25 @@ public class UserServiceImpl implements UserService{
     @Override
     public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
          return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
+    }
+
+    @Override
+    public List<Message> getUserMessages(Long id) {
+//        User user = userRepository.findByAttribute("id", id, User.class);
+        List<Message> messages = new ArrayList<>();
+        List<Estate> estates = estateRepository.getUserEstates(id);
+        if (estates != null && estates.size() > 0) {
+            for(Estate estate: estates) {
+                if (estate.getEstateMessages() != null && estate.getEstateMessages().size() > 0) {
+                    for(Message estateMessage : estate.getEstateMessages()) {
+                        estateMessage.setCreatedAtToString();
+                        messages.add(estateMessage);
+                        System.out.println(estateMessage.getCreatedAt().toString());
+                    }
+                }
+            }
+        }
+        return messages;
     }
 
     @Override

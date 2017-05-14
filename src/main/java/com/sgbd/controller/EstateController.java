@@ -23,6 +23,8 @@ import java.io.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.sgbd.util.AppConstants.UPLOAD_PATH;
 import static com.sgbd.util.ContentType.JSON;
@@ -208,6 +210,46 @@ public class EstateController {
             return new ResponseEntity<>("Deleted property", HttpStatus.OK);
         } catch(PersistenceException e) {
             return new ResponseEntity<>("Could not delete property", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @RequestMapping(path = "/send/message", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> sendMessage (Request request, Response response, @RequestBody MessageDTO messageDTO) {
+        System.out.println(messageDTO.getDateToMove());
+        String errorMessage = "";
+        if (messageDTO.getPhone() == "") {
+            errorMessage += "phone ";
+        } else {
+            Pattern pattern = Pattern.compile("^[0-9]{10}$");
+            Matcher matcher = pattern.matcher(messageDTO.getPhone());
+            if (! matcher.find()){
+                errorMessage += "phone_invalid ";
+            }
+        }
+        if (messageDTO.getEmail() == "" ) {
+            errorMessage += "email_null ";
+        } else {
+            Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(messageDTO.getEmail());
+            if (!matcher.find()) {
+                errorMessage += "email_invalid ";
+            }
+        }
+        if (messageDTO.getName() == "") {
+            errorMessage += "name ";
+        }
+        if (messageDTO.getEstateId() == null ) {
+            errorMessage += "idEstate ";
+        }
+        if (messageDTO.getDateToMove() == "") {
+            errorMessage += "moveDate_null";
+        }
+        if (errorMessage == null ) {
+            estateService.sendMessage(messageDTO);
+            return new ResponseEntity<String>("Ok, message sent", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>(errorMessage, HttpStatus.CONFLICT);
         }
     }
 

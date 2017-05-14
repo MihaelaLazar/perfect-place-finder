@@ -4,6 +4,7 @@ import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import com.sgbd.model.User;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -181,6 +183,19 @@ public class UserController {
         }catch (EntityNotFoundException e){
             return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(path = "/user/get/messages", method = RequestMethod.GET)
+    public ResponseEntity<List<Message>> getMessages (Response response, Request request) {
+        List<Message> messages = new ArrayList<>();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return new ResponseEntity<>(messages, HttpStatus.BAD_REQUEST);
+        } else {
+            Long id = (Long) session.getAttribute("ID");
+            messages = userService.getUserMessages(id);
+        }
+        return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
     }
 
 //    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
