@@ -1,14 +1,14 @@
 package com.sgbd.dto;
 
 /**
- * Created by Rares on 5/12/2017.
+ * Created by Rares on 5/14/2017.
  */
-public class UpdateUserDTO {
-
+public class UserUpdateDTO {
     private String firstName;
     private String lastName;
-    private String username;
     private String email;
+    private Long idUser;
+
 
     public String getFirstName() {
         return firstName;
@@ -26,19 +26,19 @@ public class UpdateUserDTO {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 }
