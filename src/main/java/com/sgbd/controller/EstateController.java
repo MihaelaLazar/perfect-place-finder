@@ -253,4 +253,11 @@ public class EstateController {
         }
     }
 
+    @RequestMapping(path = "/delete/message", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> deleteMessage (Response response, Request request, @RequestBody MessageToDeleteDTO messageToDeleteDTO) {
+        estateService.deleteMessage(messageToDeleteDTO);
+        return new ResponseEntity<String>("Message deleted", HttpStatus.OK);
+    }
+
 }

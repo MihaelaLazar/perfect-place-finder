@@ -32,7 +32,7 @@ window.onload = function () {
             for (var index = 0; index < messages.length; index ++) {
                 var messagesPart = messages[index].text.split(".");
                 var messageLastPart;
-                var currentMessage = $("<div id='" + messages[index].id + "' class='ui card' style='width: 100%; margin-top:15px; margin-left: 15px;'> <div class='content'><div onclick='removeMessage(" + messages[index].id + ")'><i class='right floated remove icon'></i></div> <div class='header' ><a href='/estateDetails.html?estate=" + messages[index].idAnnouncement  +"'>" + "ID " + messages[index].idAnnouncement + "</a></div> <div class='meta'>" + messages[index].createdAtToString + "</div><div class='description'><p>"+ messages[index].text +".</p> <p>" + messages[index].secondPartText + ".</p> </div></div></div> ");
+                var currentMessage = $("<div id='" + messages[index].id + "' class='ui card' style='width: 100%; margin-top:15px; margin-left: 15px;'> <div class='content'><div onclick='removeMessage(" + messages[index].id + "," + messages[index].idAnnouncement  + ")'><i class='right floated remove icon'></i></div> <div class='header' ><a href='/estateDetails.html?estate=" + messages[index].idAnnouncement  +"'>" + "ID " + messages[index].idAnnouncement + "</a></div> <div class='meta'>" + messages[index].createdAtToString + "</div><div class='description'><p>"+ messages[index].text +".</p> <p>" + messages[index].secondPartText + ".</p> </div></div></div> ");
                 $('#userMessages').append(currentMessage);
             }
         }
@@ -40,8 +40,20 @@ window.onload = function () {
 }
 
 /* This function removes the message with the given id. */
-function removeMessage(id) {
+function removeMessage(id, idAnnouncement) {
+    var messageToDelete = {
+        "idMessage" : id,
+        "idAnnouncement": idAnnouncement
+    };
+    $.ajax({
+            method: 'POST',
+            url: '/estate/delete/message',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(messageToDelete),
+            success(data) {
 
+            }
+    });
 }
 
 /* This function deletes the announcement with given id. */

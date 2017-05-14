@@ -1,9 +1,6 @@
 package com.sgbd;
 
-        import com.sgbd.dto.EstateDTO;
-        import com.sgbd.dto.EstateUpdateDTO;
-        import com.sgbd.dto.MessageDTO;
-        import com.sgbd.dto.PaginatedEstatesDetails;
+        import com.sgbd.dto.*;
         import com.sgbd.model.Estate;
 
         import java.io.IOException;
@@ -29,4 +26,6 @@ public interface EstateService {
     void deleteEstate(Long estateId);
 
     void sendMessage(MessageDTO messageDTO);
+
+    void deleteMessage(MessageToDeleteDTO messageToDeleteDTO);
 }

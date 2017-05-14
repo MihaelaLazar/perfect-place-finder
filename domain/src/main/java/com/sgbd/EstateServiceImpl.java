@@ -1,8 +1,5 @@
 package com.sgbd;
-import com.sgbd.dto.EstateDTO;
-import com.sgbd.dto.EstateUpdateDTO;
-import com.sgbd.dto.MessageDTO;
-import com.sgbd.dto.PaginatedEstatesDetails;
+import com.sgbd.dto.*;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
@@ -222,6 +219,16 @@ public class EstateServiceImpl implements EstateService {
             estate.getEstateMessages().add(message);
             estateRepository.saveOrUpdate(estate);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteMessage(MessageToDeleteDTO messageToDeleteDTO) {
+        Estate estate = (Estate) estateRepository.findByAttribute("id", messageToDeleteDTO.getIdAnnouncement(), Estate.class);
+        estate.getEstateMessages()
+                .remove(estate.getEstateMessages().stream()
+                        .filter(message -> message.getId() == messageToDeleteDTO.getIdMessage()));
+        estateRepository.saveOrUpdate(estate);
     }
 
 }

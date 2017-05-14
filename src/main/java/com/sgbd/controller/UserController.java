@@ -2,6 +2,7 @@ package com.sgbd.controller;
 
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
+import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
