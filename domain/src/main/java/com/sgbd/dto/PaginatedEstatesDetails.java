@@ -12,6 +12,7 @@ public class PaginatedEstatesDetails {
     private Integer offset;
     private Integer totalCount;
     private List<Estate> estates;
+    private List<Long> favEstates;
 
     public PaginatedEstatesDetails() {
     }
@@ -44,5 +45,13 @@ public class PaginatedEstatesDetails {
 
     public void setEstates(List<Estate> estates) {
         this.estates = estates;
+    }
+
+    public List<Long> getFavEstates() {
+        return favEstates;
+    }
+
+    public void setFavEstates(List<Long> favEstates) {
+        this.favEstates = favEstates;
     }
 }

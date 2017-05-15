@@ -2,6 +2,7 @@ package com.sgbd.controller;
 
 import com.sgbd.EstateService;
 import com.sgbd.OracleCon;
+import com.sgbd.UserService;
 import com.sgbd.dto.*;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
@@ -18,6 +19,7 @@ import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.sql.SQLException;
@@ -35,6 +37,9 @@ public class EstateController {
 
     @Autowired
     private EstateService estateService;
+
+    @Autowired
+    private UserService userService;
 
     private static final int NUMBER_OF_COLUMNS = 13;
 
@@ -116,6 +121,24 @@ public class EstateController {
     public ResponseEntity<PaginatedEstatesDetails> getEstates(Request request, Response response){
         response.setContentType(JSON.getContentType());
         PaginatedEstatesDetails paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Long idUser = (Long) session.getAttribute("ID");
+            List<Estate> userFavEstates = userService.getUserFavoriteAnnouncements(idUser);
+            List<Long> userFavEstatesIds = new LinkedList<>();
+            if (userFavEstates != null && userFavEstates.size() > 0 ) {
+                for (int index = 0; index < paginatedEstatesDetails.getEstates().size(); index ++ ) {
+                    for (Estate favEstate : userFavEstates) {
+                        if (favEstate.getID().equals(paginatedEstatesDetails.getEstates().get(index).getID())){
+                            userFavEstatesIds.add(favEstate.getID());
+                        }
+                    }
+                }
+            }
+            paginatedEstatesDetails.setFavEstates(userFavEstatesIds);
+        } else {
+        }
+
         return new ResponseEntity<>(paginatedEstatesDetails, HttpStatus.OK);
     }
 
