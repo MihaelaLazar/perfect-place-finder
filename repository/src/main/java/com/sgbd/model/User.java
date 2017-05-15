@@ -37,12 +37,12 @@ public class User implements Serializable {
     @Column(name="PASSWORD", nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name="PF_FAV_ANNOUNCEMENTS",
-            joinColumns = { @JoinColumn(name = "ID_USER")},
-            inverseJoinColumns = {@JoinColumn(name="ID_ANNOUNCEMENT")}
-    )
-    private Set<Estate> favoriteAnnouncements;
+//    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinTable(name="PF_FAV_ANNOUNCEMENTS",
+//            joinColumns = { @JoinColumn(name = "ID_USER")},
+//            inverseJoinColumns = {@JoinColumn(name="ID_ANNOUNCEMENT")}
+//    )
+//    private Set<Estate> favoriteAnnouncements;
 
     @Transient
     private boolean enabled;
@@ -185,14 +185,6 @@ public class User implements Serializable {
             user.id = id;
             return this;
         }
-    }
-
-    public Set<Estate> getFavoriteAnnouncements() {
-        return favoriteAnnouncements;
-    }
-
-    public void setFavoriteAnnouncements(Set<Estate> favoriteAnnouncements) {
-        this.favoriteAnnouncements = favoriteAnnouncements;
     }
 
     public String getUsername() {

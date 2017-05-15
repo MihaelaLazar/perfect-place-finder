@@ -174,18 +174,24 @@ public class UserController {
 
     @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<User> addFavAnnouncement(Response response, Request request) {
-        Long id = Long.parseLong(request.getParameter("id"));
+    public ResponseEntity<String> addFavAnnouncement(Response response, Request request) {
+        HttpSession session = request.getSession();
+        Long id = (Long) session.getAttribute("ID");
+        if (session != null) {
+
+        }
+//        Long id = Long.parseLong(request.getParameter("id"));
         User user = null;
         try {
             user = (User) userService.findById(id);
             userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
-            return new ResponseEntity<>(user, HttpStatus.OK);
-
+            return new ResponseEntity<>("Announcement added to favorites", HttpStatus.OK);
         }catch (EntityNotFoundException e){
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
     @RequestMapping(path = "/user/get/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages (Response response, Request request) {

@@ -24,5 +24,5 @@ public interface UserRepository {
 
     void close();
 
-    User addFavoriteAnnouncement(User user, Long idAnnouncement);
+    void addFavoriteAnnouncement(User user, Long idAnnouncement);
 }

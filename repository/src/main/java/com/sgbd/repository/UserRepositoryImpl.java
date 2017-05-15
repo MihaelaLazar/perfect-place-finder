@@ -7,10 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -91,10 +88,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public User addFavoriteAnnouncement(User user, Long idAnnouncement) {
+    public void addFavoriteAnnouncement(User user, Long idAnnouncement) throws EntityNotFoundException {
         Estate estate = (Estate) estateRepository.findByAttribute(ESTATE_ID_COLUMN_NAME, idAnnouncement ,Estate.class);
-        user.getFavoriteAnnouncements().add(estate);
-        entityManager.merge(user);
-        return user;
+        if (estate != null) {
+            entityManager.createNativeQuery("INSERT INTO PF_FAV_ANNOUNCEMENTS VALUES(?,?)")
+                    .setParameter(1, user.getId())
+                    .setParameter(2,idAnnouncement)
+                    .executeUpdate();
+        } else {
+            throw new EntityNotFoundException("Announcement not found");
+        }
     }
 }
