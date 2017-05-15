@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public User addFavoriteAnnouncement(User user, Long idAnnouncement) {
         Estate estate = (Estate) estateRepository.findByAttribute(ESTATE_ID_COLUMN_NAME, idAnnouncement ,Estate.class);
-//        user.getFavoriteAnnouncements().add(estate);
+        user.getFavoriteAnnouncements().add(estate);
         entityManager.merge(user);
         return user;
     }

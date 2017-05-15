@@ -172,7 +172,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.GET)
+    @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<User> addFavAnnouncement(Response response, Request request) {
         Long id = Long.parseLong(request.getParameter("id"));
