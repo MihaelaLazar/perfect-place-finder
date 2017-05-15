@@ -4,6 +4,7 @@ import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
@@ -199,9 +200,10 @@ public class UserController {
         return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
     }
 
-//    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
-//    public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UpdateDTO updateDTO ) {
-//      userService.updateUser(updateDTO);
-//    }
+    @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
+    public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
+      userService.updateUser(userUpdateDTO);
+      return new ResponseEntity<String>("", HttpStatus.ACCEPTED);
+    }
 
 }

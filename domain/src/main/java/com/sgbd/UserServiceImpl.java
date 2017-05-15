@@ -108,13 +108,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(UserUpdateDTO updateDTO) {
-        User user = userRepository.findByAttribute("id", updateDTO.getIdUser(), User.class);
-        user.setFirstName(updateDTO.getFirstName());
-        user.setLastName(updateDTO.getLastName());
-        user.setEmail(updateDTO.getEmail());
+    public User updateUser(UserUpdateDTO userUpdateDTO) {
+        User user = userRepository.findByAttribute("id", userUpdateDTO.getIdUser(), User.class);
+        user.setFirstName(userUpdateDTO.getFirstName());
+        user.setLastName(userUpdateDTO.getLastName());
+        user.setEmail(userUpdateDTO.getEmail());
 
-        user=userRepository.saveOrUpdate(user);
+        user = userRepository.saveOrUpdate(user);
         return userRepository.saveOrUpdate(user);
     }
 
