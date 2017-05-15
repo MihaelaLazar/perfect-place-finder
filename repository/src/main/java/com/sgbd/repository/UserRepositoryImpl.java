@@ -99,4 +99,11 @@ public class UserRepositoryImpl implements UserRepository {
             throw new EntityNotFoundException("Announcement not found");
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement) {
+        entityManager.createNativeQuery("DELETE FROM PF_FAV_ANNOUNCEMENTS WHERE ID_USER = " + idUser + " AND ID_ANNOUNCEMENT = " + idAnnouncement)
+                .executeUpdate();
+    }
 }

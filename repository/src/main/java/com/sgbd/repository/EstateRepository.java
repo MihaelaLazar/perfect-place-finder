@@ -2,10 +2,10 @@ package com.sgbd.repository;
 
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -23,9 +23,11 @@ public interface EstateRepository {
 
     List<Estate> getUserAnnouncements(Long id);
 
-    List<Estate> getUserFavouriteAnnouncements(Long id);
+//    List<Estate> getUserFavouriteAnnouncements(Long id);
 
     void deleteAnnouncement(Serializable entity, Class modelClass);
 
     List<Estate> getUserEstates(Serializable id);
+
+    List<BigDecimal> getFavoriteAnnouncementsIds(Long id);
 }

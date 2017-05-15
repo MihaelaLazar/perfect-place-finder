@@ -6,6 +6,7 @@ import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by mihae on 4/3/2017.
  */
 public interface UserService {
+
     User findByEmail(String email);
 
     User getUser(String userEmail);
@@ -27,9 +29,13 @@ public interface UserService {
 
     List<Estate> getUserAnnouncements(Long id);
 
-    User setFavoriteAnnouncement(User user, Long idAnnouncement);
+    void setFavoriteAnnouncement(User user, Long idAnnouncement) throws EntityNotFoundException;
 
     List<Message> getUserMessages(Long id);
 
     User updateUser(UserUpdateDTO updateDTO);
+
+    List<Estate> getUserFavoriteAnnouncements(Long id);
+
+    void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement);
 }

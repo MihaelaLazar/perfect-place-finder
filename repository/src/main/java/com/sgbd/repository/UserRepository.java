@@ -3,6 +3,7 @@ package com.sgbd.repository;
 import com.sgbd.model.User;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -24,5 +25,7 @@ public interface UserRepository {
 
     void close();
 
-    void addFavoriteAnnouncement(User user, Long idAnnouncement);
+    void addFavoriteAnnouncement(User user, Long idAnnouncement) throws EntityNotFoundException;
+
+    void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement);
 }

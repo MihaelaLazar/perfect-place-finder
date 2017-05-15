@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -176,20 +177,54 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<String> addFavAnnouncement(Response response, Request request) {
         HttpSession session = request.getSession();
-        Long id = (Long) session.getAttribute("ID");
         if (session != null) {
-
-        }
-//        Long id = Long.parseLong(request.getParameter("id"));
-        User user = null;
-        try {
-            user = (User) userService.findById(id);
-            userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
-            return new ResponseEntity<>("Announcement added to favorites", HttpStatus.OK);
-        }catch (EntityNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            Long id = (Long) session.getAttribute("ID");
+            User user;
+            try {
+                user = userService.findById(id);
+                userService.setFavoriteAnnouncement(user,Long.parseLong(request.getParameter("idAnnouncement")));
+                return new ResponseEntity<>("Announcement added to favorites", HttpStatus.OK);
+            }catch (EntityNotFoundException e){
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(path = "/user/delete/favoriteAnnouncements", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<String> deleteFavAnnouncement(Response response, Request request) {
+//        HttpSession session = request.getSession();
+//        if (session != null) {
+//            Long id = (Long) session.getAttribute("ID");
+//            User user;
+            Long id = Long.valueOf(request.getParameter("id"));
+//            try {
+                userService.deleteFavoriteAnnouncement(id,Long.parseLong(request.getParameter("idAnnouncement")));
+                return new ResponseEntity<>("Announcement deleted from favorites", HttpStatus.OK);
+//            }catch (EntityNotFoundException e){
+//                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//            }
+//        } else {
+//            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
+//        }
+    }
+
+    @RequestMapping(path = "/user/get/favoriteAnnouncements", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<Estate>> getUserFavoriteAnnouncements(Response response, Request request){
+        HttpSession session = request.getSession();
+        List<Estate> favoriteAnnouncements = new LinkedList<>();
+        if (session != null) {
+            Long id = (Long) session.getAttribute("ID");
+            favoriteAnnouncements = userService.getUserFavoriteAnnouncements(id);
+            return new ResponseEntity<>(favoriteAnnouncements, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(favoriteAnnouncements, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 

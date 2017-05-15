@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -84,8 +87,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User setFavoriteAnnouncement(User user, Long idAnnouncement) {
-         return  userRepository.addFavoriteAnnouncement(user, idAnnouncement);
+    public void setFavoriteAnnouncement(User user, Long idAnnouncement) throws EntityNotFoundException {
+        userRepository.addFavoriteAnnouncement(user, idAnnouncement);
     }
 
     @Override
@@ -118,4 +121,23 @@ public class UserServiceImpl implements UserService{
         return userRepository.saveOrUpdate(user);
     }
 
+    @Override
+    public List<Estate> getUserFavoriteAnnouncements(Long id){
+        List<BigDecimal> favoriteAnnouncementsIds = estateRepository.getFavoriteAnnouncementsIds(id);
+        List<Estate> favoriteAnnouncements = new LinkedList<>();
+        if (favoriteAnnouncementsIds != null) {
+            for (BigDecimal idAnnouncement: favoriteAnnouncementsIds) {
+                Estate currentEstate = (Estate)estateRepository.findByAttribute("id", idAnnouncement.longValue(), Estate.class);
+                if (currentEstate != null) {
+                    favoriteAnnouncements.add(currentEstate);
+                }
+            }
+        }
+        return favoriteAnnouncements;
+    }
+
+    @Override
+    public void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement) {
+        userRepository.deleteFavoriteAnnouncement(idUser,idAnnouncement);
+    }
 }

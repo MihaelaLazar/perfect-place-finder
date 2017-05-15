@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -46,6 +47,13 @@ public class EstateRepositoryImpl implements EstateRepository {
         return results;
     }
 
+    @Override
+    public List<BigDecimal> getFavoriteAnnouncementsIds(Long id) {
+        Query query = entityManager.createNativeQuery("SELECT o.ID_ANNOUNCEMENT FROM PF_FAV_ANNOUNCEMENTS o WHERE o.ID_USER = " + id);
+        final List<BigDecimal> estatesIds = query.getResultList();
+        return estatesIds;
+    }
+
 
     @Override
     @Transactional
@@ -78,12 +86,6 @@ public class EstateRepositoryImpl implements EstateRepository {
         Query query = entityManager.createQuery("from Estate WHERE id_user = " + id);
         List<Estate> estates = (List<Estate>) query.getResultList();
         return estates;
-    }
-
-    @Override
-    @Transactional
-    public List<Estate> getUserFavouriteAnnouncements (Long id){
-        return null;
     }
 
     @Override
