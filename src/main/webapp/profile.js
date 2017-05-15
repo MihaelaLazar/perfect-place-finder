@@ -96,6 +96,7 @@ function removeFavoriteAnnouncement(id) {
                 $('#favouritesEstatesList').remove("#" + id);
                 var elementToDelete = document.getElementById(id);
                 elementToDelete.parentNode.removeChild(elementToDelete);
+                $("#" + id).remove();
             }
     });
 }

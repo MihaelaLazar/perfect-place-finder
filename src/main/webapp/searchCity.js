@@ -3,6 +3,8 @@ function goToAddProperty(){
     window.location = "/addProperty.html";
 }
 
+var loggedInUser;
+
 /* This function checks if session exists */
 function checkSession() {
     var request = new XMLHttpRequest();
@@ -17,12 +19,14 @@ function checkSession() {
           document.getElementById('logout-searchCity').style.display = 'block';
           document.getElementById('loggedIn-searchCity').style.display = 'block';
           $('#loggedInButton-searchCity').text(data);
+          loggedInUser = data;
     } else {
         console.log("not existent session");
         document.getElementById('login-searchCity').style.display = 'block';
         document.getElementById('signup-searchCity').style.display = 'block';
         document.getElementById('logout-searchCity').style.display = 'none';
         document.getElementById('loggedIn-searchCity').style.display = 'none';
+        loggedInUser = data;
     }
 }
 
@@ -72,6 +76,8 @@ function invalidateSessionSearchCity() {
              document.getElementById('signup-searchCity').style.display = 'block';
              document.getElementById('logout-searchCity').style.display = 'none';
              document.getElementById('loggedIn-searchCity').style.display='none';
+             checkSession();
+             getEstatesByFilter();
          }
      });
  }
@@ -291,10 +297,18 @@ function getEstatesByFilter() {
         var estatesByFilters = JSON.parse(data);
         for(var i = 0; i < estatesByFilters.estates.length; i ++ ) {
             var currentDiv;
-            if (estatesByFilters.estates[i].estateAttachements. length > 0) {
-                currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estatesByFilters.estates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estatesByFilters.estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+            if (loggedInUser != "not existent") {
+                if (estatesByFilters.estates[i].estateAttachements. length > 0) {
+                    currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estatesByFilters.estates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart" + estatesByFilters.estates[i].id + "' class='ui inverted blue button' onClick=changeLikeState('heart" + estatesByFilters.estates[i].id + "')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                } else {
+                    currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id + "' class='ui inverted blue button' onClick=changeLikeState('heart" + estatesByFilters.estates[i].id + "')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                }
             } else {
-                currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ estatesByFilters.estates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                if (estatesByFilters.estates[i].estateAttachements. length > 0) {
+                    currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + estatesByFilters.estates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart" + estatesByFilters.estates[i].id + "' class='ui inverted blue button' onClick=changeLikeState('heart" + estatesByFilters.estates[i].id + "') style='display:none;'><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
+                } else {
+                    currentDiv =  $("<div id='"+ estatesByFilters.estates[i].id +"' class='only row' onmouseover='raiseMarker(" + i + ")' onmouseout='unraiseMarker("+ i +")'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + estatesByFilters.estates[i].typeOfTransaction + " " + estatesByFilters.estates[i].rooms + " room/s " + estatesByFilters.estates[i].type + "</div><div class='meta'>" + estatesByFilters.estates[i].city + "</div><div class='description'>" + estatesByFilters.estates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><form method='get' action='estateDetails.html?estate="+ estatesByFilters.estates[i].id +"'><input type='hidden' name='estate' value='" + estatesByFilters.estates[i].id + "' /><button class='ui blue button' type='submit' onclick=redirectToEstate("+ estatesByFilters.estates[i].id +")>See details</button></form><form method='get' action='estateDetails.html?estate=" + estatesByFilters.estates[i].id  +"' ><button class='ui basic black button' type='submit'>Check availability</button></form></div></div><div class='two wide column'><button id='heart"+ estatesByFilters.estates[i].id + "' class='ui inverted blue button' onClick=changeLikeState('heart" + estatesByFilters.estates[i].id + "') style='display:none;'><i class='heart icon' style='width:8px; ></i></button></div></div></div></div></div></div>");
+                }
             }
             $("#estates").append(currentDiv);
             var address = estatesByFilters.estates[i].address.split(" ");
@@ -1110,6 +1124,8 @@ function verifyLoginDataSearchCity(loginData) {
                 document.getElementById('logout-searchCity').style.display = 'block';
                 $('#loggedInButton-searchCity').text(data);
                 document.getElementById('loggedIn-searchCity').style.display='block';
+                checkSession();
+                getEstatesByFilter();
         },
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
             console.log('error Status code ' + xhr.status);
