@@ -384,11 +384,26 @@ function getEstatesByFilter() {
  */
 function changeLikeState (id) {
     if ( $('#' + id).hasClass('blue') ){
-        $('#' + id).removeClass('blue');
-        $('#' + id).addClass('orange');
+        $.ajax({
+                method: 'POST',
+                url: '/user/add/favoriteAnnouncement?idAnnouncement=' +  id.substring(5),
+                contentType: false,
+                success(data) {
+                    $('#' + id).removeClass('blue');
+                    $('#' + id).addClass('orange');
+                }
+        });
     } else {
-        $('#' + id).removeClass('orange');
-        $('#' + id).addClass('blue');
+        $.ajax({
+                method: 'POST',
+                url: '/user/delete/favoriteAnnouncement?idAnnouncement=' +  id.substring(5),
+                contentType: false,
+                success(data) {
+                    $('#' + id).removeClass('orange');
+                    $('#' + id).addClass('blue');
+                }
+        });
+
     }
 }
 
