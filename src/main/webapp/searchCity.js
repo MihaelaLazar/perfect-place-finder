@@ -5,29 +5,6 @@ function goToAddProperty(){
 
 /* This function checks if session exists */
 function checkSession() {
-//    $.ajax({
-//        url: '/user/check/session',
-//        type: 'GET',
-//        success: function(data) {
-//            if (data === "not existent") {
-//                console.log("not existent session");
-//                document.getElementById('login-searchCity').style.display = 'block';
-//                document.getElementById('signup-searchCity').style.display = 'block';
-//                document.getElementById('logout-searchCity').style.display = 'none';
-//                document.getElementById('loggedIn-searchCity').style.display = 'none';
-//            } else {
-//                console.log("session existent");
-//                console.log(data);
-////                document.getElementById('loginButton').style.display='none';
-//                document.getElementById('login-searchCity').style.display = 'none';
-//                document.getElementById('signup-searchCity').style.display = 'none';
-//                document.getElementById('logout-searchCity').style.display = 'block';
-//                document.getElementById('loggedIn-searchCity').style.display = 'block';
-//                document.getElementById('addProperty').style.display = 'none';
-//                $('#loggedInButton-searchCity').text(data);
-//            }
-//        }
-//    });
     var request = new XMLHttpRequest();
     request.open('GET', '/user/check/session', false);  // `false` makes the request synchronous
     request.send(" ");

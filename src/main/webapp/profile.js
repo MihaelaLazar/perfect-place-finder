@@ -14,10 +14,9 @@ window.onload = function () {
                     favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='"+ userEstates[i].estateAttachements[0].iconUri + "'onclick='bounce()'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Additional Details</div></div></div>");
                  } else {
                      currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + userEstates[i].description + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'><button id='heart"+ userEstates[i].id +"' class='ui inverted blue button' onClick=changeLikeState('heart"+ userEstates[i].id+"')><i class='heart icon' style='width:8px;'></i></button></div></div></div></div></div></div>");
-                      favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='./images/house-logo-md.png'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Details</div></div></div>");
                  }
                  $("#estatesProfile").append(currentDiv);
-                 $("#favouritesEstatesList").append(favoriteAnnouncement);
+
             }
          }
     });
@@ -37,6 +36,35 @@ window.onload = function () {
             }
         }
     });
+
+    $.ajax({
+        method: 'GET',
+        url: '/user/get/favoriteAnnouncements',
+        contentType: false,
+        success(data) {
+            var favoriteAnnouncements = data;
+            for (var index = 0; index < favoriteAnnouncements.length; index ++) {
+                var currentAnnouncement;
+                var price;
+                if (favoriteAnnouncements[index].buyPrice > 0) {
+                    price = favoriteAnnouncements[index].buyPrice;
+                } else {
+                    price = favoriteAnnouncements[index].rentPrice + "/month";
+                }
+                if (favoriteAnnouncements[index].estateAttachements.length > 0) {
+                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div class='ui small image'> <img src='" + favoriteAnnouncements[index].estateAttachements[0].iconUri + "'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type +  "</a><div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
+                } else {
+                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div class='ui small image'> <img src='./images/house-logo-md.png'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type + "</a><div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
+                }
+                $("#favouritesEstatesList").append(currentAnnouncement);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + textStatus);
+        }
+    });
+
 }
 
 /* This function removes the message with the given id. */

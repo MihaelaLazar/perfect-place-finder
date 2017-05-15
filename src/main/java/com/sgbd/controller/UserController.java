@@ -175,7 +175,7 @@ public class UserController {
 
     @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addFavAnnouncement(Response response, Request request) {
+    public ResponseEntity<String> addFavoriteAnnouncement(Response response, Request request) {
         HttpSession session = request.getSession();
         if (session != null) {
             Long id = (Long) session.getAttribute("ID");
@@ -194,21 +194,20 @@ public class UserController {
 
     @RequestMapping(path = "/user/delete/favoriteAnnouncements", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> deleteFavAnnouncement(Response response, Request request) {
-//        HttpSession session = request.getSession();
-//        if (session != null) {
-//            Long id = (Long) session.getAttribute("ID");
-//            User user;
-            Long id = Long.valueOf(request.getParameter("id"));
-//            try {
+    public ResponseEntity<String> deleteFavoriteAnnouncement(Response response, Request request) {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            Long id = (Long) session.getAttribute("ID");
+            User user;
+            try {
                 userService.deleteFavoriteAnnouncement(id,Long.parseLong(request.getParameter("idAnnouncement")));
                 return new ResponseEntity<>("Announcement deleted from favorites", HttpStatus.OK);
-//            }catch (EntityNotFoundException e){
-//                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-//            }
-//        } else {
-//            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
-//        }
+            }catch (EntityNotFoundException e){
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(path = "/user/get/favoriteAnnouncements", method = RequestMethod.GET)
@@ -224,9 +223,6 @@ public class UserController {
             return new ResponseEntity<>(favoriteAnnouncements, HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 
     @RequestMapping(path = "/user/get/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getMessages (Response response, Request request) {
