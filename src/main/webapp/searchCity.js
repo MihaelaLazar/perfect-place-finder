@@ -822,6 +822,8 @@ function changeOverlay(id){
     }
 }
 
+var  waqiMapOverlay;
+
 /* This function removes the given overlay from the map */
 function removeOverlay(id) {
     if(id == 'trafficLayer'){
@@ -851,6 +853,7 @@ function removeOverlay(id) {
 //                        pollutionLayerBucuresti.setMap(null);
 //                        pollutionLayerNewYork.setMap(null);
 //                        pollutionLayerLondon.setMap(null);
+
                         map.overlayMapTypes.removeAt(0,waqiMapOverlay);
                     } else {
                         if (id === "congestionLayer"){
@@ -939,7 +942,7 @@ function addOverlay(id) {
                         }, callback);
                     } else {
                         if (id === "pollutionLayer") {
-                                var  waqiMapOverlay  =  new  google.maps.ImageMapType({
+                              waqiMapOverlay  =  new  google.maps.ImageMapType({
                               getTileUrl:  function(coord,  zoom)  {
                                         return  'https://tiles.waqi.info/tiles/usepa-aqi/'  +  zoom  +  "/"  +  coord.x  +  "/"  +  coord.y  +  ".png?token=_TOKEN_ID_";
                               },

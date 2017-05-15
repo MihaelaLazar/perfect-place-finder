@@ -192,7 +192,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(path = "/user/delete/favoriteAnnouncements", method = RequestMethod.POST)
+    @RequestMapping(path = "/user/delete/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteFavoriteAnnouncement(Response response, Request request) {
         HttpSession session = request.getSession();

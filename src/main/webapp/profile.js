@@ -52,9 +52,9 @@ window.onload = function () {
                     price = favoriteAnnouncements[index].rentPrice + "/month";
                 }
                 if (favoriteAnnouncements[index].estateAttachements.length > 0) {
-                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div class='ui small image'> <img src='" + favoriteAnnouncements[index].estateAttachements[0].iconUri + "'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type +  "</a><div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
+                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div onclick='removeFavoriteAnnouncement(" + favoriteAnnouncements[index].id + ")'><i class='right floated remove icon'></i></div><div class='ui small image'> <img src='" + favoriteAnnouncements[index].estateAttachements[0].iconUri + "'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type +  "</a> <div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
                 } else {
-                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div class='ui small image'> <img src='./images/house-logo-md.png'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type + "</a><div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
+                      currentAnnouncement = $("<div class='item' id='"+ favoriteAnnouncements[index].id +"'><div onclick='removeFavoriteAnnouncement(" + favoriteAnnouncements[index].id + ")'><i class='right floated remove icon'></div></i><div class='ui small image'> <img src='./images/house-logo-md.png'></div><div class='content'><a class='header' href='/estateDetails.html?estate=" + favoriteAnnouncements[index].id  +"'>" + favoriteAnnouncements[index].typeOfTransaction + " " + favoriteAnnouncements[index].rooms + " room/s " + favoriteAnnouncements[index].type + "</a><div class='meta'><br><span>" + favoriteAnnouncements[index].description + "</span></div><div class='description'><p></p></div><div class='extra'><br><strong>$ " + price + "</strong></div></div></div>");
                 }
                 $("#favouritesEstatesList").append(currentAnnouncement);
             }
@@ -80,6 +80,20 @@ function removeMessage(id, idAnnouncement) {
             data: JSON.stringify(messageToDelete),
             success(data) {
                 $('#userMessages').remove("#" + id);
+                var elementToDelete = document.getElementById(id);
+                elementToDelete.parentNode.removeChild(elementToDelete);
+            }
+    });
+}
+
+/* This function removes the saved announcement with the given id. */
+function removeFavoriteAnnouncement(id) {
+    $.ajax({
+            method: 'POST',
+            url: '/user/delete/favoriteAnnouncement?idAnnouncement=' + id,
+            contentType: false,
+            success(data) {
+                $('#favouritesEstatesList').remove("#" + id);
                 var elementToDelete = document.getElementById(id);
                 elementToDelete.parentNode.removeChild(elementToDelete);
             }
