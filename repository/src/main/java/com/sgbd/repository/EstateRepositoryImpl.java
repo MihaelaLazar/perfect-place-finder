@@ -58,10 +58,10 @@ public class EstateRepositoryImpl implements EstateRepository {
     @Override
     @Transactional
     public PaginatedEstatesDetails getEstatesByFilters(String queryFilters, Integer offset){
-        List estates = entityManager.createQuery("from Estate WHERE " + queryFilters).setFirstResult(offset).setMaxResults(offset + 10).getResultList();
+        List estates = entityManager.createQuery("from Estate WHERE " + queryFilters + " ORDER BY ID").setFirstResult(offset).setMaxResults(10).getResultList();
         PaginatedEstatesDetails paginatedEstatesDetails = new PaginatedEstatesDetails();
         paginatedEstatesDetails.setEstates(estates);
-        paginatedEstatesDetails.setTotalCount( entityManager.createQuery("from Estate WHERE " + queryFilters).getResultList().size());
+        paginatedEstatesDetails.setTotalCount( entityManager.createQuery("from Estate WHERE " + queryFilters ).getResultList().size());
         paginatedEstatesDetails.setOffset(offset);
         return paginatedEstatesDetails;
     }
@@ -83,7 +83,7 @@ public class EstateRepositoryImpl implements EstateRepository {
     @Override
     @Transactional
     public List<Estate> getUserAnnouncements(Long id) {
-        Query query = entityManager.createQuery("from Estate WHERE id_user = " + id);
+        Query query = entityManager.createQuery("from Estate WHERE ID_USER = " + id);
         List<Estate> estates = (List<Estate>) query.getResultList();
         return estates;
     }
