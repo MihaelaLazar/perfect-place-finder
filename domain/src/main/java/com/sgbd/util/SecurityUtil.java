@@ -21,6 +21,14 @@ public class SecurityUtil {
         return passwordAndKey;
     }
 
+    public static SecretKey getSecretKeyFromDB(String dbKey){
+        byte[] decodedKey = Base64.getDecoder().decode(dbKey);
+        // rebuild key using SecretKeySpec
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        System.out.println("After key(hex form) : " + bytesToHex(originalKey.getEncoded()));
+        return originalKey;
+    }
+
     /**
      * gets the AES encryption key. In your actual programs, this should be safely
      * stored.
@@ -69,7 +77,7 @@ public class SecurityUtil {
      * @param hash
      * @return
      */
-    private static String  bytesToHex(byte[] hash) {
+    public static String  bytesToHex(byte[] hash) {
         return DatatypeConverter.printHexBinary(hash);
     }
 }

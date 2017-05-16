@@ -6,6 +6,7 @@ import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.InvalidRegexException;
+import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
@@ -87,7 +88,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
 //        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(encrypt(user.getPassword()));
+//        user.setPassword(encrypt(user.getPassword()));
         try {
             userService.createUser(user);
             response.setContentType(JSON.getContentType());
@@ -132,6 +133,9 @@ public class UserController {
             session.removeAttribute("username");
             session.removeAttribute("tokenID");
             return new ResponseEntity<String>("EMAIL NOT FOUND", HttpStatus.FORBIDDEN);
+        } catch (InvalidUserPasswordException e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 

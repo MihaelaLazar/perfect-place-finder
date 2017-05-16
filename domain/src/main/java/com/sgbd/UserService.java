@@ -3,6 +3,7 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.InvalidRegexException;
+import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
@@ -26,7 +27,7 @@ public interface UserService {
 
     User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException, InvalidRegexException;
 
-    User findByEmailAndPassword(String email, String password);
+    User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException;
 
     List<Estate> getUserAnnouncements(Long id);
 

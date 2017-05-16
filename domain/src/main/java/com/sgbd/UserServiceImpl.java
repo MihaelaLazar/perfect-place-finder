@@ -3,11 +3,13 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.InvalidRegexException;
+import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
+import com.sgbd.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Decoder;
 
+import javax.crypto.SecretKey;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -77,11 +80,22 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException, InvalidRegexException{
         User user = new User();
-        validateUserEmail(user.getEmail());
+        try {
+            validateUserEmail(signUpDTO.getEmail());
+        } catch (InvalidRegexException e) {
+            throw new InvalidRegexException("Invalid email");
+        }
         user.setFirstName(signUpDTO.getFirstName());
         user.setLastName(signUpDTO.getLastName());
         user.setEmail(signUpDTO.getEmail());
         user.setPassword(signUpDTO.getPassword());
+        try {
+            String passAndKey[] = SecurityUtil.encryptPassword(user.getPassword());
+            user.setPassword(passAndKey[0]);
+            user.setKey(passAndKey[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return userRepository.createUser(user);
     }
 
@@ -107,13 +121,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findByEmailAndPassword(String email, String password) {
+    public User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException {
         User user = (User) findByEmail(email);
-        String pass = decrypt(user.getPassword());
-        if (!password.equals(decrypt(user.getPassword()))) {
-            return null;
-        }else {
-            return user;
+        SecretKey key = SecurityUtil.getSecretKeyFromDB(user.getKey());
+        try {
+            String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
+            if (!currentPass.equals(user.getPassword())) {
+                throw new InvalidUserPasswordException("Invalid password");
+            }else {
+                return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  null;
         }
     }
 

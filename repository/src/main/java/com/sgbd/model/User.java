@@ -37,6 +37,9 @@ public class User implements Serializable {
     @Column(name="PASSWORD", nullable = false)
     private String password;
 
+    @Column(name="KEY")
+    private String key;
+
 //    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @JoinTable(name="PF_FAV_ANNOUNCEMENTS",
 //            joinColumns = { @JoinColumn(name = "ID_USER")},
@@ -54,11 +57,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String email, String firstName, String lastName, String password) {
+    public User(String email, String firstName, String lastName, String password, String key) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.key = key;
     }
 
     public User(Long id, String email, String firstName, String lastName,
@@ -120,6 +124,14 @@ public class User implements Serializable {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override
