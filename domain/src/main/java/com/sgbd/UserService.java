@@ -38,4 +38,10 @@ public interface UserService {
     List<Estate> getUserFavoriteAnnouncements(Long id);
 
     void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement);
+
+    User getLoggedInUser();
+
+    String getLoggedInUserEmail();
+
+    Long getLoggedInUserId();
 }

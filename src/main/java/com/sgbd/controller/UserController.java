@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.Cookie;
@@ -24,10 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.sgbd.util.ContentType.JSON;
 
@@ -71,13 +70,25 @@ public class UserController {
         return "";
     }
 
+    public String encrypt(String str) {
+
+        Random rand = new Random((new Date()).getTime());
+        BASE64Encoder encoder = new BASE64Encoder();
+
+        byte[] salt = new byte[8];
+
+        rand.nextBytes(salt);
+
+        return encoder.encode(salt) + encoder.encode(str.getBytes());
+    }
+
 
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
-
-
-
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(encrypt(user.getPassword()));
         try {
             userService.createUser(user);
             response.setContentType(JSON.getContentType());
@@ -89,6 +100,16 @@ public class UserController {
             response.setContentType(JSON.getContentType());
             return new ResponseEntity<>("DUPLICATE", HttpStatus.CONFLICT);
         }
+    }
+
+    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    public String login (Response response, Request request){
+        try {
+            response.sendRedirect("/homePage.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @RequestMapping(path = "/verify/user", method = RequestMethod.POST)

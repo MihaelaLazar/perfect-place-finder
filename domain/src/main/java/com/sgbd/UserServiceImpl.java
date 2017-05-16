@@ -9,9 +9,13 @@ import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -76,10 +80,24 @@ public class UserServiceImpl implements UserService{
         return userRepository.createUser(user);
     }
 
+    public  String decrypt(String encstr) {
+
+        if (encstr.length() > 12) {
+            String cipher = encstr.substring(12);
+            BASE64Decoder decoder = new BASE64Decoder();
+            try {
+                return new String(decoder.decodeBuffer(cipher));
+            } catch (IOException e) {
+            }
+        }
+        return null;
+    }
+
     @Override
     public User findByEmailAndPassword(String email, String password) {
         User user = (User) findByEmail(email);
-        if (!user.getPassword().equals(password)) {
+        String pass = decrypt(user.getPassword());
+        if (!password.equals(decrypt(user.getPassword()))) {
             return null;
         }else {
             return user;
@@ -140,4 +158,28 @@ public class UserServiceImpl implements UserService{
     public void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement) {
         userRepository.deleteFavoriteAnnouncement(idUser,idAnnouncement);
     }
+
+    @Override
+    public User getLoggedInUser() {
+        return this.getUser(getLoggedInUserEmail());
+    }
+
+    @Override
+    public String getLoggedInUserEmail(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
+    @Override
+    public Long getLoggedInUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = this.findByEmail(getLoggedInUserEmail());
+        if (currentUser != null){
+            return currentUser.getId();
+        }
+        else{
+            return -1L;
+        }
+    }
+
 }
