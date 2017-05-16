@@ -2,6 +2,7 @@ package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Decoder;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +23,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
@@ -70,14 +74,23 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException{
+    @Transactional
+    public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException, InvalidRegexException{
         User user = new User();
-        System.out.println("FIRST NAME: " + signUpDTO.getFirstName());
+        validateUserEmail(user.getEmail());
         user.setFirstName(signUpDTO.getFirstName());
         user.setLastName(signUpDTO.getLastName());
         user.setEmail(signUpDTO.getEmail());
         user.setPassword(signUpDTO.getPassword());
         return userRepository.createUser(user);
+    }
+
+    private void validateUserEmail(String email) throws InvalidRegexException {
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.find()){
+            throw new InvalidRegexException("Invalid email format");
+        }
     }
 
     public  String decrypt(String encstr) {

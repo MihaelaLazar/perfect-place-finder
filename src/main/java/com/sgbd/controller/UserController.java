@@ -5,6 +5,7 @@ import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
@@ -31,7 +32,6 @@ import java.util.*;
 import static com.sgbd.util.ContentType.JSON;
 
 @RestController
-//@RequestMapping(path="/user")
 public class UserController {
 
     @Autowired
@@ -86,8 +86,7 @@ public class UserController {
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         user.setPassword(encrypt(user.getPassword()));
         try {
             userService.createUser(user);
@@ -99,18 +98,21 @@ public class UserController {
         } catch (SQLIntegrityConstraintViolationException e) {
             response.setContentType(JSON.getContentType());
             return new ResponseEntity<>("DUPLICATE", HttpStatus.CONFLICT);
+        } catch (InvalidRegexException e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
-    @RequestMapping(path = "/login", method = RequestMethod.GET)
-    public String login (Response response, Request request){
-        try {
-            response.sendRedirect("/homePage.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    @RequestMapping(path = "/login", method = RequestMethod.GET)
+//    public String login (Response response, Request request){
+//        try {
+//            response.sendRedirect("/homePage.html");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
 
     @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
     @ResponseBody
