@@ -2,6 +2,7 @@ package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
@@ -25,7 +26,7 @@ public interface UserService {
 
     User findById (Long userId);
 
-    User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException, InvalidRegexException;
+    User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException, EmptyInputException;
 
     User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException;
 

@@ -5,6 +5,7 @@ import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
@@ -87,8 +88,6 @@ public class UserController {
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
-//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//        user.setPassword(encrypt(user.getPassword()));
         try {
             userService.createUser(user);
             response.setContentType(JSON.getContentType());
@@ -99,21 +98,11 @@ public class UserController {
         } catch (SQLIntegrityConstraintViolationException e) {
             response.setContentType(JSON.getContentType());
             return new ResponseEntity<>("DUPLICATE", HttpStatus.CONFLICT);
-        } catch (InvalidRegexException e) {
+        }catch (EmptyInputException e) {
             e.printStackTrace();
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
-
-//    @RequestMapping(path = "/login", method = RequestMethod.GET)
-//    public String login (Response response, Request request){
-//        try {
-//            response.sendRedirect("/homePage.html");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return "";
-//    }
 
     @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
     @ResponseBody

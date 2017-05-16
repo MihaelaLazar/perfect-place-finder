@@ -2,6 +2,7 @@ package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
@@ -10,6 +11,7 @@ import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import com.sgbd.util.SecurityUtil;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
@@ -78,12 +80,26 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException, InvalidRegexException{
+    public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException,EmptyInputException{
         User user = new User();
+        String errorMessages = "";
         try {
             validateUserEmail(signUpDTO.getEmail());
         } catch (InvalidRegexException e) {
-            throw new InvalidRegexException("Invalid email");
+            errorMessages += e.getMessage() + ";";
+        }
+        try {
+            validateUserLastName(signUpDTO.getLastName());
+        } catch (EmptyInputException e) {
+            errorMessages += e.getMessage() + ";";
+        }
+        try {
+            validateUserFirstName(signUpDTO.getFirstName());
+        } catch (EmptyInputException e) {
+            errorMessages += e.getMessage() + ";";
+        }
+        if (signUpDTO.getPassword().length() < 4) {
+            errorMessages += "invalid password" + ";";
         }
         user.setFirstName(signUpDTO.getFirstName());
         user.setLastName(signUpDTO.getLastName());
@@ -96,16 +112,36 @@ public class UserServiceImpl implements UserService{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (errorMessages != null) {
+            throw new EmptyInputException(errorMessages);
+        }
         return userRepository.createUser(user);
     }
 
     private void validateUserEmail(String email) throws InvalidRegexException {
-        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.find()){
+        boolean valid = EmailValidator.getInstance().isValid(email);
+        if (!valid){
             throw new InvalidRegexException("Invalid email format");
         }
+//        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
+//        Matcher matcher = pattern.matcher(email);
+//        if (!matcher.find()){
+//            throw new InvalidRegexException("Invalid email format");
+//        }
     }
+
+    private void validateUserLastName(String lastName) throws EmptyInputException{
+        if (lastName == "" || lastName.length() < 2) {
+            throw new EmptyInputException("Invalid lastName");
+        }
+    }
+
+    private void validateUserFirstName(String firstName) throws EmptyInputException{
+        if (firstName == "" || firstName.length() < 2) {
+            throw new EmptyInputException("Invalid firstName");
+        }
+    }
+
 
     public  String decrypt(String encstr) {
 
