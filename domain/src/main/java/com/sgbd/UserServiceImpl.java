@@ -104,9 +104,9 @@ public class UserServiceImpl implements UserService{
             user.setPassword(passAndKey[0]);
             user.setKey(passAndKey[1]);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
-        if (errorMessages != null) {
+        if (!errorMessages.equals("")) {
             throw new EmptyInputException(errorMessages);
         }
         return userRepository.createUser(user);
@@ -115,12 +115,7 @@ public class UserServiceImpl implements UserService{
     private String validateUserEmail(String email) throws InvalidRegexException{
         boolean valid = EmailValidator.getInstance().isValid(email);
         if (!valid){
-            throw new InvalidRegexException("Invalid email format");
-        }
-        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.find()){
-            throw new InvalidRegexException("Invalid email format");
+            throw new InvalidRegexException("Invalid email format;");
         }
 //        BindingResult result = null;
 //        validator.validate(email, result);
@@ -133,7 +128,7 @@ public class UserServiceImpl implements UserService{
 
     private String validateUserLastName(String lastName) throws EmptyInputException{
         if (lastName == "" || lastName.length() < 2) {
-            throw new EmptyInputException("Invalid lastName");
+            return "Invalid lastName;";
         }
 //        BindingResult result = null;
 //        validator.validate(lastName, result);
@@ -150,20 +145,15 @@ public class UserServiceImpl implements UserService{
 //            return  "invalid firstName;";
 //        }
         if (firstName == "" || firstName.length() < 2) {
-            throw new EmptyInputException("Invalid firstName");
+            return  "Invalid firstName;";
         }
         return "";
     }
 
     private String validateUserPassword(String password) throws EmptyInputException{
         if (password == "" || password.length() < 2) {
-            throw new EmptyInputException("Invalid password length");
+            return "Invalid password length;";
         }
-//        BindingResult result = null;
-//        validator.validate(password, result);
-//        if (result != null && result.hasErrors()) {
-//            return  "invalid password;";
-//        }
         return "";
     }
 
@@ -188,7 +178,7 @@ public class UserServiceImpl implements UserService{
         try {
             String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
             if (!currentPass.equals(user.getPassword())) {
-                throw new InvalidUserPasswordException("Invalid password");
+                throw new InvalidUserPasswordException("Invalid password;");
             }else {
                 return user;
             }

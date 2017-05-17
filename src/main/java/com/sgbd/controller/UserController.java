@@ -96,7 +96,6 @@ public class UserController {
             response.setContentType(JSON.getContentType());
             return new ResponseEntity<>("DUPLICATE", HttpStatus.CONFLICT);
         }catch (EmptyInputException e) {
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
@@ -106,7 +105,7 @@ public class UserController {
     public ResponseEntity<String> validateUser(Response response, Request request, @RequestBody LoginDTO loginDTO) {
         HttpSession session = request.getSession(true);
         try {
-            User user = (User) userService.findByEmailAndPassword(loginDTO.getEmail(),loginDTO.getPassword());
+            User user =  userService.findByEmailAndPassword(loginDTO.getEmail(),loginDTO.getPassword());
             String tokenID = session.getId();
             session.setAttribute("username",user.getUsername());
             session.setAttribute("tokenID", tokenID);

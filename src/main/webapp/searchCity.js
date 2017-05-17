@@ -1161,6 +1161,11 @@ window.onclick = function(event) {
             } else {
                 if (event.target ===  document.getElementById('signInStatusFailed')){
                     document.getElementById('signInStatusFailed').style.display='none';
+                    $("#email").val("");
+                    $("#passwordSignUp").val("");
+                    $("#first-name").val("");
+                    $("#last-name").val("");
+
                 } else {
                     if (event.target ===  document.getElementById('logInStatus')){
                         document.getElementById('logInStatus').style.display='none';
@@ -1242,15 +1247,13 @@ function logInPOST() {
         $("#password-login").val("");
     }
 }
+
 /* POST request to server for user sign up.  */
-function signUpPOST() {
+function signUpInSearchCity () {
     $('#password-input').removeClass('error');
     $('#first-name-input').removeClass('error');
     $('#last-name-input').removeClass('error');
     $('#email-input').removeClass('error');
-    console.log('signUpPOST');
-    var url = "/create/user";
-    var method = "POST";
     var firstNameInput = document.getElementById('first-name');
     var firstName = firstNameInput.value;
     var lastNameInput = document.getElementById('last-name');
@@ -1259,75 +1262,66 @@ function signUpPOST() {
     var password = passInput.value;
     var emailInput = document.getElementById('email');
     var email = emailInput.value;
-    var isValid = true;
-    var atpos = email.indexOf("@");
-    var dotpos = email.lastIndexOf(".");
-    if (firstName === "") {
-        $('#first-name-input').addClass('error');
-        $('#first-name').attr("placeholder","Insert first name");
-        $('#errorMessage').text("Insert first name");
-        $('#errorMessageContainer').css("display", "block");
-        isValid = false;
-    }
-    if (lastName === "") {
-        $('#last-name-input').addClass('error');
-        $('#last-name').attr("placeholder","Insert last name");
-        $('#errorMessage').text("Insert last name");
-        $('#errorMessageContainer').css("display", "block");
-
-        isValid = false;
-    }
-    if (password === "") {
-        $('#password-input').addClass('error');
-        $('#passwordSignUp').attr("placeholder","Insert password");
-        $('#errorMessage').text("Insert password");
-        $('#errorMessageContainer').css("display", "block");
-
-        isValid = false;
-    }
-    if (email === "" || atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
-        $('#email-input').addClass('error');
-        $('#email').attr("placeholder","Insert email");
-        $('#errorMessage').text("Insert email");
-        $('#errorMessageContainer').css("display", "block");
-
-        isValid = false;
-    }
     var postData = {
-        "first-name": firstName,
-        "last-name" : lastName,
+        "firstName": firstName,
+        "lastName" : lastName,
         "password" : password,
         "email" : email
-
     };
-    if (isValid === true ){
-        var async = true;
-        var request = new XMLHttpRequest();
-        var status;
-        var data;
-        request.onload = function () {
-            status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-            data = request.responseText; // Returned data, e.g., an HTML document.
-            if (data === 'DUPLICATE') {
-                console.log ("DUPLICATE EMAIL");
+    $.ajax ({
+        method: 'POST',
+        url: '/create/user',
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify(postData),
+        success(data){
+            document.getElementById('signupButton').style.display='none';
+            document.getElementById('signInStatus').style.display='block';
+            document.getElementById('signupButton').style.display='none';
+            $("#email").val("");
+            $("#passwordSignUp").val("");
+            $("#first-name").val("");
+            $("#last-name").val("");
+        },
+        error: function (xhr, ajaxOptions, thrownError, textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + xhr.responseText);
+            if (xhr.responseText === "DUPLICATE") {
                 document.getElementById('signupButton').style.display='none';
                 document.getElementById('signInStatusFailed').style.display='block';
-            } else {
-                document.getElementById('signupButton').style.display='none';
-                document.getElementById('signInStatus').style.display='block';
+
+            }
+            var errors = xhr.responseText.split(';');
+            for (var i = 0; i < errors.length; i ++) {
+                if (errors[i] === "Invalid email format") {
+                    $('#email-input').addClass('error');
+                    $('#email').attr("placeholder","Insert email");
+                    $('#errorMessage').text("Insert email");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+
+                if (errors[i] === "Invalid lastName") {
+                    $('#last-name-input').addClass('error');
+                    $('#last-name').attr("placeholder","Insert last name");
+                    $('#errorMessage').text("Insert last name");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+
+                if (errors[i] === "Invalid firstName") {
+                    $('#first-name-input').addClass('error');
+                    $('#first-name').attr("placeholder","Insert first name");
+                    $('#errorMessage').text("Insert first name");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+
+                if (errors[i] === "Invalid password length") {
+                    $('#password-input').addClass('error');
+                    $('#passwordSignUp').attr("placeholder","Insert valid password");
+                    $('#errorMessage').text("Insert password");
+                    $('#errorMessageContainer').css("display", "block");
+                }
             }
         }
-
-        request.open(method, url,true);
-        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        request.send(JSON.stringify(postData));
-        document.getElementById('signupButton').style.display='none';
-        $("#email").val("");
-        $("#passwordSignUp").val("");
-        $("#first-name").val("");
-        $("#last-name").val("");
-
-    }
+    });
 }
 
 /* An event trigger/listener for button "Submit" from login. */

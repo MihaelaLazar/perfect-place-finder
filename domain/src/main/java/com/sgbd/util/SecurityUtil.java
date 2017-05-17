@@ -25,7 +25,7 @@ public class SecurityUtil {
         byte[] decodedKey = Base64.getDecoder().decode(dbKey);
         // rebuild key using SecretKeySpec
         SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        System.out.println("After key(hex form) : " + bytesToHex(originalKey.getEncoded()));
+//        System.out.println("After key(hex form) : " + bytesToHex(originalKey.getEncoded()));
         return originalKey;
     }
 
