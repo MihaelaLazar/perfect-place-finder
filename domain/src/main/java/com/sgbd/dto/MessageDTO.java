@@ -4,6 +4,8 @@ public class MessageDTO {
 
     private String dateToMove;
     private String email;
+
+//    @Phone
     private String phone;
     private String name;
     private Long estateId;

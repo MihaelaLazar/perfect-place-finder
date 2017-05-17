@@ -13,11 +13,14 @@ import com.sgbd.repository.UserRepository;
 import com.sgbd.util.SecurityUtil;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.SecretKey;
@@ -35,15 +38,14 @@ import java.util.regex.Pattern;
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
 import static com.sgbd.model.User.USER_ID_COLUMN_NAME;
 
-/**
- * Created by mihae on 4/3/2017.
- */
-
 @Service
 public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+//    @Autowired
+//    private Validator validator;
 
     @Autowired
     EstateRepository estateRepository;
@@ -83,28 +85,20 @@ public class UserServiceImpl implements UserService{
     public User createUser(SignUpDTO signUpDTO) throws DataIntegrityViolationException,SQLIntegrityConstraintViolationException,EmptyInputException{
         User user = new User();
         String errorMessages = "";
+        errorMessages += validateUserFirstName(signUpDTO.getFirstName());
         try {
-            validateUserEmail(signUpDTO.getEmail());
+            errorMessages += validateUserEmail(signUpDTO.getEmail());
         } catch (InvalidRegexException e) {
-            errorMessages += e.getMessage() + ";";
+            errorMessages += e.getMessage();
         }
-        try {
-            validateUserLastName(signUpDTO.getLastName());
-        } catch (EmptyInputException e) {
-            errorMessages += e.getMessage() + ";";
+        errorMessages += validateUserLastName(signUpDTO.getLastName());
+        errorMessages += validateUserPassword(signUpDTO.getPassword());
+        if (errorMessages == "") {
+            user.setFirstName(signUpDTO.getFirstName());
+            user.setLastName(signUpDTO.getLastName());
+            user.setEmail(signUpDTO.getEmail());
+            user.setPassword(signUpDTO.getPassword());
         }
-        try {
-            validateUserFirstName(signUpDTO.getFirstName());
-        } catch (EmptyInputException e) {
-            errorMessages += e.getMessage() + ";";
-        }
-        if (signUpDTO.getPassword().length() < 4) {
-            errorMessages += "invalid password" + ";";
-        }
-        user.setFirstName(signUpDTO.getFirstName());
-        user.setLastName(signUpDTO.getLastName());
-        user.setEmail(signUpDTO.getEmail());
-        user.setPassword(signUpDTO.getPassword());
         try {
             String passAndKey[] = SecurityUtil.encryptPassword(user.getPassword());
             user.setPassword(passAndKey[0]);
@@ -118,28 +112,59 @@ public class UserServiceImpl implements UserService{
         return userRepository.createUser(user);
     }
 
-    private void validateUserEmail(String email) throws InvalidRegexException {
+    private String validateUserEmail(String email) throws InvalidRegexException{
         boolean valid = EmailValidator.getInstance().isValid(email);
         if (!valid){
             throw new InvalidRegexException("Invalid email format");
         }
-//        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
-//        Matcher matcher = pattern.matcher(email);
-//        if (!matcher.find()){
-//            throw new InvalidRegexException("Invalid email format");
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$");
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.find()){
+            throw new InvalidRegexException("Invalid email format");
+        }
+//        BindingResult result = null;
+//        validator.validate(email, result);
+//        if (result != null && result.hasErrors()) {
+//            return  "invalid email;";
 //        }
+        return "";
+
     }
 
-    private void validateUserLastName(String lastName) throws EmptyInputException{
+    private String validateUserLastName(String lastName) throws EmptyInputException{
         if (lastName == "" || lastName.length() < 2) {
             throw new EmptyInputException("Invalid lastName");
         }
+//        BindingResult result = null;
+//        validator.validate(lastName, result);
+//        if (result != null && result.hasErrors()) {
+//            return  "invalid lastName;";
+//        }
+        return "";
     }
 
-    private void validateUserFirstName(String firstName) throws EmptyInputException{
+    private String validateUserFirstName(String firstName) throws EmptyInputException{
+//        BindingResult result = null;
+//        validator.validate(firstName, result);
+//        if (result != null && result.hasErrors()) {
+//            return  "invalid firstName;";
+//        }
         if (firstName == "" || firstName.length() < 2) {
             throw new EmptyInputException("Invalid firstName");
         }
+        return "";
+    }
+
+    private String validateUserPassword(String password) throws EmptyInputException{
+        if (password == "" || password.length() < 2) {
+            throw new EmptyInputException("Invalid password length");
+        }
+//        BindingResult result = null;
+//        validator.validate(password, result);
+//        if (result != null && result.hasErrors()) {
+//            return  "invalid password;";
+//        }
+        return "";
     }
 
 

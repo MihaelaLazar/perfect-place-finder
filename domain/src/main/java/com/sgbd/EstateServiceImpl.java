@@ -3,7 +3,6 @@ import com.sgbd.dto.*;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
-import com.sgbd.model.User;
 import com.sgbd.repository.AttachementRepository;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
@@ -12,12 +11,11 @@ import com.sgbd.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.sgbd.model.Estate.ESTATE_ID_COLUMN_NAME;
@@ -38,6 +36,9 @@ public class EstateServiceImpl implements EstateService {
 
     @Autowired
     AttachementRepository attachementRepository;
+
+//    @Autowired
+//    private Validator validator;
 
     @Override
     public Serializable findById (Long userId) {

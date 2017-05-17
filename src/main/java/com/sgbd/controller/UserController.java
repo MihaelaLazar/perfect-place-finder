@@ -2,11 +2,9 @@ package com.sgbd.controller;
 
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
-import com.sgbd.dto.MessageToDeleteDTO;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.EmptyInputException;
-import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
@@ -17,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
-
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +34,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public Object redirectToHomePage(Request request, Response response) {

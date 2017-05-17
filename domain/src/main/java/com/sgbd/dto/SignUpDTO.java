@@ -1,11 +1,29 @@
 package com.sgbd.dto;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class SignUpDTO {
 
+    @NotEmpty
     private String firstName;
+
+    @NotEmpty
     private String lastName;
+
+    @NotEmpty
     private String username;
+
+    @NotEmpty
+    @Length(min = 4, max = 10)
     private String password;
+
+    @Email
+    @Length(min = 8, max = 80)
     private String email;
 
     public SignUpDTO() {
