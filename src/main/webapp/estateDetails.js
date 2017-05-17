@@ -506,9 +506,17 @@ window.onclick = function(event) {
                 } else {
                     if (event.target === modalLoginStatusEstateDetails)  {
                         document.getElementById('logInStatus-EstateDetails').style.display='none';
+                        $("#email-EstateDetails").val("");
+                        $("#passwordSignUp-EstateDetails").val("");
+                        $("#first-name-EstateDetails").val("");
+                        $("#last-name-EstateDetails").val("");
                     } else {
                         if (event.target === modalLoginStatusFailedEstateDetails) {
                             document.getElementById('logInStatusFailed-EstateDetails').style.display='none';
+                            $("#email-EstateDetails").val("");
+                            $("#passwordSignUp-EstateDetails").val("");
+                            $("#first-name-EstateDetails").val("");
+                            $("#last-name-EstateDetails").val("");
                         }
                     }
                 }
@@ -585,6 +593,73 @@ function logInPOSTEstateDetails() {
     }
 
 }
+
+/* POST request to server for user sign up.  */
+function signUpInEstateDetails () {
+
+
+    $("#email-EstateDetails").val("");
+    $("#passwordSignUp-EstateDetails").val("");
+    $("#first-name-EstateDetails").val("");
+    $("#last-name-EstateDetails").val("");
+    var url = "/user/create";
+    var method = "POST";
+    var firstNameInput = document.getElementById('first-name-EstateDetails');
+    var firstName = firstNameInput.value;
+    var lastNameInput = document.getElementById('last-name-EstateDetails');
+    var lastName = lastNameInput.value;
+    var passInput = document.getElementById('passwordSignUp-EstateDetails');
+    var password = passInput.value;
+    var emailInput = document.getElementById('email-EstateDetails');
+    var email = emailInput.value;
+    var postData = {
+        "firstName": firstName,
+        "lastName" : lastName,
+        "password" : password,
+        "email" : email
+    };
+    $.ajax ({
+        method: 'POST',
+        url: '/create/user',
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify(postData),
+        success(data){
+            document.getElementById('signUpEstateDetails').style.display='none';
+            document.getElementById('signInStatus-EstateDetails').style.display='block';
+            document.getElementById('signUpEstateDetails').style.display='none';
+            $("#email-EstateDetails").val("");
+            $("#passwordSignUp-EstateDetails").val("");
+            $("#first-name-EstateDetails").val("");
+            $("#last-name-EstateDetails").val("");
+        },
+        error: function (xhr, ajaxOptions, thrownError, textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + xhr.responseText);
+            if (xhr.responseText === "DUPLICATE") {
+                document.getElementById('signUpEstateDetails').style.display='none';
+                document.getElementById('signInStatusFailed-EstateDetails').style.display='block';
+
+            }
+            var errors = xhr.responseText.split(';');
+            for (var i = 0; i < errors.length; i ++) {
+                if (errors[i] === "Invalid email format") {
+                    $('#email-input-EstateDetails').addClass('error');
+                    $('#email-EstateDetails').attr("placeholder","Insert email");
+                    $('#errorMessage-EstateDetails').text("Insert email");
+                    $('#errorMessageContainer-EstateDetails').css("display", "block");
+                }
+
+                if (errors[i] === "Invalid password length") {
+                    $('#password-input-EstateDetails').addClass('error');
+                    $('#passwordSignUp-EstateDetails').attr("placeholder","Insert password");
+                    $('#errorMessage-EstateDetails').text("Insert password");
+                    $('#errorMessageContainer-EstateDetails').css("display", "block");
+                }
+            }
+        }
+    });
+}
+
 
 /* POST request to server for user sign up. */
 function signUpPOSTEstateDetails() {
