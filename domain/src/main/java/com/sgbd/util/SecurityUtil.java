@@ -1,10 +1,10 @@
 package com.sgbd.util;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
@@ -49,11 +49,25 @@ public class SecurityUtil {
      * @return
      * @throws Exception
      */
-    public static byte[] encryptText(String plainText,SecretKey secKey) throws Exception{
+    public static byte[] encryptText(String plainText,SecretKey secKey) {
         // AES defaults to AES/ECB/PKCS5Padding in Java 7
-        Cipher aesCipher = Cipher.getInstance("AES");
-        aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-        byte[] byteCipherText = aesCipher.doFinal(plainText.getBytes());
+        byte[] byteCipherText = null;
+        try {
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+            byteCipherText = aesCipher.doFinal(plainText.getBytes());
+            return byteCipherText;
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
         return byteCipherText;
     }
 

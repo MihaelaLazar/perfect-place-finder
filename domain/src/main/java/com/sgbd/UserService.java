@@ -28,7 +28,7 @@ public interface UserService {
 
     User createUser(SignUpDTO user) throws SQLIntegrityConstraintViolationException, EmptyInputException;
 
-    User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException;
+    User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException, EmptyInputException;
 
     List<Estate> getUserAnnouncements(Long id);
 

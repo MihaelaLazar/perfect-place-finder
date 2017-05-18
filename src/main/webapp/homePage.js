@@ -76,15 +76,28 @@ $( function() {
           {
                 if (event.target === document.getElementById('signInStatus-homePage')) {
                      document.getElementById('signInStatus-homePage').style.display='none';
+                     $("#email").val("");
+                     $("#passwordSignUp").val("");
+                     $("#first-name").val("");
+                     $("#last-name").val("");
                 } else {
                     if (event.target ===  document.getElementById('signInStatusFailed-homePage')){
                         document.getElementById('signInStatusFailed-homePage').style.display='none';
+                        $("#email").val("");
+                        $("#passwordSignUp").val("");
+                        $("#first-name").val("");
+                        $("#last-name").val("");
                     } else {
                         if (event.target === modalLoginStatusOk)  {
                             document.getElementById('logInStatus-homePage').style.display='none';
+                            $("#email-login-homePage").val("");
+                            $("#password-login-homePage").val("");
                         } else {
                           if (event.target === modalLoginStatusFailed) {
                              document.getElementById('logInStatusFailed-homePage').style.display='none';
+                             $("#email-login-homePage").val("");
+                             $("#password-login-homePage").val("");
+                             $('#password-login-homePage').style.display='none';
                           }
                         }
                     }
@@ -161,11 +174,30 @@ data.append('name', 'Bob');
                     document.getElementById('logout').style.display = 'block';
                     $('#loggedInButton').text(data);
                     document.getElementById('loggedIn').style.display='block';
+                    document.getElementById('logInhomePage').style.display='none';
+                     $("#email-login-homePage").val("");
+                     $("#password-login-homePage").val("");
+                     document.getElementById('errorMessage-login-homePage').style.display = 'none';
             },
             error: function (xhr, ajaxOptions, thrownError,textStatus) {
                 console.log('error Status code ' + xhr.status);
                 document.getElementById('logInhomePage').style.display='none';
                 document.getElementById('logInStatusFailed-homePage').style.display='block';
+                var errors = xhr.responseText.split(';');
+                for (var i = 0; i < errors.length; i ++) {
+                    if (errors[i] === "Invalid email") {
+                        $('#email-input-login-homePage').addClass('error');
+                        $('#email-login-homePage').attr("placeholder","Insert email");
+                        $('#errorMessage-login-homePage').text("Incorrect email type");
+                        $('#errorMessageContainer-login-homePage').css("display", "block");
+                    }
+
+                    if (errors[i] === "Invalid password") {
+                        $('#password-input-login-homePage').addClass('error');
+                        $('#errorMessageContainer-login-homePage').text("Insert correct password");
+                        $('#errorMessageContainer-login-homePage').css("display", "block");
+                    }
+                }
             }
         });
     }
@@ -216,93 +248,106 @@ data.append('name', 'Bob');
 
      }
 
-    function signUpPOSThomePage() {
-                  $('#password-input-homePage').removeClass('error');
-                  $('#first-name-input-homePage').removeClass('error');
-                  $('#last-name-input-homePage').removeClass('error');
-                  $('#email-input-homePage').removeClass('error');
-                  console.log('signUpPOST');
-                  var url = "/create/user";
-                  var method = "POST";
-                  var firstNameInput = document.getElementById('first-name-homePage');
-                  var firstName = firstNameInput.value;
-                  var lastNameInput = document.getElementById('last-name-homePage');
-                  var lastName = lastNameInput.value;
-                  var passInput = document.getElementById('passwordSignUp-homePage');
-                  var password = passInput.value;
-                  var emailInput = document.getElementById('email-homePage');
-                  var email = emailInput.value;
-                  var isValid = true;
-                  var atpos = email.indexOf("@");
-                  var dotpos = email.lastIndexOf(".");
-                 if (firstName === "") {
-                        $('#first-name-input-homePage').addClass('error');
-                        $('#first-name-homePage').attr("placeholder","Insert first name");
-                        $('#errorMessage-homePage').text("Insert first name");
-                        $('#errorMessageContainer-homePage').css("display", "block");
-                        isValid = false;
-                  }
-                  if (lastName === "") {
-                        $('#last-name-input-homePage').addClass('error');
-                        $('#last-name-homePage').attr("placeholder","Insert last name");
-                            $('#errorMessage-homePage').text("Insert last name");
-                            $('#errorMessageContainer-homePage').css("display", "block");
+/* POST request to server for user login.  */
+function loginInHomePage() {
+     $('#password-input-login-homePage').removeClass('error');
+     $('#email-input-login-homePage').removeClass('error');
+     var passInput = document.getElementById('password-login-homePage');
+     var password = passInput.value;
+     var emailInput = document.getElementById('email-login-homePage');
+     var email = emailInput.value;
+     var postData = {
+        "password" : password,
+        "email" : email
+     };
+     verifyLoginData(postData);
+}
 
-                        isValid = false;
-                  }
-                  if (password === "") {
-                        $('#password-input-homePage').addClass('error');
-                        $('#passwordSignUp-homePage').attr("placeholder","Insert password");
-                             $('#errorMessage-homePage').text("Insert password");
-                             $('#errorMessageContainer-homePage').css("display", "block");
+/* POST request to server for user sign up.  */
+function signUpInHomePage() {
+    $('#password-input-homePage').removeClass('error');
+    $('#first-name-input-homePage').removeClass('error');
+    $('#last-name-input-homePage').removeClass('error');
+    $('#email-input-homePage').removeClass('error');
+    var firstNameInput = document.getElementById('first-name-homePage');
+    var firstName = firstNameInput.value;
+    var lastNameInput = document.getElementById('last-name-homePage');
+    var lastName = lastNameInput.value;
+    var passInput = document.getElementById('passwordSignUp-homePage');
+    var password = passInput.value;
+    var emailInput = document.getElementById('email-homePage');
+    var email = emailInput.value;
+    var postData = {
+        "firstName": firstName,
+        "lastName" : lastName,
+        "password" : password,
+        "email" : email
+    };
+    $.ajax ({
+        method: 'POST',
+        url: '/create/user',
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify(postData),
+        success(data){
+            document.getElementById('signupButton').style.display='none';
+            document.getElementById('signInStatus').style.display='block';
+            document.getElementById('signupButton').style.display='none';
+            $("#email").val("");
+            $("#passwordSignUp").val("");
+            $("#first-name").val("");
+            $("#last-name").val("");
+        },
+        error: function (xhr, ajaxOptions, thrownError, textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + xhr.responseText);
+            if (xhr.responseText === "DUPLICATE") {
+                document.getElementById('signUphomePage').style.display='none';
+                document.getElementById('signInStatus-homePage').style.display='block';
+                document.getElementById('signUphomePage').style.display='none';
+            }
+            if (xhr.responseText === "Added in database") {
+                document.getElementById('signUphomePage').style.display='none';
+                document.getElementById('signInStatus-homePage').style.display='block';
+                document.getElementById('signUphomePage').style.display='none';
+                $("#email-homePage").val("");
+               $("#passwordSignUp-homePage").val("");
+               $("#first-name-homePage").val("");
+               $("#last-name-homePage").val("");
+            }
 
-                        isValid = false;
-                  }
-                  if (email === "" || atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length) {
-                        $('#email-input-homePage').addClass('error');
-                        $('#email-homePage').attr("placeholder","Insert email");
-                            $('#errorMessage-homePage').text("Insert email");
-                            $('#errorMessageContainer-homePage').css("display", "block");
+            var errors = xhr.responseText.split(';');
+            for (var i = 0; i < errors.length; i ++) {
+                if (errors[i] === "Invalid email format") {
+                    $('#email-input-homePage').addClass('error');
+                    $('#email-homePage').attr("placeholder","Insert email");
+                    $('#errorMessage-homePage').text("Insert email");
+                    $('#errorMessageContainer-homePage').css("display", "block");
+                }
 
-                        isValid = false;
-                  }
-                  var postData = {
-                      "firstName": firstName,
-                       "lastName" : lastName,
-                       "password" : password,
-                       "email" : email
+                if (errors[i] === "Invalid lastName") {
+                    $('#last-name-input-homePage').addClass('error');
+                    $('#last-name-homePage').attr("placeholder","Insert last name");
+                    $('#errorMessage-homePage').text("Insert last name");
+                    $('#errorMessageContainer-homePage').css("display", "block");
+                }
 
-                      };
-                  if (isValid === true ){
+                if (errors[i] === "Invalid firstName") {
+                    $('#first-name-input-homePage').addClass('error');
+                    $('#first-name-homePage').attr("placeholder","Insert first name");
+                    $('#errorMessage-homePage').text("Insert first name");
+                    $('#errorMessageContainer-homePage').css("display", "block");
+                }
 
-                      var async = true;
-                      var request = new XMLHttpRequest();
-                      var status;
-                      var data;
-                      request.onload = function () {
-                            status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-                            data = request.responseText; // Returned data, e.g., an HTML document.
-                            if (data === 'DUPLICATE') {
-                                console.log (data);
-                                document.getElementById('signUphomePage').style.display='none';
-                                document.getElementById('signInStatusFailed-homePage').style.display='block';
-                            } else {
-                                console.log (data);
-                                document.getElementById('signUphomePage').style.display='none';
-                                document.getElementById('signInStatus-homePage').style.display='block';
-                          }
-                      }
-                      request.open(method, url,true);
-                      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                      request.send(JSON.stringify(postData));
-                      document.getElementById('signUphomePage').style.display='none';
-                       $("#email-homePage").val("");
-                       $("#passwordSignUp-homePage").val("");
-                       $("#first-name-homePage").val("");
-                       $("#last-name-homePage").val("");
-
-                  }
-           }
+                if (errors[i] === "Invalid password length") {
+                    $('#password-input-homePage').addClass('error');
+                    $('#passwordSignUp-homePage').attr("placeholder","Insert password");
+                    $('#errorMessage-homePage').text("Insert password");
+                    $('#errorMessageContainer-homePage').css("display", "block");
+                }
+            }
+        }
+    });
+}
 
 function redirectToProfile() {
     $.ajax ({

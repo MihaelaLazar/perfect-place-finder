@@ -500,23 +500,25 @@ window.onclick = function(event) {
         {
             if (event.target === document.getElementById('signInStatus-EstateDetails')) {
                 document.getElementById('signInStatus-EstateDetails').style.display='none';
+                $("#email-EstateDetails").val("");
+                $("#passwordSignUp-EstateDetails").val("");
+                $("#first-name-EstateDetails").val("");
+                $("#last-name-EstateDetails").val("");
             } else {
                 if (event.target ===  document.getElementById('signInStatusFailed-EstateDetails')){
                     document.getElementById('signInStatusFailed-EstateDetails').style.display='none';
+                    $("#email-EstateDetails").val("");
+                    $("#passwordSignUp-EstateDetails").val("");
+                    $("#first-name-EstateDetails").val("");
+                    $("#last-name-EstateDetails").val("");
                 } else {
                     if (event.target === modalLoginStatusEstateDetails)  {
                         document.getElementById('logInStatus-EstateDetails').style.display='none';
-                        $("#email-EstateDetails").val("");
-                        $("#passwordSignUp-EstateDetails").val("");
-                        $("#first-name-EstateDetails").val("");
-                        $("#last-name-EstateDetails").val("");
+
                     } else {
                         if (event.target === modalLoginStatusFailedEstateDetails) {
                             document.getElementById('logInStatusFailed-EstateDetails').style.display='none';
-                            $("#email-EstateDetails").val("");
-                            $("#passwordSignUp-EstateDetails").val("");
-                            $("#first-name-EstateDetails").val("");
-                            $("#last-name-EstateDetails").val("");
+
                         }
                     }
                 }
@@ -597,11 +599,10 @@ function logInPOSTEstateDetails() {
 /* POST request to server for user sign up.  */
 function signUpInEstateDetails () {
 
-
-    $("#email-EstateDetails").val("");
-    $("#passwordSignUp-EstateDetails").val("");
-    $("#first-name-EstateDetails").val("");
-    $("#last-name-EstateDetails").val("");
+    $('#password-input-EstateDetails').removeClass('error');
+    $('#first-name-input-EstateDetails').removeClass('error');
+    $('#last-name-input-EstateDetails').removeClass('error');
+    $('#email-input-EstateDetails').removeClass('error');
     var url = "/user/create";
     var method = "POST";
     var firstNameInput = document.getElementById('first-name-EstateDetails');
@@ -624,6 +625,7 @@ function signUpInEstateDetails () {
         contentType: 'application/json;charset=UTF-8',
         data: JSON.stringify(postData),
         success(data){
+            console.log('SUCCESS');
             document.getElementById('signUpEstateDetails').style.display='none';
             document.getElementById('signInStatus-EstateDetails').style.display='block';
             document.getElementById('signUpEstateDetails').style.display='none';
@@ -640,6 +642,16 @@ function signUpInEstateDetails () {
                 document.getElementById('signInStatusFailed-EstateDetails').style.display='block';
 
             }
+            if (xhr.responseText === "Added in database") {
+                document.getElementById('signUpEstateDetails').style.display='none';
+                document.getElementById('signInStatus-EstateDetails').style.display='block';
+                document.getElementById('signUpEstateDetails').style.display='none';
+                $("#email-EstateDetails").val("");
+                $("#passwordSignUp-EstateDetails").val("");
+                $("#first-name-EstateDetails").val("");
+                $("#last-name-EstateDetails").val("");
+            }
+
             var errors = xhr.responseText.split(';');
             for (var i = 0; i < errors.length; i ++) {
                 if (errors[i] === "Invalid email format") {

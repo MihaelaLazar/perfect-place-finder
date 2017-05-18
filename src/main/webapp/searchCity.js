@@ -1290,6 +1290,16 @@ function signUpInSearchCity () {
                 document.getElementById('signInStatusFailed').style.display='block';
 
             }
+            if (xhr.responseText === "Added in database") {
+                document.getElementById('signUpEstateDetails').style.display='none';
+                document.getElementById('signInStatus-EstateDetails').style.display='block';
+                document.getElementById('signUpEstateDetails').style.display='none';
+                $("#email-EstateDetails").val("");
+                $("#passwordSignUp-EstateDetails").val("");
+                $("#first-name-EstateDetails").val("");
+                $("#last-name-EstateDetails").val("");
+            }
+
             var errors = xhr.responseText.split(';');
             for (var i = 0; i < errors.length; i ++) {
                 if (errors[i] === "Invalid email format") {

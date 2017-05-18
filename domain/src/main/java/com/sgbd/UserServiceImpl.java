@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService{
         }
         errorMessages += validateUserLastName(signUpDTO.getLastName());
         errorMessages += validateUserPassword(signUpDTO.getPassword());
-        if (errorMessages == "") {
+        if (errorMessages.equals("")) {
             user.setFirstName(signUpDTO.getFirstName());
             user.setLastName(signUpDTO.getLastName());
             user.setEmail(signUpDTO.getEmail());
@@ -157,34 +157,18 @@ public class UserServiceImpl implements UserService{
         return "";
     }
 
-
-    public  String decrypt(String encstr) {
-
-        if (encstr.length() > 12) {
-            String cipher = encstr.substring(12);
-            BASE64Decoder decoder = new BASE64Decoder();
-            try {
-                return new String(decoder.decodeBuffer(cipher));
-            } catch (IOException e) {
-            }
-        }
-        return null;
-    }
-
     @Override
-    public User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException {
-        User user = (User) findByEmail(email);
+    public User findByEmailAndPassword(String email, String password) throws InvalidUserPasswordException, EmptyInputException {
+        if (email == "") {
+            throw new EmptyInputException("Invalid email;");
+        }
+        User user = findByEmail(email);
         SecretKey key = SecurityUtil.getSecretKeyFromDB(user.getKey());
-        try {
-            String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
-            if (!currentPass.equals(user.getPassword())) {
-                throw new InvalidUserPasswordException("Invalid password;");
-            }else {
-                return user;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return  null;
+        String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
+        if (!currentPass.equals(user.getPassword())) {
+            throw new InvalidUserPasswordException("Invalid password;");
+        }else {
+            return user;
         }
     }
 

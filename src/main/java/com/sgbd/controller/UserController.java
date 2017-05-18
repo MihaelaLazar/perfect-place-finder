@@ -69,18 +69,6 @@ public class UserController {
         return "";
     }
 
-    public String encrypt(String str) {
-
-        Random rand = new Random((new Date()).getTime());
-        BASE64Encoder encoder = new BASE64Encoder();
-
-        byte[] salt = new byte[8];
-
-        rand.nextBytes(salt);
-
-        return encoder.encode(salt) + encoder.encode(str.getBytes());
-    }
-
 
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
@@ -117,10 +105,20 @@ public class UserController {
         }catch (EntityNotFoundException e){
             session.removeAttribute("username");
             session.removeAttribute("tokenID");
-            return new ResponseEntity<String>("EMAIL NOT FOUND", HttpStatus.FORBIDDEN);
+            if (request.getSession(false) != null) {
+                request.getSession(false).invalidate();
+            }
+            return new ResponseEntity<>("EMAIL NOT FOUND", HttpStatus.FORBIDDEN);
+        }catch (EmptyInputException e) {
+            if (request.getSession(false) != null) {
+                request.getSession(false).invalidate();
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (InvalidUserPasswordException e) {
-            e.printStackTrace();
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
+            if (request.getSession(false) != null) {
+                request.getSession(false).invalidate();
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
