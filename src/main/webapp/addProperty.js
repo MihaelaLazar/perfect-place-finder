@@ -109,8 +109,7 @@ function addPropertyPOST(event) {
     var rent_price;
     var buy_price;
 
-    var cityChosen =  document.getElementById('city-chosen').value;
-    console.log('city chosen: "' + cityChosen +'"')
+    var cityChosen = document.getElementById('city-chosen').value;
     if (cityChosen === "") {
         $('#error-city').css("display", "block");
     }
@@ -223,12 +222,24 @@ function addPropertyPOST(event) {
                 contentType: 'application/json',
                 success: function(data, textStatus, xhr) {
                     document.getElementById('addPropertyFailedModal').style.display='block';
-
-
+                    $('#error-city').css("display", "none");
+                    $('#error-division').css("display", "none");
+                    $('#error-level-on-comfort').css("display", "none");
+                    $('#error-bathrooms').css("display", "none");
+                    $('#error-category').css("display", "none");
+                    $('#error-rooms').css("display", "none");
+                    $('#error-price').css("display", "none");
+                    $('#error-surface').css("display", "none");
+                    $('#error-year').css("display", "none");
+                    $('#error-utilities').css("display", "none");
+                    $('#error-description').css("display", "none");
+                    $('#error-phone').css("display", "none");
+                    $('#error-floor').css("display", "none");
                 },
                 error: function (xhr, ajaxOptions, thrownError,textStatus) {
                     var errors = xhr.responseText;
-                    if (textStatus === 403) {
+                    console.log('status:::: ' + xhr.status);
+                    if (xhr.status === 403) {
                         $('#error-city').css("display", "block");
                     } else {
                         document.getElementById('addPropertySuccessfulModal').style.display='block';
