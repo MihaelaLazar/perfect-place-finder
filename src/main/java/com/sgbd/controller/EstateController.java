@@ -78,7 +78,7 @@ public class EstateController {
             estateService.saveEstate(estateDTO, idUser);
             return new ResponseEntity<>("Added property", HttpStatus.OK);
         } catch(PersistenceException e) {
-            return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         } catch (InvalidPropertiesFormatException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }

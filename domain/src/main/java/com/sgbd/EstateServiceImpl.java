@@ -149,7 +149,7 @@ public class EstateServiceImpl implements EstateService {
         boolean isValidCity = false;
         CityConstants[] constants = CityConstants.values();
         for (CityConstants cityConstant: constants) {
-            if (city.equals(cityConstant.getAttachType())){
+            if (city.equalsIgnoreCase(cityConstant.getAttachType())){
                 isValidCity = true;
             }
         }

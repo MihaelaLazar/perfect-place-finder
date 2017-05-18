@@ -104,13 +104,19 @@ function addPropertyPOST(event) {
     var division = divisionInput.value;
     var bathroomsInput = document.getElementById('bathrooms');
     var bathrooms = bathroomsInput.value;
-    var floorInput = document.getElementById('floor-input');
+    var floorInput = document.getElementById('floor');
     var floor = floorInput.value;
     var rent_price;
     var buy_price;
 
+    var cityChosen =  document.getElementById('city-chosen').value;
+    console.log('city chosen: "' + cityChosen +'"')
+    if (cityChosen === "") {
+        $('#error-city').css("display", "block");
+    }
     if (division === "" && category !== "space") {
         isValidLogin = false;
+        $('#error-division').css("display", "block");
     } else {
         if (division === 1) {
             division = "Semi-detached";
@@ -123,57 +129,47 @@ function addPropertyPOST(event) {
         }
     }
     if (levelOfComfort === "" && category !== "space" ) {
-        console.log("levelOfComfort null");
-        $('#comfort-select').addClass('error');
+        $('#error-level-on-comfort').css("display", "block");
         isValidLogin = false;
     }
     if (bathrooms === "" && category !== "space") {
-        console.log("bathrooms null");
-        $().addClass('error');
+        $('#error-bathrooms').css("display", "block");
         isValidLogin = false;
     }
     if (category === "") {
-        console.log("category null");
-        $().addClass('error');
+        $('#error-category').css("display", "block");
         isValidLogin = false;
     }
     if (rooms === "" && category !== "space") {
-        console.log("rooms null");
-        $().addClass('error');
+        $('#error-rooms').css("display", "block");
         isValidLogin = false;
     }
     if (price === "") {
-        console.log("price null");
-        $().addClass('error');
+        $('#error-price').css("display", "block");
         isValidLogin = false;
     }
     if (surface === "") {
-        console.log("surface null");
-        $().addClass('error');
+        $('#error-surface').css("display", "block");
         isValidLogin = false;
     }
     if (year === "" && category !== "space") {
-        console.log("year null");
-        $().addClass('error');
+        $('#error-year').css("display", "block");
         isValidLogin = false;
     }
     if (furniture === "" && category !== "space") {
-        console.log("furniture null");
-        $().addClass('error');
+        $('#error-utilities').css("display", "block");
         isValidLogin = false;
     }
     if (description === "") {
-        console.log("description null");
-        $().addClass('error');
+        $('#error-description').css("display", "block");
         isValidLogin = false;
     }
     if (phoneNumber === "") {
-        console.log("phoneNumber null");
-        $().addClass('error');
+        $('#error-phone').css("display", "block");
         isValidLogin = false;
     }
     if (category === "appartment" && floor === ""){
-        $().addClass('error');
+        $('#error-floor').css("display", "block");
         isValidLogin = false;
     }
     if (category === "space"){
@@ -219,42 +215,27 @@ function addPropertyPOST(event) {
             "announcementImagesArray": announcementImagesArray,
             "announcementImagesIconsURIArray" : announcementImagesIconsURIArray
         };
-//        var async = true;
-//        var requestAddProperty = new XMLHttpRequest();
-//        var data;
-//        var status;
-//        requestAddProperty.onload = function () {
-//            status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
-//            data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
-//            console.log(status);
-//            if (status !== 200) {
-//                document.getElementById('addPropertyFailedModal').style.display='block';
-//            } else {
-//                document.getElementById('addPropertySuccessfulModal').style.display='block';
-//            }
-//        }
         $.ajax({
                 method: 'POST',
-                url: '/verify/user',
+                url: '/estate/add/property',
                 contentType: false,
-                data: JSON.stringify(loginData),
+                data: JSON.stringify(postDataProperty),
                 contentType: 'application/json',
                 success: function(data, textStatus, xhr) {
                     document.getElementById('addPropertyFailedModal').style.display='block';
+
+
                 },
                 error: function (xhr, ajaxOptions, thrownError,textStatus) {
                     var errors = xhr.responseText;
-                    if (errors === "Invalid city") {
-
+                    if (textStatus === 403) {
+                        $('#error-city').css("display", "block");
                     } else {
                         document.getElementById('addPropertySuccessfulModal').style.display='block';
                     }
                 }
          });
 
-        requestAddProperty.open(methodLogin, urlLogin,true);
-        requestAddProperty.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        requestAddProperty.send(JSON.stringify(postDataProperty));
     }
 }
 
