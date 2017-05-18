@@ -43,6 +43,19 @@ $( function() {
     var modalLoginStatusOk = document.getElementById('logInStatus-homePage');
     var modalLoginStatusFailed = document.getElementById('logInStatusFailed-homePage');
     window.onclick = function(event) {
+        $('#first-name-input-homePage').removeClass('error');
+        $('#first-name-homePage').attr("placeholder","First name");
+        $('#last-name-input-homePage').removeClass('error');
+        $('#last-name-homePage').attr("placeholder","Last name");
+        $('#email-input-homePage').removeClass('error');
+        $('#email-homePage').attr("placeholder","Email");
+        $('#password-input-homePage').removeClass('error');
+        $('#password-name-homePage').attr("placeholder","Password");
+        $('#errorMessageContainer-homePage').css("display", "none");
+        $("#email-homePage").val("");
+        $("#passwordSignUp-homePage").val("");
+        $("#first-name-homePage").val("");
+        $("#last-name-homePage").val("");
         if(event.target === modalSignUpHomePage )
         {
             modalSignUpHomePage.style.display = "none";
@@ -104,6 +117,7 @@ $( function() {
                 }
           }
         }
+        $('#errorMessageContainer-login-homePage').css("display", "none");
 
     }
 

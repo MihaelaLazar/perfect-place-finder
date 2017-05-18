@@ -1204,6 +1204,22 @@ function verifyLoginDataSearchCity(loginData) {
             console.log('error Status code ' + xhr.status);
             document.getElementById('logInStatus').style.display='none';
             document.getElementById('logInStatusFailed').style.display='block';
+            var errors = xhr.responseText.split(';');
+            for (var i = 0; i < errors.length; i ++) {
+                if (errors[i] === "Invalid email") {
+                    $('#email-input-login').addClass('error');
+                    $('#email-login').attr("placeholder","Insert email");
+                    $('#errorMessage').text("Insert email");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+
+                if (errors[i] === "Invalid password") {
+                    $('#password-input-login').addClass('error');
+                    $('#password-login').attr("placeholder","Insert password");
+                    $('#errorMessage').text("Insert password");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+            }
         }
     });
 }

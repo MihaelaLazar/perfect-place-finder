@@ -7,6 +7,7 @@ import com.sgbd.repository.AttachementRepository;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import com.sgbd.util.AttachType;
+import com.sgbd.util.CityConstants;
 import com.sgbd.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,11 +114,15 @@ public class EstateServiceImpl implements EstateService {
 
     @Override
     @Transactional
-    public Serializable saveEstate(EstateDTO estateDTO, Long idUser) {
+    public Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException {
 
-        Estate estate = new Estate();
+        Estate estate;
         // persist announcement
         estate = createEstate(estateDTO, idUser);
+        estateDTO.setCity(estateDTO.getCity().split(" ")[0]);
+        if (!validateCity(estateDTO.getCity())) {
+            throw new InvalidPropertiesFormatException("Invalid city");
+        }
         if (estateDTO.getBuyPrice() != 0 ){
             estate.setTypeOfTransaction("RENT");
         } else {
@@ -138,6 +143,17 @@ public class EstateServiceImpl implements EstateService {
         estate.setEstateAttachements(announcementAttachements);
 
         return estateRepository.saveOrUpdate(estate);
+    }
+
+    private boolean validateCity(String city) {
+        boolean isValidCity = false;
+        CityConstants[] constants = CityConstants.values();
+        for (CityConstants cityConstant: constants) {
+            if (city.equals(cityConstant.getAttachType())){
+                isValidCity = true;
+            }
+        }
+        return isValidCity;
     }
 
     @Override

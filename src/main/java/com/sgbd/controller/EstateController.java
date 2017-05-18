@@ -79,6 +79,8 @@ public class EstateController {
             return new ResponseEntity<>("Added property", HttpStatus.OK);
         } catch(PersistenceException e) {
             return new ResponseEntity<>("Could not add property", HttpStatus.FORBIDDEN);
+        } catch (InvalidPropertiesFormatException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 

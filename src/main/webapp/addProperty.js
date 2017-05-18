@@ -46,6 +46,7 @@ function initMap11() {
                     var cityWithDiacritics = cityAddress[cityAddress.length - 2];
                     city = cityWithDiacritics.replace(/ș/i, "s");
                     console.log(city);
+                    $('#city-chosen').val(city);
                 }
             }
         );
@@ -207,21 +208,38 @@ function addPropertyPOST(event) {
             "announcementImagesArray": announcementImagesArray,
             "announcementImagesIconsURIArray" : announcementImagesIconsURIArray
         };
-        var async = true;
-        var requestAddProperty = new XMLHttpRequest();
-        var data;
-        var status;
-        requestAddProperty.onload = function () {
-            status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
-            data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
-            console.log(status);
-            if (status !== 200) {
-                document.getElementById('addPropertyFailedModal').style.display='block';
-            } else {
-                document.getElementById('addPropertySuccessfulModal').style.display='block';
-            }
-        }
+//        var async = true;
+//        var requestAddProperty = new XMLHttpRequest();
+//        var data;
+//        var status;
+//        requestAddProperty.onload = function () {
+//            status = requestAddProperty.status; // HTTP response status, e.g., 200 for "200 OK"
+//            data = requestAddProperty.responseText; // Returned data, e.g., an HTML document.
+//            console.log(status);
+//            if (status !== 200) {
+//                document.getElementById('addPropertyFailedModal').style.display='block';
+//            } else {
+//                document.getElementById('addPropertySuccessfulModal').style.display='block';
+//            }
+//        }
+        $.ajax({
+                method: 'POST',
+                url: '/verify/user',
+                contentType: false,
+                data: JSON.stringify(loginData),
+                contentType: 'application/json',
+                success: function(data, textStatus, xhr) {
+                    document.getElementById('addPropertyFailedModal').style.display='block';
+                },
+                error: function (xhr, ajaxOptions, thrownError,textStatus) {
+                    var errors = xhr.responseText;
+                    if (errors === "Invalid city") {
 
+                    } else {
+                        document.getElementById('addPropertySuccessfulModal').style.display='block';
+                    }
+                }
+         });
 
         requestAddProperty.open(methodLogin, urlLogin,true);
         requestAddProperty.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

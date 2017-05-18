@@ -514,10 +514,14 @@ window.onclick = function(event) {
                 } else {
                     if (event.target === modalLoginStatusEstateDetails)  {
                         document.getElementById('logInStatus-EstateDetails').style.display='none';
+                        $("#email-login-EstateDetails").val("");
+                        $("#password-login-EstateDetails").val("");
 
                     } else {
                         if (event.target === modalLoginStatusFailedEstateDetails) {
                             document.getElementById('logInStatusFailed-EstateDetails').style.display='none';
+                            $("#email-login-EstateDetails").val("");
+                            $("#password-login-EstateDetails").val("");
 
                         }
                     }
@@ -546,9 +550,29 @@ function verifyLoginDataEstateDetails(loginData) {
                 $('#loggedInButton-estateDetails').text(data);
         },
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
-            console.log('error Status code ' + xhr.status);
-            document.getElementById('logInStatus-EstateDetails').style.display='none';
-            document.getElementById('logInStatusFailed-EstateDetails').style.display='block';
+            document.getElementById('logInEstateDetails').style.display='none';
+            $("#email-login-EstateDetails").val("");
+            $("#password-login-EstateDetails").val("");
+            document.getElementById('errorMessage-login-EstateDetails').style.display = 'none';
+            var errors = xhr.responseText.split(';');
+            for (var i = 0; i < errors.length; i ++) {
+                if (errors[i] === "Invalid email") {
+                    $('#email-input-login-EstateDetails').addClass('error');
+                    $('#email-login-EstateDetails').attr("placeholder","Insert email");
+                    $('#errorMessage-login-EstateDetails').text("Incorrect email type");
+                    $('#errorMessageContainer-login-EstateDetails').css("display", "block");
+                    document.getElementById('logInStatusFailed-EstateDetails').style.display='block';
+
+                }
+
+                if (errors[i] === "Invalid password") {
+                   $('#password-input-login-EstateDetails').addClass('error');
+                   $('#password-login-EstateDetails').attr("placeholder","Insert password");
+                   $('#errorMessageContainer-login-EstateDetails').text("Insert password");
+                   $('#errorMessageContainer-login-EstateDetails').css("display", "block");
+                   document.getElementById('logInStatusFailed-EstateDetails').style.display='block';
+                }
+            }
         }
     });
 }

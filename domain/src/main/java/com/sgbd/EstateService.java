@@ -5,6 +5,7 @@ package com.sgbd;
 
         import java.io.IOException;
         import java.io.Serializable;
+        import java.util.InvalidPropertiesFormatException;
         import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface EstateService {
 
     PaginatedEstatesDetails getEstatesByFilters(String queryString);
 
-    Serializable saveEstate(EstateDTO estateDTO, Long idUser) ;
+    Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException;
 
     Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws IOException;
 
