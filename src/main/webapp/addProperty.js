@@ -124,45 +124,56 @@ function addPropertyPOST(event) {
     }
     if (levelOfComfort === "" && category !== "space" ) {
         console.log("levelOfComfort null");
+        $('#comfort-select').addClass('error');
         isValidLogin = false;
     }
     if (bathrooms === "" && category !== "space") {
         console.log("bathrooms null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (category === "") {
         console.log("category null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (rooms === "" && category !== "space") {
         console.log("rooms null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (price === "") {
         console.log("price null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (surface === "") {
         console.log("surface null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (year === "" && category !== "space") {
         console.log("year null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (furniture === "" && category !== "space") {
         console.log("furniture null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (description === "") {
         console.log("description null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (phoneNumber === "") {
         console.log("phoneNumber null");
+        $().addClass('error');
         isValidLogin = false;
     }
     if (category === "appartment" && floor === ""){
+        $().addClass('error');
         isValidLogin = false;
     }
     if (category === "space"){

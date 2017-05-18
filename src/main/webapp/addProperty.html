@@ -99,7 +99,7 @@
                 <div class="field">
                     <div class="fields">
                         <div class="four wide field">
-                            <label>Category:</label>
+                            <label style="float:left;">Category:</label><label id="error-category" class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                             <select name="category" id="category-select" required onchange="displayOtherFields()">
                                 <option value="" disabled selected>Choose</option>
                                 <option value="house">House</option>
@@ -109,7 +109,7 @@
                         </div>
 
                         <div id="price-input" class="four wide field">
-                            <label>Price:</label>
+                            <label style="float:left;">Price:</label> <label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                             <input id="price" name="price" placeholder="Add price" type="number" required min="1">
                         </div>
 
@@ -119,7 +119,7 @@
                     <div class="fields">
                         <div class="four wide field">
                             <div class="ui form">
-                                <label >Transaction type:</label>
+                                <label style="float:left;" >Transaction type:</label> <label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                 <div class="field">
                                     <div class="ui radio checkbox">
                                         <input id="transaction-type-rent-input" name="fruit" tabindex="0" type="radio" onChange={setCheckbox('transaction-type-rent-input')} unchecked={} required>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                         <div id="comfort-select-field" class="four wide field">
-                            <label>Level on comfort:</label>
+                            <label style="float:left;">Level on comfort:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                             <select name="category" id="comfort-select" required>
                                 <option value="" disabled selected>Choose</option>
                                 <option value="1">1</option>
@@ -145,7 +145,7 @@
                         </div>
 
                         <div id="city" class="four wide field">
-                            <label>City chosen:</label>
+                            <label style="float:left;">City chosen:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                             <input id="city-chosen" placeholder="Choose on map" readonly/>
                         </div>
 
@@ -159,11 +159,11 @@
 
                                 <div class="two fields">
                                     <div id="usable-surface-input" class="field">
-                                        <label>Usable surface:</label>
+                                        <label style="float:left;">Usable surface:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <input id="usable-surface" name="usable_surface" placeholder="Add surface in square meters" type="number" required min="10">
                                     </div>
                                     <div id="bathrooms-input" class="field">
-                                        <label>Bathrooms:</label>
+                                        <label style="float:left;">Bathrooms:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <input id="bathrooms" name="price" placeholder="Add bathrooms" type="number" required min="1">
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
 
                                 <div class="two fields">
                                     <div id="rooms-field" class="field">
-                                        <label>Rooms:</label>
+                                        <label style="float:left;">Rooms:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <select name="rooms" id="rooms-select" required>
                                             <option value="" disabled selected>Choose</option>
                                             <option value="1">1 room</option>
@@ -183,7 +183,7 @@
                                         </select>
                                     </div>
                                     <div id="floor-input" class="field">
-                                        <label>Floor:</label>
+                                        <label style="float:left;">Floor:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <input id="floor" name="usable_surface" placeholder="Add floor" type="number"  min="-1">
                                     </div>
 
@@ -193,13 +193,13 @@
                             <div id="year-and-car" class="field">
                                 <div class="two fields">
                                     <div class="field">
-                                        <label>Construction year:</label>
+                                        <label style="float:left;">Construction year:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <div id="construction-year-input">
                                             <input id="construction-year" name="construction_year" placeholder="Add year" type="number" min="1600" max="2017" required>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label>Car:</label>
+                                        <label style="float:left;">Car:</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                         <div class="inline fields">
                                             <div class="field">
                                                 <div class="ui radio checkbox">
@@ -228,7 +228,7 @@
 
                             <div id="utilities-and-division" class="two wide fields">
                                 <div class=" field">
-                                    <label>Furniture/Utilities</label>
+                                    <label style="float:left;">Furniture/Utilities</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                     <select name="furniture" id="furniture-utilities-select" required>
                                         <option value="" disabled selected>Choose</option>
                                         <option value="1">Complete</option>
@@ -237,7 +237,7 @@
                                     </select>
                                 </div>
                                 <div class=" field">
-                                    <label>Division</label>
+                                    <label style="float:left;">Division</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                                     <select name="division" id="division-select" required>
                                         <option value="" disabled selected>Choose</option>
                                         <option value="Semi-detached">Semi-detached</option>
@@ -263,7 +263,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label>Description</label>
+                    <label style="float:left;">Description</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                     <div id="description-textarea" class="ui form">
                         <textarea id="description" placeholder="Add a drescription here.." required></textarea>
                     </div>
@@ -294,7 +294,7 @@
                     </script>
 
                     <div class="field">
-                        <label>Phone number</label>
+                        <label style="float:left;">Phone number</label><label class="error" style="float:left; margin-left:20px;color:red; display:none;"> Field must be completed</label>
                         <div id="phone-number-input"class="four wide field">
                             <input id="phone-number" type="number" placeholder="+0 " required min="100000000" max="999999999">
                         </div>
