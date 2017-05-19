@@ -106,4 +106,13 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.createNativeQuery("DELETE FROM PF_FAV_ANNOUNCEMENTS WHERE ID_USER = " + idUser + " AND ID_ANNOUNCEMENT = " + idAnnouncement)
                 .executeUpdate();
     }
+
+    @Override
+    @Transactional
+    public List<User> getAllUsers() {
+        final Query query = entityManager.createQuery("SELECT o FROM " + User.class.getSimpleName()
+                + " o ");
+        final List<User> results = query.getResultList();
+        return results;
+    }
 }

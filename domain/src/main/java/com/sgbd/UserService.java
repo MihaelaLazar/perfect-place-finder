@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UserDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
@@ -47,4 +48,6 @@ public interface UserService {
     String getLoggedInUserEmail();
 
     Long getLoggedInUserId();
+
+    List<UserDTO> getAllUsers();
 }

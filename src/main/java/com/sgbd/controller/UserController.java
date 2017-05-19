@@ -3,6 +3,7 @@ package com.sgbd.controller;
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UserDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
@@ -260,6 +261,12 @@ public class UserController {
     public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
       userService.updateUser(userUpdateDTO);
       return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(path = "/user/getAll", method = RequestMethod.GET)
+    public ResponseEntity<List<UserDTO>> getAllUsers (Request request, Response response) {
+        List<UserDTO> users = new LinkedList<>();
+        users = userService.getAllUsers();
     }
 
 }

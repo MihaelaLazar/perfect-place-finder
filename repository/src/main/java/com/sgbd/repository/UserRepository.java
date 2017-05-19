@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 /**
  * Created by mihae on 4/3/2017.
@@ -28,4 +29,6 @@ public interface UserRepository {
     void addFavoriteAnnouncement(User user, Long idAnnouncement) throws EntityNotFoundException;
 
     void deleteFavoriteAnnouncement(Long idUser, Long idAnnouncement);
+
+    List<User> getAllUsers();
 }

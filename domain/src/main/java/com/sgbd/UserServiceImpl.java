@@ -1,6 +1,7 @@
 package com.sgbd;
 
 import com.sgbd.dto.SignUpDTO;
+import com.sgbd.dto.UserDTO;
 import com.sgbd.dto.UserUpdateDTO;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
@@ -250,4 +251,9 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public List<UserDTO> getAllUsers(){
+        List<User> users = userRepository.getAllUsers();
+        List<UserDTO> usersListToReturn = new LinkedList<>();
+    }
 }
