@@ -40,6 +40,9 @@ public class User implements Serializable {
     @Column(name="KEY")
     private String key;
 
+    @Column(name="ROLE")
+    private String role;
+
 //    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //    @JoinTable(name="PF_FAV_ANNOUNCEMENTS",
 //            joinColumns = { @JoinColumn(name = "ID_USER")},
@@ -132,6 +135,14 @@ public class User implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

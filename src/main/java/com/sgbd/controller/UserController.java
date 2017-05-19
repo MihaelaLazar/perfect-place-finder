@@ -11,6 +11,7 @@ import com.sgbd.model.Message;
 import com.sgbd.model.User;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -101,10 +102,16 @@ public class UserController {
             request.getSession(false).setAttribute("username", user.getUsername());
             request.getSession(false).setAttribute("tokenID", tokenID);
             request.getSession(false).setAttribute("ID", user.getId());
+            request.getSession(false).setAttribute("admin", "admin");
+            if (user.getRole().equalsIgnoreCase("admin")){
+                return new ResponseEntity<>("admin", HttpStatus.OK);
+            }
             return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
+
         }catch (EntityNotFoundException e){
             session.removeAttribute("username");
             session.removeAttribute("tokenID");
+            session.removeAttribute("admin");
             if (request.getSession(false) != null) {
                 request.getSession(false).invalidate();
             }
@@ -128,10 +135,13 @@ public class UserController {
         HttpSession session = request.getSession(false);
         if (session != null) {
 //                response.sendRedirect("/profile.html");
-            return new ResponseEntity<String>("/profile.html", HttpStatus.OK);
+            if (session.getAttribute("admin") != null){
+                return new ResponseEntity<>("/adminProfile.html", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("/profile.html", HttpStatus.OK);
 
         } else {
-            return new ResponseEntity<String>("Session not existent", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Session not existent", HttpStatus.CONFLICT);
         }
     }
 
@@ -140,9 +150,9 @@ public class UserController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             String username = (String) session.getAttribute("username");
-            return new ResponseEntity<String>((String) session.getAttribute("username"),HttpStatus.OK);
+            return new ResponseEntity<>((String) session.getAttribute("username"),HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("not existent",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("not existent",HttpStatus.CONFLICT);
         }
     }
 
@@ -158,10 +168,10 @@ public class UserController {
     public ResponseEntity<String> redirectToAddProperty (HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            return new ResponseEntity<String>("/addProperty.html", HttpStatus.OK);
+            return new ResponseEntity<>("/addProperty.html", HttpStatus.OK);
 
         } else {
-            return new ResponseEntity<String>("Session not existent", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Session not existent", HttpStatus.CONFLICT);
         }
 
     }
@@ -173,9 +183,8 @@ public class UserController {
         Long id = (Long) session.getAttribute("ID");
         List<Estate> userAnnouncements = null;
         try {
-            User user = (User) userService.findById(id);
+            User user =  userService.findById(id);
             userAnnouncements = userService.getUserAnnouncements(id);
-//            userAnnouncements = user.getAnnouncements();
             return new ResponseEntity<>(userAnnouncements, HttpStatus.OK);
 
         }catch (EntityNotFoundException e){
@@ -244,13 +253,13 @@ public class UserController {
             Long id = (Long) session.getAttribute("ID");
             messages = userService.getUserMessages(id);
         }
-        return new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
+        return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
     public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
       userService.updateUser(userUpdateDTO);
-      return new ResponseEntity<String>("", HttpStatus.ACCEPTED);
+      return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
 }
