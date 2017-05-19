@@ -270,4 +270,10 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/user/deleteAccount", method = RequestMethod.POST)
+    public ResponseEntity<String> deleteUserAccount(Request request, Response response){
+        userService.deleteUserAccount(Long.parseLong(request.getParameter("id")));
+        return new ResponseEntity<String>("User deleted", HttpStatus.OK);
+    }
+
 }

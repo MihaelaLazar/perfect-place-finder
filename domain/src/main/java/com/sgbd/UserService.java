@@ -50,4 +50,6 @@ public interface UserService {
     Long getLoggedInUserId();
 
     List<UserDTO> getAllUsers();
+
+    void deleteUserAccount(Long id);
 }

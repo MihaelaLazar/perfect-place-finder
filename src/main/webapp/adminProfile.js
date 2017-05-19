@@ -53,8 +53,22 @@ window.onload = function() {
                 firstNameCell.innerHTML = data[i].firstname;
                 var lastNameCell = row.insertCell(3);
                 lastNameCell.innerHTML = data[i].lastname;
+                var deleteUserButton = row.insertCell(4);
+                deleteUserButton.innerHTML = "<button class='ui inverted blue fluid button' onclick='deleteUserAccount("+ data[i].id +", " + i +")'> Delete user account</button>";
             }
         }
     });
 
+}
+
+function deleteUserAccount(id, indexRow) {
+
+    $.ajax({
+        method: 'POST',
+        url: '/user/deleteAccount?id=' + id,
+        contentType: false,
+        success(data) {
+            document.getElementById("users-table").deleteRow(indexRow + 1);
+        }
+    });
 }

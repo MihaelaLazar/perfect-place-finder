@@ -261,4 +261,10 @@ public class UserServiceImpl implements UserService{
         }
         return usersListToReturn;
     }
+
+    @Override
+    public void deleteUserAccount(Long id) {
+        User user = userRepository.findByAttribute("id",id, User.class);
+        userRepository.deleteUser(user.getEmail());
+    }
 }
