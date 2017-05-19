@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/estateDetails.css">
     <link rel="stylesheet" href="css/slideshow.css">
     <link rel="stylesheet" href="css/automaticSlideshow.css">
-    <link rel="stylesheet" href="lightbox2/dist/css/lightbox.min.css">
+
 
     <link href="css/jquery-ui-1.10.1.css" rel="stylesheet">
     <link href="css/nigran.datepicker.css" rel="stylesheet">
@@ -18,7 +18,6 @@
             crossorigin="anonymous"></script>
     <script src="semantic-ui-css/semantic.min.js"></script>
     <script src="semantic-ui-css/semantic.js"></script>
-    <script src="js/favoriteAnnouncements.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -58,13 +57,15 @@
             <div class="ui raised  very padded  segment"
                  style="position:absolute;margin-top:0%; margin-left: 0%; width:26%; height: 45%;">
                 <div class="field">
-                    <button class="ui inverted blue fluid button" onclick="getField('users')"> <i class="tag icon"></i> Users</button>
+                    <button class="ui inverted blue fluid button" onclick="getFieldAdminProfile('users')"> <i class="users icon"></i> Users</button>
                     <br>
-                    <button class="ui inverted blue fluid button" onclick="getField('messages')"> <i class="tag icon"></i>Announcements </button>
+                    <button class="ui inverted blue fluid button" onclick="getFieldAdminProfile('announcements')"> <i class="tag icon"></i>Announcements </button>
                     <br>
-                    <button class="ui inverted blue fluid button" onclick="getField('accountSettings')"> <i class="mail icon"></i>Messages</button>
+                    <button class="ui inverted blue fluid button" onclick="getFieldAdminProfile('messages')"> <i class="mail icon"></i>Messages</button>
                     <br>
-                    <button class="ui inverted blue fluid button" onclick="getField('favouritesEstates')"> <i class="settings icon"></i> Account settings</button>
+                    <button class="ui inverted blue fluid button" onclick="getFieldAdminProfile('settings')"> <i class="settings icon"></i> Account settings</button>
+
+                    <i class="remove user icon"></i>
                 </div>
             </div>
         </div>
@@ -133,22 +134,22 @@
                     </div>
                 </div>
 
-                <div id="messages" class="field" style="display:none;">
-                    <div class="ui huge header" style="color:#1C7CD7;">Your messages</div>
+                <div id="users" class="field" style="display:none;">
+                    <div class="ui huge header" style="color:#1C7CD7;">Users</div>
                     <div class="column" id="scrollingMessages" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
-                        <div id="userMessages" class="ui left aligned grid" style="width:544px;float: left" >
+                        <div id="usersList" class="ui left aligned grid" style="width:544px;float: left" >
 
 
                         </div>
                     </div>
                 </div>
 
-                <div id="favouritesEstates" class="field" style="display:none;">
+                <div id="messages" class="field" style="display:none;">
                     <!--<div  class="ui huge header" style="color:#1C7CD7; width:75%;">Your favorite announcements</div>-->
                     <div class="ui grid" >
                         <div class="ui two column row">
                             <div class="eleven wide column">
-                                <div  class="ui huge header" style="color:#1C7CD7; ">Your favorite announcements</div>
+                                <div  class="ui huge header" style="color:#1C7CD7; ">Messages</div>
                             </div>
                             <div class="four wide column" >
                                 <div class="item" style="margin-top:8%;">
@@ -301,7 +302,7 @@
     </div>
 
 </div>
-<script src="profile.js"></script>
+<script src="adminProfile.js"></script>
 
 </body>
 </html>
