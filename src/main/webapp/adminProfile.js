@@ -42,6 +42,18 @@ window.onload = function() {
         contentType: false,
         success(data) {
             console.log(data);
+            for (var i = 0; i < data.length; i ++) {
+                var table  = document.getElementById("users-table");
+                var row = table.insertRow(table.rows.length);
+                var idCell = row.insertCell(0);
+                idCell.innerHTML = data[i].id;
+                var emailCell = row.insertCell(1);
+                emailCell.innerHTML = data[i].email;
+                var firstNameCell = row.insertCell(2);
+                firstNameCell.innerHTML = data[i].firstname;
+                var lastNameCell = row.insertCell(3);
+                lastNameCell.innerHTML = data[i].lastname;
+            }
         }
     });
 

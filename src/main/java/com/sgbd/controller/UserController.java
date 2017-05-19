@@ -267,6 +267,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers (Request request, Response response) {
         List<UserDTO> users = new LinkedList<>();
         users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

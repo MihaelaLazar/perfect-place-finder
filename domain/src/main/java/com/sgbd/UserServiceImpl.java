@@ -255,5 +255,10 @@ public class UserServiceImpl implements UserService{
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.getAllUsers();
         List<UserDTO> usersListToReturn = new LinkedList<>();
+        for (User user: users) {
+            UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName());
+            usersListToReturn.add(userDTO);
+        }
+        return usersListToReturn;
     }
 }
