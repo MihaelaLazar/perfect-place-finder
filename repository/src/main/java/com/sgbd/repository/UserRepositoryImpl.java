@@ -84,7 +84,8 @@ public class UserRepositoryImpl implements UserRepository {
 
         List<Estate> estates = estateRepository.getUserAnnouncements(idUser);
         for(Estate estate: estates) {
-            entityManager.remove(estate);
+            entityManager.createNativeQuery("DELETE FROM PF_FAV_ANNOUNCEMENTS WHERE ID_USER = " + idUser + " AND ID_ANNOUNCEMENT = " + estate.getID())
+                    .executeUpdate();
         }
     }
 
