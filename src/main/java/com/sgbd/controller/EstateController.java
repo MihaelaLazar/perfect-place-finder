@@ -285,4 +285,10 @@ public class EstateController {
         return new ResponseEntity<String>("Message deleted", HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/getAllAnnouncements", method = RequestMethod.GET)
+    public ResponseEntity<List<Estate>> getAllAnnouncements(Request request, Response response){
+        List<Estate> estates = estateService.getAllEstates();
+        return new ResponseEntity<>(estates, HttpStatus.OK);
+    }
+
 }

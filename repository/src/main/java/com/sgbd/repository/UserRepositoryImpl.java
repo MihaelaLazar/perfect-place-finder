@@ -72,10 +72,19 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public void deleteUser(String userEmail) {
+        Long idUser;
         try {
+            User user = findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class);
+            idUser = user.getId();
             entityManager.remove(findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class));
+
         }catch (Exception e) {
             throw new PersistenceException("Failed delete for entity class " + User.class, e);
+        }
+
+        List<Estate> estates = estateRepository.getUserAnnouncements(idUser);
+        for(Estate estate: estates) {
+            entityManager.remove(estate);
         }
     }
 

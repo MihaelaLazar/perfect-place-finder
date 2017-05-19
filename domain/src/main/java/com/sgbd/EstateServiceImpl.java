@@ -270,4 +270,8 @@ public class EstateServiceImpl implements EstateService {
         estateRepository.saveOrUpdate(estate);
     }
 
+    @Override
+    public List<Estate> getAllEstates() {
+        return estateRepository.getAllEstates();
+    }
 }

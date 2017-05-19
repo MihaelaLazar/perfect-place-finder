@@ -30,4 +30,6 @@ public interface EstateRepository {
     List<Estate> getUserEstates(Serializable id);
 
     List<BigDecimal> getFavoriteAnnouncementsIds(Long id);
+
+    List<Estate> getAllEstates();
 }

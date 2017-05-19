@@ -89,9 +89,16 @@ public class EstateRepositoryImpl implements EstateRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAnnouncement(Serializable entity, Class modelClass) {
         entityManager.remove(entity);
     }
 
-
+    @Override
+    @Transactional
+    public List<Estate> getAllEstates() {
+        Query query = entityManager.createQuery("from Estate ");
+        List<Estate> estates = (List<Estate>) query.getResultList();
+        return estates;
+    }
 }

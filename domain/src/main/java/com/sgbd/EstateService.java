@@ -29,4 +29,6 @@ public interface EstateService {
     void sendMessage(MessageDTO messageDTO);
 
     void deleteMessage(MessageToDeleteDTO messageToDeleteDTO);
+
+    List<Estate> getAllEstates();
 }
