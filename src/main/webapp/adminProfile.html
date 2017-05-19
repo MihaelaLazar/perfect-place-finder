@@ -125,8 +125,8 @@
                     <button class="medium ui button">Cancel</button>
                 </div>
 
-                <div id="announcements" class="field" style="display:block;">
-                    <div class="ui huge header"  style="color:#1C7CD7;">Your announcements</div>
+                <div id="announcements" class="field" style="display:none;">
+                    <div class="ui huge header"  style="color:#1C7CD7;">Announcements</div>
                     <div class="column" id="scrolling" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
                         <div id="estatesProfile" class="ui left aligned grid" style="width:544px;float: left">
 
@@ -134,11 +134,42 @@
                     </div>
                 </div>
 
-                <div id="users" class="field" style="display:none;">
+                <div id="users" class="field" style="display:block;">
                     <div class="ui huge header" style="color:#1C7CD7;">Users</div>
-                    <div class="column" id="scrollingMessages" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: hidden; overflow-y: scroll; height:75%">
+                    <div class="column" id="scrollingMessages" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: scroll; overflow-y: scroll; height:75%">
                         <div id="usersList" class="ui left aligned grid" style="width:544px;float: left" >
 
+                            <table class="ui single line table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>E-mail address</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Delete account</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>jhlilk22@yahoo.com</td>
+                                    <td>September 14, 2013</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>jamieharingonton@yahoo.com</td>
+                                    <td>January 11, 2014</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>jilsewris22@yahoo.com</td>
+                                    <td>May 11, 2014</td>
+                                    <td>Yes</td>
+                                </tr>
+                                </tbody>
+                            </table>
 
                         </div>
                     </div>

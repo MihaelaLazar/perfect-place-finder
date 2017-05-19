@@ -34,3 +34,15 @@ function getFieldAdminProfile(id) {
         $('#messages').css("display", "block");
     }
 }
+
+window.onload = function() {
+    $.ajax({
+        method: 'GET',
+        url: '/user/getAll',
+        contentType: false,
+        success(data) {
+            console.log(data);
+        }
+    });
+
+}
