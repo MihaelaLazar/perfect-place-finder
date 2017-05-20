@@ -20,18 +20,26 @@ function checkSession() {
     if (request.status === 200) {
           console.log("session existent");
           console.log(data);
-          document.getElementById('login-estateDetails').style.display = 'none';
-          document.getElementById('signup-estateDetails').style.display = 'none';
-          document.getElementById('logout-estateDetails').style.display = 'inline';
-          document.getElementById('loggedIn-estateDetails').style.display = 'inline';
-          $('#loggedInButton-estateDetails').text(data);
+
+           $( "#estateDetails-container" ).empty();
+          var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+          $addProperty.appendTo($("#estateDetails-container"));
+          var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick=redirectToProfileAddProperty() >" + data+"</button>");
+          $currentDiv.appendTo($("#estateDetails-container"));
+          var $logout = $("<button id='logoutButton-estateDetails' class='ui inverted blue button' onclick=invalidateSessionEstateDetails()>Log out</button>");
+          $logout.appendTo($("#estateDetails-container"));
+
     } else {
         console.log("not existent session");
-        document.getElementById('login-estateDetails').style.display = 'block';
-        document.getElementById('signup-estateDetails').style.display = 'block';
-        document.getElementById('logout-estateDetails').style.display = 'none';
-        document.getElementById('loggedIn-estateDetails').style.display = 'none';
+        $( "#estateDetails-container" ).empty();
+        var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+        $addProperty.appendTo($("#estateDetails-container"));
+        var $signup = $("<button class='ui inverted blue button' onclick=document.getElementById('signUpEstateDetails').style.display='block'>Sign up</button>");
+        $signup.appendTo($("#estateDetails-container"));
+        var $login = $("<button class='ui inverted blue button' onclick=document.getElementById('logInEstateDetails').style.display='block'>Log in</button>");
+        $login.appendTo($("#estateDetails-container"));
     }
+
 }
 
 /* This function invalidates session */
@@ -42,12 +50,13 @@ function invalidateSessionEstateDetails() {
          contentType: false,
          success (data) {
              console.log('session invalidated');
-             document.getElementById('logInEstateDetails').style.display='none';
-             document.getElementById('logInStatus-EstateDetails').style.display='none';
-             document.getElementById('login-estateDetails').style.display = 'block';
-             document.getElementById('signup-estateDetails').style.display = 'block';
-             document.getElementById('logout-estateDetails').style.display = 'none';
-             document.getElementById('loggedIn-estateDetails').style.display='none';
+             $( "#estateDetails-container" ).empty();
+             var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+             $addProperty.appendTo($("#estateDetails-container"));
+             var $signup = $("<button class='ui inverted blue button' onclick='document.getElementById('signUpEstateDetails').style.display='block''>Sign up</button>");
+             $signup.appendTo($("#estateDetails-container"));
+             var $login = $("<button class='ui inverted blue button' onclick='document.getElementById('logInEstateDetails').style.display='block''>Log in</button>");
+             $login.appendTo($("#estateDetails-container"));
          }
      });
 }
@@ -541,13 +550,14 @@ function verifyLoginDataEstateDetails(loginData) {
         contentType: 'application/json',
         success: function(data, textStatus, xhr) {
                 console.log('Status code ' + xhr.status + "data: " + data);
-                document.getElementById('logInEstateDetails').style.display='none';
-                document.getElementById('logInStatus-EstateDetails').style.display='block';
-                document.getElementById('login-estateDetails').style.display = 'none';
-                document.getElementById('signup-estateDetails').style.display = 'none';
-                document.getElementById('logout-estateDetails').style.display = 'inline';
-                document.getElementById('loggedIn-estateDetails').style.display = 'inline';
-                $('#loggedInButton-estateDetails').text(data);
+                 $( "#estateDetails-container" ).empty();
+                 var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+                 $addProperty.appendTo($("#estateDetails-container"));
+                 var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick='redirectToProfileAddProperty()' >" + data+"</button>");
+                  $currentDiv.appendTo($("#estateDetails-container"));
+                  var $logout = $("<button id='logoutButton-estateDetails' class='ui inverted blue button' onclick='invalidateSessionEstateDetails()'>Log out</button>");
+                  $logout.appendTo($("#estateDetails-container"));
+//                $('#loggedInButton-estateDetails').text(data);
         },
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
             document.getElementById('logInEstateDetails').style.display='none';
