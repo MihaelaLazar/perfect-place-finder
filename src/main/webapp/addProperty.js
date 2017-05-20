@@ -400,9 +400,14 @@ function checkSessionAddProperty() {
     if (request.status === 200) {
         console.log("session existent");
         console.log();
-        document.getElementById('logoutAddProperty').style.display = 'block';
-        document.getElementById('loggedIn-addProperty').style.display = 'block';
-        $('#loggedInButton-addProperty').text(data);
+//        document.getElementById('logoutAddProperty').style.display = 'block';
+//        document.getElementById('loggedIn-addProperty').style.display = 'block';
+//        $('#loggedInButton-addProperty').text(data);
+        var $currentDiv = $("<button id='loggedIn-addProperty' style='margin-top:5px;' class='ui inverted blue button' onclick='redirectToSearchCity()' >" + data+"</button>");
+        var $logoutButton = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick='redirectToSearchCity()' >Log out</button>");
+        $currentDiv.appendTo($("#myContainer"));
+        $logoutButton.appendTo($("#myContainer"));
+
     } else {
         console.log("not existent session");
 
