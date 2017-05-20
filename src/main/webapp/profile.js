@@ -84,7 +84,32 @@ window.onload = function () {
 }
 
 function updateUserProfile() {
-    var
+    var userEmail = document.getElementById('newEmailSignUp-homePage').value;
+    console.log("USER EMAIL " + userEmail);
+    var updateUserData = {
+      "email" : userEmail,
+      "firstName": document.getElementById('first-name-homePage').value,
+      "lastName": document.getElementById('last-name-homePage').value,
+      "idUser": "0"
+    };
+
+    $.ajax({
+         method: 'POST',
+         url : '/user/update/profile',
+         contentType: 'application/json;charset=UTF-8',
+         data: JSON.stringify(updateUserData),
+         success (data) {
+            $('#email-homePage').val(document.getElementById('newEmailSignUp-homePage').value);
+            $('#newEmailSignUp-homePage').val("");
+         },
+         error : function (xhr, ajaxOptions, thrownError,textStatus) {
+             console.log('error Status code ' + xhr.status);
+             console.log('Text status: ' + textStatus);
+             if (xhr.responseText === "email_null" || xhr.responseText === "email_invalid") {
+                     $('#newEmailSignUp-homePage').val("Insert valid email");
+             }
+         }
+    });
 }
 
 /* This function removes the message with the given id. */

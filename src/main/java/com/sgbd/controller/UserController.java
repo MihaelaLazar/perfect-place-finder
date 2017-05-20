@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.sgbd.util.ContentType.JSON;
 
@@ -279,8 +281,21 @@ public class UserController {
 
     @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
     public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
-      userService.updateUser(userUpdateDTO);
-      return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            if (userUpdateDTO.getEmail().equals("")) {
+                return new ResponseEntity<>("email_null", HttpStatus.BAD_REQUEST);
+            }
+            Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(userUpdateDTO.getEmail());
+            if (!matcher.find()) {
+                return new ResponseEntity<>("email_invalid", HttpStatus.BAD_REQUEST);
+            }
+            userUpdateDTO.setIdUser((Long) session.getAttribute("ID"));
+            userService.updateUser(userUpdateDTO);
+        }
+
+        return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(path = "/user/get/profileAccount", method = RequestMethod.GET)
