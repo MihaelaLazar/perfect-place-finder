@@ -14,11 +14,6 @@ function checkSession() {
     if (request.status === 200) {
           console.log("session existent");
           console.log(data);
-//          document.getElementById('login-searchCity').style.display = 'none';
-//          document.getElementById('signup-searchCity').style.display = 'none';
-//          document.getElementById('logout-searchCity').style.display = 'block';
-//          document.getElementById('loggedIn-searchCity').style.display = 'block';
-//          $('#loggedInButton-searchCity').text(data);
           $( "#searchCity-container" ).empty();
           var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertySearchCity() >Add property</button>");
           $addProperty.appendTo($("#searchCity-container"));
@@ -1002,24 +997,57 @@ function addOverlay(id) {
                         anchor: new google.maps.Point(0, 0)
                     };
                     var marker, i;
-                    for (i = 0; i < noiseLocations.length; i++) {
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(noiseLocations[i][0], noiseLocations[i][1]),
-                            // map: map,
-                            icon: icon
-                        });
-                        var cityCircle = new google.maps.Circle({
-                            strokeColor: '#808080',
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: '#808080',
-                            fillOpacity: 0.35,
-                            map: map,
-                            center: marker.position,
-                            radius: 100
-                        });
-                        noiseMarkersArray[i] = {marker: marker, circle: cityCircle};
-                    }
+                    $.ajax({
+                        method: 'GET',
+                        url: '/get/noise/tweets',
+                        contentType: false,
+                        success: function (data) {
+                            console.log(data);
+                            for (var i = 0; i < data.length; i ++) {
+                                var latCoordinate = data[i].split(',')[0];
+                                var longCoordinate = data[i].split(',')[1];
+                                marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(latCoordinate, longCoordinate),
+                                    // map: map,
+                                    icon: icon
+                                });
+                                var cityCircle = new google.maps.Circle({
+                                    strokeColor: '#808080',
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 2,
+                                    fillColor: '#808080',
+                                    fillOpacity: 0.35,
+                                    map: map,
+                                    center: marker.position,
+                                    radius: 500
+                                });
+                                noiseMarkersArray[i] = {marker: marker, circle: cityCircle};
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+                            console.log('error Status code ' + xhr.status);
+                            console.log('Not logged in');
+                        }
+                    })
+//
+//                    for (i = 0; i < noiseLocations.length; i++) {
+//                        marker = new google.maps.Marker({
+//                            position: new google.maps.LatLng(noiseLocations[i][0], noiseLocations[i][1]),
+//                            // map: map,
+//                            icon: icon
+//                        });
+//                        var cityCircle = new google.maps.Circle({
+//                            strokeColor: '#808080',
+//                            strokeOpacity: 0.8,
+//                            strokeWeight: 2,
+//                            fillColor: '#808080',
+//                            fillOpacity: 0.35,
+//                            map: map,
+//                            center: marker.position,
+//                            radius: 100
+//                        });
+//                        noiseMarkersArray[i] = {marker: marker, circle: cityCircle};
+//                    }
                     console.log(noiseMarkersArray);
                 } else {
                     if (id == "schools"){

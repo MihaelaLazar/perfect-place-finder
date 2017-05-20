@@ -43,48 +43,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public Object redirectToHomePage(Request request, Response response) {
-        try {
-            HttpResponse<JsonNode> jsonNodeHttpResponse = Unirest.get("http://localhost:9001/get/noise/tweets")
-                    .asJson();
-            System.out.println(jsonNodeHttpResponse.getBody().toString());
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-        response.setContentType("text/html");
-        SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[20];
-        random.nextBytes(bytes);
-        String token = bytes.toString();
-        System.out.println("TOKEN: " + token);
-        HttpSession httpSession = request.getSession(true);
-        httpSession.setMaxInactiveInterval(2);
-        httpSession.setAttribute("token",token);
-        System.out.println("Last accessed time: " + httpSession.getLastAccessedTime());
-        Cookie cookie = new Cookie("token", token);
-        request.setCookies(new Cookie[]{cookie});
-        response.addCookie(cookie);
-        try {
-            response.sendRedirect("/homePage.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    @RequestMapping(path = "/error", method = RequestMethod.GET)
-    public Object error(Response response) {
-        try {
-            response.sendRedirect("/error.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
