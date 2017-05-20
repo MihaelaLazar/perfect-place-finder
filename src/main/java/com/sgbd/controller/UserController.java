@@ -1,5 +1,9 @@
 package com.sgbd.controller;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.sgbd.UserService;
 import com.sgbd.dto.LoginDTO;
 import com.sgbd.dto.SignUpDTO;
@@ -42,6 +46,13 @@ public class UserController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public Object redirectToHomePage(Request request, Response response) {
+        try {
+            HttpResponse<JsonNode> jsonNodeHttpResponse = Unirest.get("http://localhost:9001/get/noise/tweets")
+                    .asJson();
+            System.out.println(jsonNodeHttpResponse.getBody().toString());
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
         response.setContentType("text/html");
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[20];
