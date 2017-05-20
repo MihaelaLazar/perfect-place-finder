@@ -2,6 +2,7 @@ package com.sgbd.repository;
 
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,5 +103,13 @@ public class EstateRepositoryImpl implements EstateRepository {
         Query query = entityManager.createQuery("from Estate ");
         List<Estate> estates = (List<Estate>) query.getResultList();
         return estates;
+    }
+
+    @Override
+    @Transactional
+    public List<Message> getAllMessages(){
+        Query query = entityManager.createQuery("from Message ");
+        List<Message> messages = (List<Message>) query.getResultList();
+        return messages;
     }
 }

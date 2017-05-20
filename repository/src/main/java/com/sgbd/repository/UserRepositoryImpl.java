@@ -89,8 +89,8 @@ public class UserRepositoryImpl implements UserRepository {
                     .executeUpdate();
 //            entityManager.createNativeQuery("DELETE FROM PF_ANNOUNCEMENTS WHERE ID_USER = " + idUser )
 //                    .executeUpdate();
-            estate.getEstateAttachements().clear();
-            estate = estateRepository.saveOrUpdate(estate);
+//            estate.getEstateAttachements().clear();
+//            estate = estateRepository.saveOrUpdate(estate);
             estateRepository.deleteAnnouncement(estate, Estate.class);
         }
 

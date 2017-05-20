@@ -2,6 +2,7 @@ package com.sgbd.repository;
 
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
@@ -32,4 +33,6 @@ public interface EstateRepository {
     List<BigDecimal> getFavoriteAnnouncementsIds(Long id);
 
     List<Estate> getAllEstates();
+
+    List<Message> getAllMessages();
 }

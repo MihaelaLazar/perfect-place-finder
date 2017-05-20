@@ -38,9 +38,6 @@ public class EstateServiceImpl implements EstateService {
     @Autowired
     AttachementRepository attachementRepository;
 
-//    @Autowired
-//    private Validator validator;
-
     @Override
     public Serializable findById (Long userId) {
         return estateRepository.findByAttribute(ESTATE_ID_COLUMN_NAME, userId, Estate.class);
@@ -103,7 +100,6 @@ public class EstateServiceImpl implements EstateService {
         if(filters.get("transType") != null) {
             queryFilters += " AND" +  " upper(TYPE_OF_TRANSACTION) = '" + filters.get("transType").toUpperCase() + "' ";
         }
-
 
         Integer offset = 0;
         if (filters.get("offset") != null) {
@@ -273,5 +269,11 @@ public class EstateServiceImpl implements EstateService {
     @Override
     public List<Estate> getAllEstates() {
         return estateRepository.getAllEstates();
+    }
+
+    @Override
+    public List<Message> getAllMessages() {
+        List<Message> messages = estateRepository.getAllMessages();
+        return messages;
     }
 }

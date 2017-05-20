@@ -6,10 +6,12 @@ import com.sgbd.UserService;
 import com.sgbd.dto.*;
 import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 import com.sgbd.util.ImageUtil;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +83,8 @@ public class EstateController {
             return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         } catch (InvalidPropertiesFormatException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         }
     }
 
@@ -290,5 +294,12 @@ public class EstateController {
         List<Estate> estates = estateService.getAllEstates();
         return new ResponseEntity<>(estates, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/getAllMessages", method = RequestMethod.GET)
+    public ResponseEntity<List<Message>> getAllMessages(Request request, Response response){
+        List<Message> messages = estateService.getAllMessages();
+        return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.sgbd;
 
         import com.sgbd.dto.*;
         import com.sgbd.model.Estate;
+        import com.sgbd.model.Message;
 
         import java.io.IOException;
         import java.io.Serializable;
@@ -31,4 +32,6 @@ public interface EstateService {
     void deleteMessage(MessageToDeleteDTO messageToDeleteDTO);
 
     List<Estate> getAllEstates();
+
+    List<Message> getAllMessages();
 }

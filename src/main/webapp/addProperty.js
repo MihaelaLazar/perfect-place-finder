@@ -239,8 +239,8 @@ function addPropertyPOST(event) {
                 error: function (xhr, ajaxOptions, thrownError,textStatus) {
                     var errors = xhr.responseText;
                     console.log('status:::: ' + xhr.status);
-                    if (xhr.status === 403) {
-                        $('#error-city').css("display", "block");
+                    if (xhr.status === 403 || xhr.status === 409) {
+                        $('#addPropertyFailedModal').css("display", "block");
                     } else {
                         document.getElementById('addPropertySuccessfulModal').style.display='block';
                     }

@@ -65,7 +65,7 @@
                     <br>
                     <button class="ui inverted blue fluid button" onclick="getFieldAdminProfile('settings')"> <i class="settings icon"></i> Account settings</button>
 
-                    <i class="remove user icon"></i>
+
                 </div>
             </div>
         </div>
@@ -136,7 +136,7 @@
 
                 <div id="users" class="field" style="display:block;">
                     <div class="ui huge header" style="color:#1C7CD7;">Users</div>
-                    <div class="column" id="scrollingMessages" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: scroll; overflow-y: scroll; height:75%">
+                    <div class="column" id="scrollingUsers" style="position:absolute;width:90%;margin-top:7%;margin-left: 0.5%;overflow-x: scroll; overflow-y: scroll; height:75%">
                         <div id="usersList" class="ui left aligned grid" style="width:544px;float: left" >
 
                             <table id="users-table" class="ui single line table">
@@ -192,9 +192,6 @@
                             </div>
                             <div class="four wide column">
                                 <label>Furniture/Utilities</label>
-                                <!--<div  class="ui input">-->
-                                <!--<input placeholder="Furniture/Utilities" type="text">-->
-                                <!--</div>-->
                                 <select name="furniture-profile" style="height:37px; width:100%;border-radius: 3px; border-color: #D4D2D2" id="furniture-profile" required>
                                     <option value="" disabled>Choose</option>
                                     <option value="1">Complete</option>
