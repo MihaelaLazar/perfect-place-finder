@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://scholarly.vernacular.io/ -->
+<html lang="en-GB"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width">
+    <title>PerF Documentation</title>
+    <link rel="stylesheet" href="Scholarly/scholarly.css">
+    <link rel="stylesheet" href="Scholarly/prism-coy.css">
+    <script src="Scholarly/prism.js" defer=""></script>
+    <style type="text/css"></style></head>
+<body prefix="schema: http://schema.org/ xsd: http://www.w3.org/2001/XMLSchema# sa: https://ns.science.ai/">
+<header>
+    <p class="title">PerF HTML</p>
+    <p class="subtitle">Documentation</p>
+</header>
+<article id="what" typeof="schema:ScholarlyArticle" resource="#">
+    <h1>PerF</h1>
+    <section>
+        <ol>
+            <li property="schema:author" typeof="sa:ContributorRole">
+                <a property="schema:author" href="https://github.com/MihaelaLazar/" typeof="schema:Person">
+                    <span property="schema:givenName">Lazar</span>
+                    <span property="schema:familyName">Mihaela</span>
+                </a>
+                <a href="http://scholarly.vernacular.io/#scienceai" property="sa:roleAffiliation" resource="http://science.ai/">a</a>
+            </li>
+            <li property="schema:contributor" typeof="sa:ContributorRole">
+                <a property="schema:contributor" href="https://github.com/RaresPodaru/" typeof="schema:Person">
+                    <span property="schema:givenName">Podaru</span>
+                    <span property="schema:familyName">Rares</span>
+                </a>
+                <a href="http://scholarly.vernacular.io/#scienceai" property="sa:roleAffiliation" resource="http://science.ai/">a</a>
+            </li>
+            <li property="schema:contributor" typeof="sa:ContributorRole">
+                <a property="schema:contributor" href="https://github.com/AcasandreiBeatrice" typeof="schema:Person">
+                    <span property="schema:givenName">Acasandrei</span>
+                    <span property="schema:familyName">Beatrice-Raluca</span>
+                </a>
+                <a href="http://scholarly.vernacular.io/#scienceai" property="sa:roleAffiliation" resource="http://science.ai/">a</a>
+            </li>
+        </ol>
+    </section>
+
+    <section typeof="sa:Subcategorii" id="cuprins">
+        <h2>Cuprins</h2>
+        <aside typeof="schema:WPSideBar">
+            <p>
+            <ul>
+                <li><a href="#descriereaProiectului">1. Descriere Proiect</a></li>
+                <li><a href="#etapeProiect">2. Etapele dezvoltarii proiectului</a></li>
+                <li><a href="#arhitectura">3. Arhitectura aplicatiei</a></li>
+                <li><a href="#progresProiect">4. Progresul inregistrat</a></li>
+                <li><a href="#tehnologiieUtilizate">5. Tehnologii utilizate</a></li>
+                <li><a href="#serviciiUtilizate">6. Servicii utilizate</a></li>
+                <li><a href="#task">7. Task-urile echipei</a></li>
+                <li><a href="#membriiEchipei">8. Membrii echipei</a></li>
+            </ul>
+            <!--</p>-->
+        </aside>
+    </section>
+    <section typeof="sa:Results" id="descriereaProiectului">
+        <h2>1. Descriere Proiect</h2>
+        <p>
+            E necesara o aplicatie Web menita a gestiona eficient tranzactiile imobiliare. Sistemul va permite managementul
+            unor imobile spre vanzare si/sau inchiriere, inclusiv informatii precum descriere, pret, coordonatele locatiei,
+            date de contact, starea cladirii, facilitati oferite, riscuri posibile etc. Pentru localizarea facila, se va
+            recurge la un serviciu de cartografiere (e.g., OpenStreetMap). In plus, se va oferi si posibilitatea atasarii
+            de straturi suplimentare pentru vizualizarea unor informatii de interes -- e.g. diversele tipuri de poluare,
+            nivelul de aglomeratie, numarul de raportari de jafuri, costul mediu de trai, temperatura medie anuala,
+            existenta parcarilor ori altor obiective de interes (i.e. magazine) si altele. Pentru generarea diverselor
+            straturi se poate recurge la date agregate existente in cadrul unor platforme sociale (e.g., Twitter, Facebook).
+            De exemplu, pentru stratul poluare fonica, se pot agrega resurse marcate cu tag-ul "#noise" ori "#smog".
+            Utilizatorii interesati de inchirierea/cumpararea unei locuinte (e.g. apartament, casa, loc de veci etc.)
+            vor putea efectua diverse operatiuni folosind harta pusa la dispozitie: selectarea zonei de interes pentru
+            afisarea optiunilor existente, selectarea diverselor straturi pentru luarea deciziei, filtrare in functie de
+            alte criterii (e.g., pret, suprafata, facilitati).
+        </p>
+    </section>
+    <section id="etapeProiect">
+        <h2>2. Etapele dezvoltarii proiectului</h2>
+        <ol>
+            <li>Design/Arhitectura</li>
+            <li>Modelare baza de date</li>
+            <li>Creare pagini front-end</li>
+            <li>Design back-end</li>
+            <li>Design proceduri oracle</li>
+            <li>Design &amp; implementare arhitectura MVC</li>
+            <li>Implementare proceduri oracle</li>
+            <li>Implementarea view-urilor pe baza html &amp; css &amp; javascript</li>
+        </ol>
+    </section>
+
+    <section id="arhitectura">
+        <h2>3. Arhitectura aplicatiei</h2>
+
+        <figure typeof="sa:Image6">
+            <img src="diagram.png" style="width:100%;display:inline;border-left: 2px solid black">
+            <figcaption>
+                <a href="http://fenrir.info.uaic.ro/~sebastian.albisteanu/auxImages/img6.jpg"></a>
+            </figcaption>
+        </figure>
+        <blockquote>
+            <p>Aplicatia va fi proiectata pe arhitectura MVC. Aplicatia va fi una multi-page, adica in functie de actiunile utilizatorului browserul va naviga catre alta pagina.</p>
+        </blockquote>
+    </section>
+
+    <section id="progresProiect">
+        <h2>4. Progresul inregistrat</h2>
+        <blockquote>
+            <li><p><strong>Front-end</strong></p></li>
+            <li>Pagini create</li>
+            <p><strong>– Home page</strong></p>
+            <ul><p>Pagina de start expune campuri de logare, inregistrare, precum si un camp pentru introducerea unui oras unde se doreste cautarea anunturilor.</p></ul>
+
+            <figure typeof="sa:Image1">
+                <img src="Scholarly/homePage.jpg" style="width:600px;height:350px;display:inline">
+                <figcaption>
+                    <a href="Scholarly/homePageLogin.jpg"></a>
+                    Pagina de start cu campul de cautare dupa oras.
+                </figcaption>
+            </figure>
+
+            <figure typeof="sa:Image2">
+                <img src="Scholarly/homePageLogin.jpg" style="width:100%;display:inline">
+                <figcaption>
+                    <a href=""></a>
+                    Pagina de start cu login.
+                </figcaption>
+            </figure>
+
+        </blockquote>
+
+        <blockquote>
+
+            <p><strong>– Pagina de cautare anunturi dupa filtre</strong></p>
+            <ul><p>Pagina de cautare a anunturilor contine diferite filtre necesare cautarii anunturilor, precum si anunturile gasite si harta cu pin-urile lor.</ul></p>
+
+            <figure typeof="sa:Image5">
+                <img src="Scholarly/searchCity.jpg" style="width:100%;display:inline">
+                <figcaption>
+                    <a href=""></a>
+                </figcaption>
+            </figure>
+
+        </blockquote>
+
+        <blockquote>
+            <p><strong>- Pagina de cautare pentru utilizatorii logati</strong></p>
+            <ul><p>Pagina de cautare pentru utilizatorii logati care pot salva anumite anunturi</ul></p>
+
+            <figure typeof="sa:Image3">
+                <img src="Scholarly/searchCityLoggedIn.jpg" style="width:100%;display:inline">
+                <figcaption>
+                    <a href=""></a>
+                </figcaption>
+            </figure>
+
+        </blockquote>
+
+        <blockquote>
+            <p><strong>- Pagina de adaugare anunt</strong></p>
+            <ul><p>Pagina de adaugare a unui anunt (completare formular + adaugare de poze).</ul></p>
+
+            <figure typeof="sa:Image7">
+                <img src="Scholarly/addProperty.jpg" style="width:100%;display:inline">
+                <figcaption>
+                    <a href=""></a>
+                </figcaption>
+            </figure>
+
+        </blockquote>
+
+        <blockquote>
+            <p><strong>- Pagina de vizualizare detalii despre anunt</strong></p>
+
+            <figure typeof="sa:Image7">
+                <img src="Scholarly/estateDetails.jpg" style="width:100%;display:inline">
+                <figcaption>
+                    <a href=""></a>
+                </figcaption>
+            </figure>
+
+        </blockquote>
+
+
+        <blockquote>
+            <li><strong>Back-end</strong></li>
+            <p>Pe partea de back-end se va folosi o baza de date care va contine script-uri de creare a unor tabele, popularea cu ajutorul unor pachete si blocuri din PL\SQL, creeandu-se
+                triggere si indecsi, acestea fiind adaugate intr-un fisier cu inregistrari din tabele.</p>
+        </blockquote>
+
+        <section id="progresProiect">
+            <h2>5. Tehnologii utilizate</h2>
+            <blockquote><h3>1. Pl\SQL - JAVA</h3>
+
+                <ul><p>Pentru scrierea aplicatiilor care acceseaza serverul Oracle XE o solutie este limbajul Java. De altfel firma Oracle Co. pune la dispoziţia utilizatorilor mediul JDeveloper .
+                    Se va folosi mediul de pragramare Intellij.
+                    Hibernate este un ORM (Object-relational mapping) framework matur, bine gandit si dezvoltat. Este scris in Java si este destinat pentru rezolvarea problemelor de persistenta ale
+                    aplicatiilor J2SE si J2EE. In prezent este foarte des folosit dintre framework-urile ORM existente, in aplicatiile Java pentru web.
+                   </p></ul></blockquote>
+
+            <blockquote><h3>2. Spring framework - MVC</h3>
+                <ul><p>Spring Framework urmăreşte să ofere infrastructura necesară pentru realizarea aplicațiilor Java, astfel încât programatorul să se poată concentra asupra dezvoltării efective
+                    de cod. Spring utilizează pe scară largă obiecte Java clasice (POJOs – Plain Old Java Objects). </p></ul></blockquote>
+
+
+            <blockquote><h3>3. Semantic UI</h3>
+                <ul><p>Framework-ul Semantic UI isi pune ca scop usurarea dezvoltarii web. Semantic UI se afla pe partea de front-end, asta insemnand ca este o interfata intre utilizator si
+                    codul de pe partea back-end. Este si un framework de aplicatie web, un software framework care este creat sa suporte dezvoltarea website-urilor si aplicatiilor web.
+                    Semantic UI ajuta la layout si design usor si totodata responsive pe orice platforma folosindu-se de clase si functii predeclarate in fisiere externe cum ar fi semantic.js,
+                    semantic.css. Semantic UI poate la randul lui sa fie formatat de fisierele css care prin cascading vor da overwrite la anumite atribute si functii facand aplicatia web pe
+                    placul utilizatorului, dar fara a mai fie nevoie sa se scrie tot codul de la inceput .</p></ul></blockquote>
+
+            <blockquote><h3>4. HTML / CSS</h3>
+                <ul><p>Pentru partea de front-end se foloseste html. Scopul HTML este mai degraba prezentarea informatiilor – paragrafe, fonturi, tabele etc. – decat descrierea semanticii
+                    documentului. CSS este un standard pentru formatarea elementelor unui document HTML. Stilurile se pot atașa elementelor HTML prin intermediul unor fișiere externe.</p></ul></blockquote>
+
+            <blockquote><h3>5. jQuery - JavaScript</h3>
+                <ul><p>jQuery este o platforma de dezvoltare JavaScript. De asemenea, este necesara
+                    referinta la API-ul jQuery. </p></ul></blockquote>
+
+            <blockquote><h3>6. API-uri utilizate</h3></ul>
+                <ul><p>Google Maps este un API care ne pune la dispozitie harta pe care vor fi afisate diverse straturi, precum si anunturile (clusterizate).</p></ul>
+                <p><a href="https://developers.google.com/maps/documentation/javascript/">GoogleMaps API</a></p>
+                <ul><p>Twitter API va fi folosit pentru preluarea datelor pentru generarea straturilor (de noise) dupa #noise.</p></ul>
+                <p><a href="https://dev.twitter.com/rest/public">Twitter API (twitter4j)</a></p>
+            </blockquote>
+        </section>
+
+
+        <section id="serviciiUtilizate">
+            <h2>6. Servicii utilizate</h2>
+            <blockquote><h3>GitHub</h3>
+                <p><ul>GitHub este un serviciu de gazduire web pentru proiecte de dezvoltare a software-ului care utilizeaza sistemul de control al versiunilor Git. GitHub ofera planuri
+                    tarifare pentru depozite private si conturi gratuite pentru proiecte open source. De asemenea, exista o optiune speciala, care este atribuita studentilor, unde au voie la 5
+                    proiecte private fara sa existe un plan tarifar.</ul></p>
+
+                <p><a href="https://github.com/RaresPodaru/proiect-tw">GitHub project</a></p></blockquote>
+
+        </section>
+        <section id="task">
+            <h2>7. Task-urile echipei</h2>
+            <blockquote>
+                Lazar Mihaela:
+                <ul>
+                    <li>Optimizare functii / proceduri din baza de date.</li>
+                    
+                </ul>
+            </blockquote>
+
+            <blockquote>
+                Podaru Rares:
+                <ul>
+                    <li>Construirea functiilor PL/SQL din baza de date.</li>
+
+                </ul>
+            </blockquote>
+
+            <blockquote>
+                Acasandrei Beatrice-Raluca:
+                <ul>
+                    <li>Construirea procedurilor PL/SQL din baza de date.</li>
+
+                </ul>
+            </blockquote>
+
+            <blockquote>
+                Task-uri comune:
+                <ul>
+                    <li>Imbunatatirea design-ului aplicatiei.</li>
+                    <li>Mentenanta si imbunatatirea bazei de date</li>
+                    <li>Preluarea informatiilor de la API-ul Google Maps</li>
+                    <li>Preluarea informatiilor de la API-ul Twitter</li>
+                </ul>
+            </blockquote>
+        </section>
+
+        <section id="membriiEchipei">
+            <h2>8. Membrii echipei</h2>
+            <ul><li><p>Lazar Mihaela</p></li>
+                <li><p>Podaru Rares</p></li>
+                <li><p>Acasandrei Beatrice-Raluca</p></li></ul>
+        </section>
+</article>
+
+</body></html>
