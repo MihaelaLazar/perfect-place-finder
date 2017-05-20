@@ -103,8 +103,8 @@ public class UserController {
             request.getSession(false).setAttribute("username", user.getUsername());
             request.getSession(false).setAttribute("tokenID", tokenID);
             request.getSession(false).setAttribute("ID", user.getId());
-            request.getSession(false).setAttribute("admin", "admin");
             if (user.getRole().equalsIgnoreCase("admin")){
+                request.getSession(false).setAttribute("username", "admin");
                 return new ResponseEntity<>("admin", HttpStatus.OK);
             }
             return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
@@ -208,6 +208,11 @@ public class UserController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         } else {
+            try {
+                response.sendRedirect("/searchCity.html");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
         }
     }
@@ -226,6 +231,11 @@ public class UserController {
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         } else {
+            try {
+                response.sendRedirect("/searchCity.html");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>("User not logged in", HttpStatus.BAD_REQUEST);
         }
     }
@@ -240,6 +250,11 @@ public class UserController {
             favoriteAnnouncements = userService.getUserFavoriteAnnouncements(id);
             return new ResponseEntity<>(favoriteAnnouncements, HttpStatus.OK);
         } else {
+            try {
+                response.sendRedirect("/homePage.html");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(favoriteAnnouncements, HttpStatus.BAD_REQUEST);
         }
     }
@@ -249,6 +264,11 @@ public class UserController {
         List<Message> messages = new ArrayList<>();
         HttpSession session = request.getSession(false);
         if (session == null) {
+            try {
+                response.sendRedirect("/homePage.html");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(messages, HttpStatus.BAD_REQUEST);
         } else {
             Long id = (Long) session.getAttribute("ID");
@@ -261,6 +281,27 @@ public class UserController {
     public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
       userService.updateUser(userUpdateDTO);
       return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(path = "/user/get/profileAccount", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> getUSerProfileAccount(Request request, Response response) {
+        UserDTO userDTO = new UserDTO();
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            User user = userService.getUser((String) session.getAttribute("username"));
+            userDTO.setEmail(user.getEmail());
+            userDTO.setFirstname(user.getFirstName());
+            userDTO.setLastname(user.getLastName());
+            userDTO.setId(user.getId());
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        }else {
+            try {
+                response.sendRedirect("/homePage.html");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new ResponseEntity<>(userDTO, HttpStatus.CONFLICT);
     }
 
     @RequestMapping(path = "/user/getAll", method = RequestMethod.GET)

@@ -245,10 +245,9 @@ public class EstateController {
     @RequestMapping(path = "/send/message", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> sendMessage (Request request, Response response, @RequestBody MessageDTO messageDTO) {
-        System.out.println(messageDTO.getDateToMove());
         String errorMessage = "";
         if (messageDTO.getPhone() == "") {
-            errorMessage += "phone ";
+            errorMessage += "phone_null ";
         } else {
             Pattern pattern = Pattern.compile("^[0-9]{10}$");
             Matcher matcher = pattern.matcher(messageDTO.getPhone());
@@ -266,15 +265,15 @@ public class EstateController {
             }
         }
         if (messageDTO.getName() == "") {
-            errorMessage += "name ";
+            errorMessage += "name_null ";
         }
         if (messageDTO.getEstateId() == null ) {
-            errorMessage += "idEstate ";
+            errorMessage += "idEstate_null ";
         }
         if (messageDTO.getDateToMove() == "") {
             errorMessage += "moveDate_null";
         }
-        if (errorMessage == null ) {
+        if (errorMessage == "" ) {
             estateService.sendMessage(messageDTO);
             return new ResponseEntity<String>("Ok, message sent", HttpStatus.OK);
         } else {

@@ -9,6 +9,15 @@ public class UserUpdateDTO {
     private String email;
     private Long idUser;
 
+    public UserUpdateDTO() {
+    }
+
+    public UserUpdateDTO(String firstName, String lastName, String email, Long idUser) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.idUser = idUser;
+    }
 
     public String getFirstName() {
         return firstName;

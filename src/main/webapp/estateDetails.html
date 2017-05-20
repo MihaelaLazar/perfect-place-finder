@@ -289,7 +289,7 @@
                                             <div class="field">
                                                 <label>Move-in:</label>
                                                 <article>
-                                                    <div class="ui mini input">
+                                                    <div id="sender-moveDate-container" class="ui small fluid input field">
                                                         <input type="text" id="date-picker-input-1" style="width:100%;"/>
                                                     </div>
                                                 </article>
@@ -311,23 +311,23 @@
                                     <div class="row">
                                         <label>From: </label>
                                         <div class="field">
-                                            <div class="ui small fluid input field">
-                                                <input placeholder="Name" type="text">
+                                            <div id="sender-name-container" class="ui small fluid input field">
+                                                <input id="sender-name" placeholder="Name" type="text">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="field" style="margin-top:1.5%;">
-                                            <div class="ui small fluid input field">
-                                                <input placeholder="Email address" type="text">
+                                            <div id="sender-email-container" class="ui small fluid input field">
+                                                <input id="sender-email" placeholder="Email address" type="text">
                                             </div>
                                         </div>
-                                        <div class="ui small fluid input field" style="margin-top:1.5%;">
-                                            <input placeholder="Phone" type="text">
+                                        <div id="sender-phone-container" class="ui small fluid input field" style="margin-top:1.5%;">
+                                            <input id="sender-phone" placeholder="Phone" type="text">
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="ui fluid primary submit button" style="margin-top:1.5%;">Send</div>
+                                        <div class="ui fluid primary submit button" style="margin-top:1.5%;" onclick="sendMessage()">Send</div>
                                     </div>
                                 </div>
                             </div>

@@ -778,3 +778,66 @@ function signUpPOSTEstateDetails() {
         $("#last-name-EstateDetails").val("");
     }
 }
+
+/* This function sends a message to the user who posted the given announcement */
+function sendMessage() {
+    var idEstate = getQueryVariableEstateDetails('estate');
+    var dateToMove = document.getElementById('date-picker-input-1').value;
+    var name = document.getElementById('sender-name').value;
+    var email = document.getElementById('sender-email').value;
+    var phone = document.getElementById('sender-phone').value;
+    var messageData = {
+        "dateToMove":dateToMove,
+        "email": email,
+        "phone": phone,
+        "name": name,
+        "estateId": idEstate
+    };
+    $.ajax({
+            method: 'POST',
+            url: '/estate/send/message',
+            contentType: false,
+            data: JSON.stringify(messageData),
+            contentType: 'application/json',
+            success: function(data, textStatus, xhr) {
+                console.log(data);
+                document.getElementById('sender-email').value = "";
+                document.getElementById('date-picker-input-1').value = "";
+                document.getElementById('sender-name').value = "";
+                document.getElementById('sender-phone').value = "";
+                $("#sender-phone-container").removeClass('error');
+                $("#sender-email-container").removeClass('error');
+                $("#sender-moveDate-container").removeClass('error');
+                $("#sender-name-container").removeClass('error');
+            },
+            error: function (xhr, ajaxOptions, thrownError,textStatus) {
+                $("#sender-phone-container").removeClass('error');
+                $("#sender-email-container").removeClass('error');
+                $("#sender-moveDate-container").removeClass('error');
+                $("#sender-name-container").removeClass('error');
+                console.log(xhr.responseText);
+                var errors = xhr.responseText.split(' ');
+                console.log(errors);
+                for (var i = 0; i < errors.length; i ++) {
+                    if (errors[i] === "phone_null" || errors[i] === "phone_invalid") {
+                        document.getElementById('sender-phone').value = "";
+                       $("#sender-phone-container").addClass('error');
+                    }
+                    if (errors[i] === "email_null" || errors[i] === "email_invalid") {
+                        document.getElementById('sender-email').value = "";
+                       $("#sender-email-container").addClass('error');
+                    }
+                    if (errors[i] === "name_null") {
+                         document.getElementById('sender-name').value = "";
+                         $("#sender-name-container").addClass('error');
+                    }
+
+                    if (errors[i] === "moveDate_null") {
+                         document.getElementById('date-picker-input-1').value = "";
+                         $("#sender-moveDate-container").addClass('error');
+                    }
+
+                }
+            }
+    });
+}

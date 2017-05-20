@@ -35,6 +35,18 @@ function getFieldAdminProfile(id) {
     }
 }
 
+
+function redirectToSearchCity () {
+    $.ajax ({
+         method: 'GET',
+         url: '/user/logout',
+         contentType: false,
+         success (data) {
+            window.location = "./searchCity.html";
+         }
+     });
+}
+
 window.onload = function() {
     $.ajax({
         method: 'GET',

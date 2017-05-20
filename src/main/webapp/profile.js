@@ -65,6 +65,26 @@ window.onload = function () {
         }
     });
 
+    $.ajax({
+        method: 'GET',
+        url: '/user/get/profileAccount',
+        contentType: false,
+        success (data){
+            console.log(data);
+            $('#first-name-homePage').val( data.firstname);
+            $('#last-name-homePage').val(data.lastname);
+            $('#email-homePage').val(data.email);
+        },
+        error: function (xhr, ajaxOptions, thrownError,textStatus) {
+            console.log('error Status code ' + xhr.status);
+            console.log('Text status: ' + textStatus);
+        }
+    });
+
+}
+
+function updateUserProfile() {
+    var
 }
 
 /* This function removes the message with the given id. */

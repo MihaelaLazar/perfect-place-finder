@@ -83,19 +83,19 @@
                         <div class="field" style="width:100%;">
                             <label>First Name</label>
                             <div id="first-name-input-homePage" class="ui fluid input">
-                                <input id="first-name-homePage" name="first-name-homePage" placeholder="First Name" type="text">
+                                <input id="first-name-homePage" name="first-name-homePage" placeholder="First Name" type="text" readonly>
                             </div>
                         </div>
                         <div class="field" style="width:100%;">
                             <label>Last Name</label>
                             <div id="last-name-input-homePage" class="ui fluid input">
-                                <input id="last-name-homePage" name="last-name-homePage" placeholder="Last Name" type="text">
+                                <input id="last-name-homePage" name="last-name-homePage" placeholder="Last Name" type="text" readonly>
                             </div>
                         </div>
                         <div class="field" style="width:100%;">
                             <label>Email</label>
                             <div id="email-input-homePage" class="ui fluid input">
-                                <input class="ui input" id="email-homePage" name="email" placeholder="Email" type="text">
+                                <input class="ui input" id="email-homePage" name="email" placeholder="Email" type="text" readonly>
                             </div>
                         </div>
                         <div class="field" style="width:100%;">
@@ -104,6 +104,8 @@
                                 <input class="ui input" id="newEmailSignUp-homePage" name="newEmail-homePage" placeholder="New Email" type="text">
                             </div>
                         </div>
+                        <br>
+                        <button class="medium ui primary button" onclick="updateUserProfile()">Save</button>
                     </div>
 
                     <div id="secondTabSegment" class="ui bottom attached tab segment" data-tab="second">
@@ -119,9 +121,10 @@
                                 <input placeholder="Confirm password" type="password">
                             </div>
                         </div>
+                        <br>
+                        <button class="medium ui primary button">Save</button>
                     </div>
-                    <button class="medium ui primary button">Save</button>
-                    <button class="medium ui button">Cancel</button>
+
                 </div>
 
                 <div id="announcements" class="field" style="display:block;">
