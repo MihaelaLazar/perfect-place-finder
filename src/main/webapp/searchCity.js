@@ -14,19 +14,27 @@ function checkSession() {
     if (request.status === 200) {
           console.log("session existent");
           console.log(data);
-          document.getElementById('login-searchCity').style.display = 'none';
-          document.getElementById('signup-searchCity').style.display = 'none';
-          document.getElementById('logout-searchCity').style.display = 'block';
-          document.getElementById('loggedIn-searchCity').style.display = 'block';
-          $('#loggedInButton-searchCity').text(data);
+//          document.getElementById('login-searchCity').style.display = 'none';
+//          document.getElementById('signup-searchCity').style.display = 'none';
+//          document.getElementById('logout-searchCity').style.display = 'block';
+//          document.getElementById('loggedIn-searchCity').style.display = 'block';
+//          $('#loggedInButton-searchCity').text(data);
+          $( "#searchCity-container" ).empty();
+          var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertySearchCity() >Add property</button>");
+          $addProperty.appendTo($("#searchCity-container"));
+          var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick=redirectToProfileSearchCity() >" + data+"</button>");
+          $currentDiv.appendTo($("#searchCity-container"));
+          var $logout = $("<button id='logoutButton-estateDetails' style='margin-top:5px;' class='ui inverted blue button' onclick=invalidateSessionSearchCity()>Log out</button>");
+          $logout.appendTo($("#searchCity-container"));
           loggedInUser = data;
 //          getUserFavAnnouncements();
     } else {
         console.log("not existent session");
-        document.getElementById('login-searchCity').style.display = 'block';
-        document.getElementById('signup-searchCity').style.display = 'block';
-        document.getElementById('logout-searchCity').style.display = 'none';
-        document.getElementById('loggedIn-searchCity').style.display = 'none';
+        $( "#searchCity-container" ).empty();
+        var $signup = $("<button class='ui inverted blue button' onclick=document.getElementById('signupButton').style.display='block' style='margin-top:5px;'>Sign up</button>");
+        $signup.appendTo($("#searchCity-container"));
+        var $login = $("<button class='ui inverted blue button' onclick=document.getElementById('loginButton').style.display='block' style='margin-top:5px;'>Log in</button>");
+        $login.appendTo($("#searchCity-container"));
         loggedInUser = data;
     }
 }
@@ -71,12 +79,11 @@ function invalidateSessionSearchCity() {
          contentType: false,
          success (data) {
              console.log('session invalidated');
-             document.getElementById('loginButton').style.display='none';
-             document.getElementById('logInStatus').style.display='none';
-             document.getElementById('login-searchCity').style.display = 'block';
-             document.getElementById('signup-searchCity').style.display = 'block';
-             document.getElementById('logout-searchCity').style.display = 'none';
-             document.getElementById('loggedIn-searchCity').style.display='none';
+             $( "#searchCity-container" ).empty();
+              var $signup = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=document.getElementById('signupButton').style.display='block'>Sign up</button>");
+              $signup.appendTo($("#searchCity-container"));
+              var $login = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick='document.getElementById('loginButton').style.display='block''>Log in</button>");
+              $login.appendTo($("#searchCity-container"));
              checkSession();
              getEstatesByFilter();
          }
