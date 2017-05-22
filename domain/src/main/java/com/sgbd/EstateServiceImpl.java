@@ -229,6 +229,8 @@ public class EstateServiceImpl implements EstateService {
                     + ".  I will be available to achieve/move in from " + messageDTO.getDateToMove() + "." ;
             String secondPartText = "Call me on: " + messageDTO.getPhone() + " or email me on: " + messageDTO.getEmail() + ".";
             Message message = new Message(messageDTO.getEstateId(), text,secondPartText, new Date());
+            message.setIdAnnouncement(estate.getID());
+            message.setCreatedAtToString();
             estate.getEstateMessages().add(message);
             estateRepository.saveOrUpdate(estate);
         }

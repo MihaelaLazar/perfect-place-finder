@@ -805,7 +805,6 @@ var estatesMarkers= [];
 function initMap() {
     console.log("initMap");
     cityCoordinates = getCityCoordinates(getQueryVariable('city'));
-    console.log("cityyyyy: " + getQueryVariable('city'));
     if (getQueryVariable('city') === null) {
         cityCoordinates = getCityCoordinates('iasi');
     }
@@ -874,20 +873,19 @@ function initMap() {
             animation: google.maps.Animation.DROP
         });
     });
-    //console.log(markers);
-    // Add a marker clusterer to manage the markers.
+
     var markerCluster = new MarkerClusterer(map, estatesMarkers,
         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     for(var i = 0; i < markers.length; i ++) {
         estatesMarkers[i] = markers[i];
     }
+    checkSelectedOverlays();
 }
 
 /* This function gets chosen city coordinates to place the center of map on the center of the city. */
 function getCityCoordinates(city_id) {
     var i = 0;
     var currentCityCoordinates = {};
-    console.log("hei, city_id: " + city_id);
     for (i = 0; i < citiesCenterCoordinates.length; i++){
         if (city_id == citiesCenterCoordinates[i].name.toLowerCase()){
             currentCityCoordinates.lat = citiesCenterCoordinates[i].lat;
@@ -895,6 +893,27 @@ function getCityCoordinates(city_id) {
         }
     }
     return currentCityCoordinates;
+}
+
+function checkSelectedOverlays() {
+    if(document.getElementById("trafficLayer").checked) {
+        addOverlay("trafficLayer");
+    }
+
+    if(document.getElementById("noiseLayer").checked) {
+        addOverlay("noiseLayer");
+    }
+
+    if(document.getElementById("pollutionLayer").checked) {
+        addOverlay("pollutionLayer");
+    }
+    if(document.getElementById("congestionLayer").checked) {
+        addOverlay("congestionLayer");
+    }
+
+    if(document.getElementById("transitLayer").checked) {
+        addOverlay("transitLayer");
+    } 
 }
 
 /* This function changes the state of overlays on checking/unchecking the checkbox: add/ remove overlay. */
@@ -933,11 +952,6 @@ function removeOverlay(id) {
                     }
                 } else {
                     if ( id === "pollutionLayer"){
-//                        pollutionLayerIasi.setMap(null);
-//                        pollutionLayerBucuresti.setMap(null);
-//                        pollutionLayerNewYork.setMap(null);
-//                        pollutionLayerLondon.setMap(null);
-
                         map.overlayMapTypes.removeAt(0,waqiMapOverlay);
                     } else {
                         if (id === "congestionLayer"){
