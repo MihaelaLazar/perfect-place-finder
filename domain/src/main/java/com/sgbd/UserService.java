@@ -3,12 +3,14 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.dto.UserUpdatePasswordDTO;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -52,4 +54,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     void deleteUserAccount(Long id);
+
+    void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id);
 }

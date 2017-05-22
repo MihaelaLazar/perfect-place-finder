@@ -1227,16 +1227,17 @@ function verifyLoginDataSearchCity(loginData) {
                 console.log('Status code ' + xhr.status + "data: " + data);
                 document.getElementById('loginButton').style.display='none';
                 document.getElementById('logInStatus').style.display='block';
-                document.getElementById('login-searchCity').style.display = 'none';
-                document.getElementById('signup-searchCity').style.display = 'none';
-                document.getElementById('logout-searchCity').style.display = 'block';
-                $('#loggedInButton-searchCity').text(data);
-                document.getElementById('loggedIn-searchCity').style.display='block';
+                // document.getElementById('login-searchCity').style.display = 'none';
+                // document.getElementById('signup-searchCity').style.display = 'none';
+                // document.getElementById('logout-searchCity').style.display = 'block';
+                checkSession();
+                // $('#loggedInButton-searchCity').text(data);
+                // document.getElementById('loggedIn-searchCity').style.display='block';
                 checkSession();
                 getEstatesByFilter();
         },
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
-            console.log('error Status code ' + xhr.status);
+            console.log('error Status code ' + xhr.status + ' ' + xhr.responseText);
             document.getElementById('logInStatus').style.display='none';
             document.getElementById('logInStatusFailed').style.display='block';
             var errors = xhr.responseText.split(';');
@@ -1252,6 +1253,13 @@ function verifyLoginDataSearchCity(loginData) {
                     $('#password-input-login').addClass('error');
                     $('#password-login').attr("placeholder","Insert password");
                     $('#errorMessage').text("Insert password");
+                    $('#errorMessageContainer').css("display", "block");
+                }
+
+                if (errors[i] === "EMAIL NOT FOUND") {
+                    $('#email-input-login').addClass('error');
+                    $('#email-login').attr("placeholder","Insert existent email");
+                    $('#errorMessage').text("Insert existent email");
                     $('#errorMessageContainer').css("display", "block");
                 }
             }

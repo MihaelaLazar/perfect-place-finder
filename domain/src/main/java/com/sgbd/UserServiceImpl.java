@@ -3,6 +3,7 @@ package com.sgbd;
 import com.sgbd.dto.SignUpDTO;
 import com.sgbd.dto.UserDTO;
 import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.dto.UserUpdatePasswordDTO;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidRegexException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUser(String userEmail) {
-        return (User) userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class);
+        return  userRepository.findByAttribute(USER_EMAIL_COLUMN_NAME, userEmail, User.class);
     }
 
     @Override
@@ -118,11 +119,6 @@ public class UserServiceImpl implements UserService{
         if (!valid){
             throw new InvalidRegexException("Invalid email format;");
         }
-//        BindingResult result = null;
-//        validator.validate(email, result);
-//        if (result != null && result.hasErrors()) {
-//            return  "invalid email;";
-//        }
         return "";
 
     }
@@ -131,20 +127,10 @@ public class UserServiceImpl implements UserService{
         if (lastName == "" || lastName.length() < 2) {
             return "Invalid lastName;";
         }
-//        BindingResult result = null;
-//        validator.validate(lastName, result);
-//        if (result != null && result.hasErrors()) {
-//            return  "invalid lastName;";
-//        }
         return "";
     }
 
     private String validateUserFirstName(String firstName) throws EmptyInputException{
-//        BindingResult result = null;
-//        validator.validate(firstName, result);
-//        if (result != null && result.hasErrors()) {
-//            return  "invalid firstName;";
-//        }
         if (firstName == "" || firstName.length() < 2) {
             return  "Invalid firstName;";
         }
@@ -164,13 +150,18 @@ public class UserServiceImpl implements UserService{
             throw new EmptyInputException("Invalid email;");
         }
         User user = findByEmail(email);
-        SecretKey key = SecurityUtil.getSecretKeyFromDB(user.getKey());
-        String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
-        if (!currentPass.equals(user.getPassword())) {
-            throw new InvalidUserPasswordException("Invalid password;");
-        }else {
-            return user;
+        if (user != null) {
+            SecretKey key = SecurityUtil.getSecretKeyFromDB(user.getKey());
+            String currentPass = SecurityUtil.bytesToHex(SecurityUtil.encryptText(password, key));
+            if (!currentPass.equals(user.getPassword())) {
+                throw new InvalidUserPasswordException("Invalid password;");
+            }else {
+                return user;
+            }
+        } else {
+            return null;
         }
+
     }
 
     @Override
@@ -266,5 +257,19 @@ public class UserServiceImpl implements UserService{
     public void deleteUserAccount(Long id) {
         User user = userRepository.findByAttribute("id",id, User.class);
         userRepository.deleteUser(user.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id) {
+        User user = userRepository.findByAttribute("id",id, User.class);
+        try {
+            String passAndKey[] = SecurityUtil.encryptPassword(userUpdatePassword.getNewPassword());
+            user.setPassword(passAndKey[0]);
+            user.setKey(passAndKey[1]);
+        } catch (Exception e) {
+            System.out.println("Could not encrypt password");
+        }
+        userRepository.saveOrUpdate(user);
     }
 }

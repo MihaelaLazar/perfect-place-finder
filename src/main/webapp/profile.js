@@ -113,15 +113,13 @@ function updateUserProfile() {
 }
 
 function updatePassword() {
-    var userEmail = document.getElementById('newEmailSignUp-homePage').value;
-    console.log("USER EMAIL " + userEmail);
-    var updateUserData = {
-      "email" : userEmail,
-      "firstName": document.getElementById('first-name-homePage').value,
-      "lastName": document.getElementById('last-name-homePage').value,
-      "idUser": "0"
-    };
+    var userPassword = document.getElementById("new-password");
+    var userPasswordConfirmed = document.getElementById("new-password-confirmed");
+    var updateUserData ={
+        "newPassword" : userPassword,
+        "userPasswordConfirmed": userPasswordConfirmed
 
+    };
     $.ajax({
          method: 'POST',
          url : '/user/update/password',

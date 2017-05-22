@@ -5,10 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.sgbd.UserService;
-import com.sgbd.dto.LoginDTO;
-import com.sgbd.dto.SignUpDTO;
-import com.sgbd.dto.UserDTO;
-import com.sgbd.dto.UserUpdateDTO;
+import com.sgbd.dto.*;
 import com.sgbd.exceptions.EmptyInputException;
 import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
@@ -67,19 +64,22 @@ public class UserController {
         HttpSession session = request.getSession(true);
         try {
             User user =  userService.findByEmailAndPassword(loginDTO.getEmail(),loginDTO.getPassword());
-            String tokenID = session.getId();
-            session.setAttribute("username",user.getUsername());
-            session.setAttribute("tokenID", tokenID);
-            session.setMaxInactiveInterval(20 * 60);
-            request.getSession(false).setAttribute("username", user.getUsername());
-            request.getSession(false).setAttribute("tokenID", tokenID);
-            request.getSession(false).setAttribute("ID", user.getId());
-            if (user.getRole().equalsIgnoreCase("admin")){
-                request.getSession(false).setAttribute("username", "admin");
-                return new ResponseEntity<>("admin", HttpStatus.OK);
+            if (user != null) {
+                String tokenID = session.getId();
+                session.setAttribute("username",user.getUsername());
+                session.setAttribute("tokenID", tokenID);
+                session.setMaxInactiveInterval(20 * 60);
+                request.getSession(false).setAttribute("username", user.getUsername());
+                request.getSession(false).setAttribute("tokenID", tokenID);
+                request.getSession(false).setAttribute("ID", user.getId());
+                if (user.getRole().equalsIgnoreCase("admin")){
+                    request.getSession(false).setAttribute("username", "admin");
+                    return new ResponseEntity<>("admin", HttpStatus.OK);
+                }
+                return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("EMAIL NOT FOUND", HttpStatus.FORBIDDEN);
             }
-            return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
-
         }catch (EntityNotFoundException e){
             session.removeAttribute("username");
             session.removeAttribute("tokenID");
@@ -265,6 +265,24 @@ public class UserController {
         }
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(path = "/user/update/password", method = RequestMethod.POST)
+    public ResponseEntity<String> updatePassword(Request request, Response response, @RequestBody UserUpdatePasswordDTO userUpdatePassword){
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            if (userUpdatePassword.getNewPassword().equals("") ) {
+                return new ResponseEntity<>("password_null", HttpStatus.BAD_REQUEST);
+            }
+            if (userUpdatePassword.getUserPasswordConfirmed().equals("") ) {
+                return new ResponseEntity<>("password_confirmed_null", HttpStatus.BAD_REQUEST);
+            }
+            if (!userUpdatePassword.getUserPasswordConfirmed().equals(userUpdatePassword.getNewPassword()) ) {
+                return new ResponseEntity<>("password_confirmed_not_equal", HttpStatus.BAD_REQUEST);
+            }
+            userService.updateUserPassword(userUpdatePassword, (Long) session.getAttribute("ID"));
+        }
+        return new ResponseEntity<>("invalid session", HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(path = "/user/get/profileAccount", method = RequestMethod.GET)

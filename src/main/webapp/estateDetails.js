@@ -57,6 +57,7 @@ function invalidateSessionEstateDetails() {
              $signup.appendTo($("#estateDetails-container"));
              var $login = $("<button class='ui inverted blue button' onclick='document.getElementById('logInEstateDetails').style.display='block''>Log in</button>");
              $login.appendTo($("#estateDetails-container"));
+
          }
      });
 }
