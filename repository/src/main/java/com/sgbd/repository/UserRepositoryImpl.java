@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User saveOrUpdate(User user) {
+    public User saveOrUpdate(User user) throws SQLException, DataIntegrityViolationException {
         entityManager.merge(user);
         return user;
     }
@@ -81,16 +82,10 @@ public class UserRepositoryImpl implements UserRepository {
         }catch (Exception e) {
             throw new PersistenceException("Failed delete for entity class " + User.class, e);
         }
-//        entityManager.createNativeQuery("DELETE FROM PF_ANNOUNCEMENTS WHERE ID_USER = " + idUser)
-//                .executeUpdate();
         List<Estate> estates = estateRepository.getUserAnnouncements(idUser);
         for(Estate estate: estates) {
             entityManager.createNativeQuery("DELETE FROM PF_FAV_ANNOUNCEMENTS WHERE ID_USER = " + idUser + " AND ID_ANNOUNCEMENT = " + estate.getID())
                     .executeUpdate();
-//            entityManager.createNativeQuery("DELETE FROM PF_ANNOUNCEMENTS WHERE ID_USER = " + idUser )
-//                    .executeUpdate();
-//            estate.getEstateAttachements().clear();
-//            estate = estateRepository.saveOrUpdate(estate);
             estateRepository.deleteAnnouncement(estate, Estate.class);
         }
 

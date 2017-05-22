@@ -554,7 +554,7 @@ function verifyLoginDataEstateDetails(loginData) {
                  $( "#estateDetails-container" ).empty();
                  var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
                  $addProperty.appendTo($("#estateDetails-container"));
-                 var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick='redirectToProfileAddProperty()' >" + data+"</button>");
+                 var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick='redirectToProfileEstateDetails()' >" + data+"</button>");
                   $currentDiv.appendTo($("#estateDetails-container"));
                   var $logout = $("<button id='logoutButton-estateDetails' class='ui inverted blue button' onclick='invalidateSessionEstateDetails()'>Log out</button>");
                   $logout.appendTo($("#estateDetails-container"));

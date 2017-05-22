@@ -10,9 +10,11 @@ import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public interface UserService {
 
     List<Message> getUserMessages(Long id);
 
-    User updateUser(UserUpdateDTO updateDTO);
+    User updateUser(UserUpdateDTO updateDTO) throws SQLException, DataIntegrityViolationException;
 
     List<Estate> getUserFavoriteAnnouncements(Long id);
 
@@ -55,5 +57,5 @@ public interface UserService {
 
     void deleteUserAccount(Long id);
 
-    void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id);
+    void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id) throws SQLException;
 }

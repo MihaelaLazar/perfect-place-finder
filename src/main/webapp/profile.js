@@ -83,6 +83,32 @@ window.onload = function () {
 
 }
 
+window.onclick = function(event) {
+    if(event.target === document.getElementById('updated-profile-modal-success') ) {
+       document.getElementById('updated-profile-modal-success').style.display = "none";
+    } else {
+        if(event.target === document.getElementById('updated-estate-modal-success') ) {
+                    document.getElementById('updated-estate-modal-success').style.display = "none";
+            } else {
+                if(event.target === document.getElementById('updated-profile-modal-error') ) {
+                            document.getElementById('updated-profile-modal-error').style.display = "none";
+                    } else {
+                        if(event.target === document.getElementById('updated-password-modal-success') ) {
+                                    document.getElementById('updated-password-modal-success').style.display = "none";
+                            } else {
+                                if(event.target === document.getElementById('updated-password-modal-error') ) {
+                                            document.getElementById('updated-password-modal-error').style.display = "none";
+                                    } else {
+                                        if(event.target === document.getElementById('updated-password-modal-error-not-equal') ) {
+                                                    document.getElementById('updated-password-modal-error-not-equal').style.display = "none";
+                                            }
+                                    }
+                            }
+                    }
+            }
+    }
+}
+
 function updateUserProfile() {
     var userEmail = document.getElementById('newEmailSignUp-homePage').value;
     console.log("USER EMAIL " + userEmail);
@@ -104,9 +130,15 @@ function updateUserProfile() {
          },
          error : function (xhr, ajaxOptions, thrownError,textStatus) {
              console.log('error Status code ' + xhr.status);
-             console.log('Text status: ' + textStatus);
+             console.log('Text status: ' + xhr.responseText);
              if (xhr.responseText === "email_null" || xhr.responseText === "email_invalid") {
                      $('#newEmailSignUp-homePage').val("Insert valid email");
+             }
+             if (xhr.responseText === "Update could not be completed.") {
+                    document.getElementById('updated-profile-modal-error').style.display = "block";
+             }
+             if (xhr.status === 202) {
+                    document.getElementById('updated-profile-modal-success').style.display = "block";
              }
          }
     });
@@ -126,14 +158,25 @@ function updatePassword() {
          contentType: 'application/json;charset=UTF-8',
          data: JSON.stringify(updateUserData),
          success (data) {
-            $('#email-homePage').val(document.getElementById('newEmailSignUp-homePage').value);
-            $('#newEmailSignUp-homePage').val("");
+            $('#new-password').val("");
+            $('#new-password-confirmed').val("");
+            document.getElementById("updated-password-modal-success").style.display = "block";
+
          },
          error : function (xhr, ajaxOptions, thrownError,textStatus) {
              console.log('error Status code ' + xhr.status);
-             console.log('Text status: ' + textStatus);
-             if (xhr.responseText === "email_null" || xhr.responseText === "email_invalid") {
-                     $('#newEmailSignUp-homePage').val("Insert valid email");
+             console.log('Text status: ' + xhr.responseText);
+             if (xhr.responseText === "password_null") {
+                   $('#new-password').val("Insert password");
+             }
+             if (xhr.responseText === "password_confirmed_null") {
+                   $('#new-password-confirmed').val("Insert password");
+             }
+             if (xhr.responseText === "password_confirmed_not_equal") {
+                    document.getElementById("updated-password-modal-error-not-equal").style.display = "block";
+             }
+             if (xhr.responseText === "Update password could not be completed.") {
+                 document.getElementById("updated-password-modal-error-not-equal").style.display = "block";
              }
          }
     });
@@ -519,10 +562,14 @@ function updatePropertyPOST(event) {
             data: JSON.stringify(postDataPropertyUpdate),
             success (data) {
                 console.log(data);
+                document.getElementById('updated-estate-modal-success').style.display='block';
             },
             error: function (xhr, ajaxOptions, thrownError,textStatus) {
                 console.log('error Status code ' + xhr.status);
-                console.log('Text status: ' + textStatus);
+                console.log('Text status: ' + xhr.responseText);
+                if (xhr.status === 200){
+                    document.getElementById('updated-estate-modal-success').style.display='block';
+                }
             }
         });
     }

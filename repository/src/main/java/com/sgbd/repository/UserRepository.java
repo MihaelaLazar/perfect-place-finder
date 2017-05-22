@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UserRepository {
 
     User findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException;
 
-    User saveOrUpdate(User user);
+    User saveOrUpdate(User user) throws SQLException, DataIntegrityViolationException;
 
     void deleteUser(String userEmail);
 

@@ -177,10 +177,12 @@ public class EstateServiceImpl implements EstateService {
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateUpdateDTO.getAnnouncementImagesArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesArray().size()]);
 
-        Iterator<Attachement> it = estate.getEstateAttachements().iterator();
-        while(it.hasNext()){
-            it.remove(); //<--- iterator safe remove
-        }
+//        Iterator<Attachement> it = estate.getEstateAttachements().iterator();
+//        while(it.hasNext()){
+//            it.remove(); //<--- iterator safe remove
+//        }
+//
+        estate.getEstateAttachements().clear();
 
         estate = estateRepository.saveOrUpdate(estate);
 //        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);

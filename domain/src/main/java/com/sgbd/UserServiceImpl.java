@@ -29,6 +29,7 @@ import javax.crypto.SecretKey;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -189,14 +190,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(UserUpdateDTO userUpdateDTO) {
+    public User updateUser(UserUpdateDTO userUpdateDTO) throws SQLException, DataIntegrityViolationException{
         User user = userRepository.findByAttribute("id", userUpdateDTO.getIdUser(), User.class);
         user.setFirstName(userUpdateDTO.getFirstName());
         user.setLastName(userUpdateDTO.getLastName());
         user.setEmail(userUpdateDTO.getEmail());
-
-        user = userRepository.saveOrUpdate(user);
-        return userRepository.saveOrUpdate(user);
+        try {
+            return userRepository.saveOrUpdate(user);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
+        }catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
     }
 
     @Override
@@ -261,7 +266,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id) {
+    public void updateUserPassword(UserUpdatePasswordDTO userUpdatePassword, Long id) throws SQLException, DataIntegrityViolationException {
         User user = userRepository.findByAttribute("id",id, User.class);
         try {
             String passAndKey[] = SecurityUtil.encryptPassword(userUpdatePassword.getNewPassword());
@@ -270,6 +275,13 @@ public class UserServiceImpl implements UserService{
         } catch (Exception e) {
             System.out.println("Could not encrypt password");
         }
-        userRepository.saveOrUpdate(user);
+        try {
+            userRepository.saveOrUpdate(user);
+        }catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
+        }catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+
     }
 }

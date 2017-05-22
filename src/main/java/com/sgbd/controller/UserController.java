@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -99,7 +100,7 @@ public class UserController {
         HttpSession session = request.getSession(false);
         if (session != null) {
 //                response.sendRedirect("/profile.html");
-            if (session.getAttribute("admin") != null){
+            if (session.getAttribute("username").equals("admin")){
                 return new ResponseEntity<>("/adminProfile.html", HttpStatus.OK);
             }
             return new ResponseEntity<>("/profile.html", HttpStatus.OK);
@@ -253,7 +254,17 @@ public class UserController {
                 return new ResponseEntity<>("email_invalid", HttpStatus.BAD_REQUEST);
             }
             userUpdateDTO.setIdUser((Long) session.getAttribute("ID"));
-            userService.updateUser(userUpdateDTO);
+            try {
+                userService.updateUser(userUpdateDTO);
+            } catch (SQLException e) {
+                System.out.println("here sql exception");
+                return new ResponseEntity<>("Update could not be completed.", HttpStatus.BAD_REQUEST);
+            }catch (DataIntegrityViolationException e) {
+                return new ResponseEntity<>("Update could not be completed.", HttpStatus.BAD_REQUEST);
+            }
+
+            session.removeAttribute("username");
+            session.setAttribute("username", userUpdateDTO.getEmail());
         }
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
@@ -272,7 +283,11 @@ public class UserController {
             if (!userUpdatePassword.getUserPasswordConfirmed().equals(userUpdatePassword.getNewPassword()) ) {
                 return new ResponseEntity<>("password_confirmed_not_equal", HttpStatus.BAD_REQUEST);
             }
-            userService.updateUserPassword(userUpdatePassword, (Long) session.getAttribute("ID"));
+            try {
+                userService.updateUserPassword(userUpdatePassword, (Long) session.getAttribute("ID"));
+            } catch (SQLException e) {
+                return new ResponseEntity<>("Update password could not be completed.", HttpStatus.BAD_REQUEST);
+            }
         }
         return new ResponseEntity<>("invalid session", HttpStatus.ACCEPTED);
     }
