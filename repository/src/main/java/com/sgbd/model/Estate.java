@@ -333,4 +333,12 @@ public class Estate implements Serializable {
     public void setFloor(Long floor) {
         this.floor = floor;
     }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 }

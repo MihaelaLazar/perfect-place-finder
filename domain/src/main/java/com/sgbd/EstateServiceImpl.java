@@ -193,6 +193,7 @@ public class EstateServiceImpl implements EstateService {
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
+        estate.getEstateAttachements().clear();
         estate.getEstateAttachements().addAll(announcementAttachements);
         return estateRepository.saveOrUpdate(estate);
     }
