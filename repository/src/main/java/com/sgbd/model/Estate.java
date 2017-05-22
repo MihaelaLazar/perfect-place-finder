@@ -4,8 +4,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -29,55 +31,71 @@ public class Estate implements Serializable {
     private Long ID;
 
     @Column(name = "TYPE_OF_ESTATE", nullable = false)
+    @NotEmpty @NotNull
     private String type;
 
     @Column(name = "TYPE_OF_TRANSACTION", nullable = false)
+    @NotEmpty @NotNull
     private String typeOfTransaction;
 
     @Column(name = "ADDRESS", nullable = false)
+    @NotEmpty @NotNull
     private String address;
 
     @Column(name = "SURFACE", nullable = false)
+    @NotEmpty @NotNull
     private Long surface;
 
     @Column(name = "ROOMS", nullable = false)
+    @NotEmpty @NotNull
     private Long rooms;
 
     @Column(name = "RENT_PRICE", nullable = false)
+    @NotEmpty @NotNull
     private Long rentPrice;
 
     @Column(name = "BUY_PRICE", nullable = false)
+    @NotEmpty @NotNull
     private Long buyPrice;
 
     @Column(name = "DIVISION", nullable = false)
+    @NotEmpty @NotNull
     private String division;
 
     @Column(name = "YEAR_OF_CONSTRUCTION", nullable = false)
+    @NotEmpty @NotNull
     private Long constructionYear;
 
     @Column(name = "DESCRIPTION", nullable = false)
+    @NotEmpty @NotNull
     private String description;
 
     @Column(name = "CREATION_DATE", nullable = false)
     @Type(type = "date")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotEmpty @NotNull
     private Date creationDate;
 
     @Column(name = "LAST_UPDATE", nullable = false)
     @Type(type = "date")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotEmpty @NotNull
     private Date lastUpdate;
 
     @Column(name = "CITY", nullable = false)
+    @NotEmpty @NotNull
     private String city;
 
     @Column(name = "CONTACT_NUMBER", nullable = false)
+    @NotEmpty @NotNull
     private String contactNumber;
 
     @Column(name = "ID_USER")
+    @NotEmpty @NotNull
     private Long idUser;
 
     @Column(name = "UTILITIES", nullable = false)
+    @NotEmpty @NotNull
     private Long utilities;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

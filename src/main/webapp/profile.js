@@ -101,6 +101,10 @@ window.onclick = function(event) {
                                     } else {
                                         if(event.target === document.getElementById('updated-password-modal-error-not-equal') ) {
                                                     document.getElementById('updated-password-modal-error-not-equal').style.display = "none";
+                                            } else {
+                                                if(event.target === document.getElementById('updated-estate-modal-error') ) {
+                                                        document.getElementById('updated-estate-modal-error').style.display = "none";
+                                                }
                                             }
                                     }
                             }
@@ -569,6 +573,9 @@ function updatePropertyPOST(event) {
                 console.log('Text status: ' + xhr.responseText);
                 if (xhr.status === 200){
                     document.getElementById('updated-estate-modal-success').style.display='block';
+                }
+                if (xhr.status === 403) {
+                    document.getElementById('updated-estate-modal-error').style.display='block';
                 }
             }
         });

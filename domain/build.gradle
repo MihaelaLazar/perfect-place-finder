@@ -16,7 +16,6 @@ dependencies {
         exclude module: "spring-boot-starter-tomcat"
     }
     compile "org.springframework.security:spring-security-core:4.2.2.RELEASE"
-    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
 
@@ -32,10 +31,12 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
 
     /* validation */
-        compile 'commons-validator:commons-validator:1.4.1'
-//    compile 'org.hibernate:hibernate-validator:5.2.4.Final'
-//    compile group: 'javax.validation', name: 'validation-api', version: '1.0.0.GA'
+        compile 'commons-validator:commons-validator:1.4.1' //era ok ASTA!!!!
     // https://mvnrepository.com/artifact/commons-validator/commons-validator
 //    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
-//    compile 'javax.validation:validation-api:1.1.0.Final'
+
+    compile 'javax.validation:validation-api:1.1.0.Final'
+    compile 'org.hibernate:hibernate-validator:5.1.1.Final'
+    compile 'javax.el:javax.el-api:2.2.4'
+    compile 'org.glassfish.web:javax.el:2.2.4'
 }

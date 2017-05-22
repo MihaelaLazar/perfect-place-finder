@@ -13,29 +13,25 @@ import com.sgbd.model.User;
 import com.sgbd.repository.EstateRepository;
 import com.sgbd.repository.UserRepository;
 import com.sgbd.util.SecurityUtil;
-import org.apache.commons.validator.routines.EmailValidator;
+
+import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import sun.misc.BASE64Decoder;
 
 import javax.crypto.SecretKey;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 import static com.sgbd.model.User.USER_EMAIL_COLUMN_NAME;
@@ -46,9 +42,6 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
-
-//    @Autowired
-//    private Validator validator;
 
     @Autowired
     EstateRepository estateRepository;
@@ -107,7 +100,6 @@ public class UserServiceImpl implements UserService{
             user.setPassword(passAndKey[0]);
             user.setKey(passAndKey[1]);
         } catch (Exception e) {
-//            e.printStackTrace();
         }
         if (!errorMessages.equals("")) {
             throw new EmptyInputException(errorMessages);
@@ -120,6 +112,7 @@ public class UserServiceImpl implements UserService{
         if (!valid){
             throw new InvalidRegexException("Invalid email format;");
         }
+
         return "";
 
     }

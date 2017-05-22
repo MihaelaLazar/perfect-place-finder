@@ -10,13 +10,17 @@ import com.sgbd.util.AttachType;
 import com.sgbd.util.CityConstants;
 import com.sgbd.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.sgbd.model.Estate.ESTATE_ID_COLUMN_NAME;
@@ -26,7 +30,6 @@ import static com.sgbd.util.AppConstants.UPLOAD_PATH;
  * Created by mihae on 4/8/2017.
  */
 @Service
-@Transactional
 public class EstateServiceImpl implements EstateService {
 
     @Autowired
@@ -110,10 +113,9 @@ public class EstateServiceImpl implements EstateService {
 
     @Override
     @Transactional
-    public Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException {
+    public Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException, SQLException, DataIntegrityViolationException  {
 
         Estate estate;
-        // persist announcement
         estate = createEstate(estateDTO, idUser);
         estateDTO.setCity(estateDTO.getCity().split(" ")[0]);
         if (!validateCity(estateDTO.getCity())) {
@@ -152,9 +154,18 @@ public class EstateServiceImpl implements EstateService {
         return isValidCity;
     }
 
+    private boolean validateEstate(Estate estate) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        javax.validation.Validator validator = factory.getValidator();
+        if (validator.validate(estate).size() == 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     @Override
-    @Transactional
-    public Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws IOException {
+    public Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws Exception {
         Estate estate = (Estate) estateRepository.findByAttribute("id", estateUpdateDTO.getIdEstate(), Estate.class );
         estate.setBathrooms(estateUpdateDTO.getBathrooms());
         estate.setBuyPrice(estateUpdateDTO.getBuyPrice());
@@ -167,37 +178,45 @@ public class EstateServiceImpl implements EstateService {
         estate.setSurface(estateUpdateDTO.getSurface());
         estate.setRooms(estateUpdateDTO.getRoomsNumber());
         estate.setUtilities(estateUpdateDTO.getUtilities());
+        estate.setLastUpdate(new Date());
         String estateTransactionType;
-        if (estateUpdateDTO.getBuyPrice() != 0) {
-            estateTransactionType = "sale";
-        } else {
-            estateTransactionType = "rent";
-        }
+
+
+        estateTransactionType = estateUpdateDTO.getBuyPrice() != 0 ? "sale" : "rent";
         estate.setTypeOfTransaction(estateTransactionType);
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateUpdateDTO.getAnnouncementImagesArray().toArray(new String[estateUpdateDTO.getAnnouncementImagesArray().size()]);
-
-//        Iterator<Attachement> it = estate.getEstateAttachements().iterator();
-//        while(it.hasNext()){
-//            it.remove(); //<--- iterator safe remove
-//        }
-//
         estate.getEstateAttachements().clear();
-
-        estate = estateRepository.saveOrUpdate(estate);
-//        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
-
+//        try {
+//            estate = estateRepository.saveOrUpdate(estate);
+//        }catch (SQLException e){
+//            throw new SQLException(e.getMessage());
+//        }catch (DataIntegrityViolationException e){
+//            throw new DataIntegrityViolationException(e.getMessage());
+//        }
         for(int index = 0; index < announcementAttachementsImagesNames.length; index ++) {
             Attachement attachement = new Attachement( announcementAttachementsImagesNames[index], AttachType.JPEG);
-            attachement.setIconUri(ImageUtil.convertToURI(announcementAttachementsImagesNames[index]));
-            char regex = '\\';
+            try {
+                attachement.setIconUri(ImageUtil.convertToURI(announcementAttachementsImagesNames[index]));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             attachement.setImageName(announcementAttachementsImagesNames[index].split("\\\\")[2]);
             attachement.setIdAnnouncement(estate.getID());
             announcementAttachements.add(attachement);
         }
         estate.getEstateAttachements().clear();
         estate.getEstateAttachements().addAll(announcementAttachements);
-        return estateRepository.saveOrUpdate(estate);
+        if (validateEstate(estate)) {
+            try {
+                return estateRepository.saveOrUpdate(estate);
+            }catch (Exception e){
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        } else {
+            throw new Exception("not valid estate");
+        }
+
     }
 
     @Override
@@ -225,7 +244,7 @@ public class EstateServiceImpl implements EstateService {
     }
 
     @Override
-    public void sendMessage(MessageDTO messageDTO) {
+    public void sendMessage(MessageDTO messageDTO) throws SQLException, DataIntegrityViolationException  {
         Estate estate = (Estate) estateRepository.findByAttribute("id", messageDTO.getEstateId(), Estate.class);
         if (estate != null) {
             String text = "Hello,I'm "+ messageDTO.getName() +", I found this announcement on your site. Please, give me more details about ID " + messageDTO.getEstateId()
@@ -241,7 +260,7 @@ public class EstateServiceImpl implements EstateService {
 
     @Override
     @Transactional
-    public void deleteMessage(MessageToDeleteDTO messageToDeleteDTO) {
+    public void deleteMessage(MessageToDeleteDTO messageToDeleteDTO) throws SQLException, DataIntegrityViolationException {
         Estate estate = (Estate) estateRepository.findByAttribute("id", messageToDeleteDTO.getIdAnnouncement(), Estate.class);
         List<Message> messages = new ArrayList<>();
         for(Message message : estate.getEstateMessages()) {
@@ -253,21 +272,17 @@ public class EstateServiceImpl implements EstateService {
         Set<Message> messagesToKeep = new HashSet<>();
         for (int index = 0; index < messages.size(); index ++){
             if (!Objects.equals(messages.get(index).getId(), messageToDeleteDTO.getIdMessage())){
-//                messagesToKeep.add(messages.get(index));
                 messagesToKeep.add(new Message(messages.get(index).getIdAnnouncement(), messages.get(index).getText(),
                         messages.get(index).getSecondPartText(), messages.get(index).getCreatedAt()));
             }
         }
         Iterator<Message> it = estate.getEstateMessages().iterator();
-//        while(it.hasNext()){
-//            it.remove(); //<--- iterator safe remove
-//        }
+
         estate.getEstateMessages().clear();
 
         estate = estateRepository.saveOrUpdate(estate);
         estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
         estate.getEstateMessages().addAll(messagesToKeep);
-//        estate.setEstateMessages(messagesToKeep);
         estateRepository.saveOrUpdate(estate);
     }
 

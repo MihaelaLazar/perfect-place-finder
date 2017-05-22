@@ -85,6 +85,8 @@ public class EstateController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
+        } catch (SQLException e) {
+            return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         }
     }
 
@@ -220,14 +222,11 @@ public class EstateController {
     @RequestMapping(path = "/update/property",headers = "Accept=application/json", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> updateProperty(Request request, Response response, @RequestBody EstateUpdateDTO estateUpdateDTO) {
-        try{
+        try {
             estateService.updateEstate(estateUpdateDTO);
             return new ResponseEntity<>("Updated property", HttpStatus.OK);
-        } catch(PersistenceException e) {
-            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Update property could not execute.", HttpStatus.FORBIDDEN);
         }
     }
 
@@ -274,7 +273,11 @@ public class EstateController {
             errorMessage += "moveDate_null";
         }
         if (errorMessage == "" ) {
-            estateService.sendMessage(messageDTO);
+            try {
+                estateService.sendMessage(messageDTO);
+            } catch (SQLException e) {
+                return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+            }
             return new ResponseEntity<String>("Ok, message sent", HttpStatus.OK);
         } else {
             return new ResponseEntity<String>(errorMessage, HttpStatus.CONFLICT);
@@ -284,7 +287,11 @@ public class EstateController {
     @RequestMapping(path = "/delete/message", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteMessage (Response response, Request request, @RequestBody MessageToDeleteDTO messageToDeleteDTO) {
-        estateService.deleteMessage(messageToDeleteDTO);
+        try {
+            estateService.deleteMessage(messageToDeleteDTO);
+        } catch (SQLException e) {
+            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+        }
         return new ResponseEntity<String>("Message deleted", HttpStatus.OK);
     }
 

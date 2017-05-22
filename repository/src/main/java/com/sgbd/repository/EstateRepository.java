@@ -3,10 +3,12 @@ package com.sgbd.repository;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.persistence.PersistenceException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ public interface EstateRepository {
 
     Serializable save(Serializable entity, Class modelClass) throws PersistenceException;
 
-    Estate saveOrUpdate(Estate estate) throws PersistenceException;
+    Estate saveOrUpdate(Estate estate);
 
     List<Estate> getUserAnnouncements(Long id);
 

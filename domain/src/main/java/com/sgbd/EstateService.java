@@ -1,35 +1,33 @@
 package com.sgbd;
 
-        import com.sgbd.dto.*;
-        import com.sgbd.model.Estate;
-        import com.sgbd.model.Message;
+import com.sgbd.dto.*;
+import com.sgbd.model.Estate;
+import com.sgbd.model.Message;
 
-        import java.io.IOException;
-        import java.io.Serializable;
-        import java.util.InvalidPropertiesFormatException;
-        import java.util.List;
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.InvalidPropertiesFormatException;
+import java.util.List;
 
-/**
- * Created by mihae on 4/8/2017.
- */
 public interface EstateService {
     // PaginatedEstatesDetails getEstatesByFilters(String queryString) throws SQLException, ClassNotFoundException;
 
-    Serializable findById (Long userId);
+    Serializable findById(Long userId);
 
     List<Estate> getUserEstates(Long id);
 
     PaginatedEstatesDetails getEstatesByFilters(String queryString);
 
-    Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException;
+    Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException, SQLException;
 
-    Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws IOException;
+    Serializable updateEstate(EstateUpdateDTO estateUpdateDTO) throws Exception;
 
     void deleteEstate(Long estateId);
 
-    void sendMessage(MessageDTO messageDTO);
+    void sendMessage(MessageDTO messageDTO) throws SQLException;
 
-    void deleteMessage(MessageToDeleteDTO messageToDeleteDTO);
+    void deleteMessage(MessageToDeleteDTO messageToDeleteDTO) throws SQLException;
 
     List<Estate> getAllEstates();
 

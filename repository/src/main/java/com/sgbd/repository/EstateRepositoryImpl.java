@@ -3,6 +3,7 @@ package com.sgbd.repository;
 import com.sgbd.dto.PaginatedEstatesDetails;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +13,10 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-@Transactional
 public class EstateRepositoryImpl implements EstateRepository {
 
     @PersistenceContext
@@ -69,7 +70,7 @@ public class EstateRepositoryImpl implements EstateRepository {
 
 
     @Transactional
-    public Serializable save(Serializable entity, Class modelClass) throws PersistenceException {
+    public Serializable save(Serializable entity, Class modelClass){
              entityManager.persist(entity);
              return entity;
 

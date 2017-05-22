@@ -1,5 +1,8 @@
 package com.sgbd.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
@@ -7,10 +10,6 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Set;
 
-/**
- * @author Lazarm
- * Creation Date: 4/3/2017.
- */
 @Entity
 @Table(name = "PF_USERS", uniqueConstraints = {
         @UniqueConstraint(columnNames = "EMAIL")
@@ -26,15 +25,20 @@ public class User implements Serializable {
     private Long id;
 
     @Column(name="EMAIL",nullable = false)
+    @Email
     private String email;
 
     @Column(name="FIRSTNAME", nullable = false)
+    @NotEmpty
+    @Range (min = 4, max = 8)
     private String firstName;
 
     @Column(name="LASTNAME" , nullable = false)
+    @Range (min = 4, max = 8)
     private String lastName;
 
     @Column(name="PASSWORD", nullable = false)
+    @Range (min = 4, max = 8)
     private String password;
 
     @Column(name="KEY")
