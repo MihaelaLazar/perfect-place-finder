@@ -24,7 +24,7 @@ function checkSession() {
            $( "#estateDetails-container" ).empty();
           var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertyEstateDetails() >Add property</button>");
           $addProperty.appendTo($("#estateDetails-container"));
-          var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick=redirectToProfileAddProperty() >" + data+"</button>");
+          var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick=redirectToProfileEstateDetails() >" + data+"</button>");
           $currentDiv.appendTo($("#estateDetails-container"));
           var $logout = $("<button id='logoutButton-estateDetails' class='ui inverted blue button' onclick=invalidateSessionEstateDetails()>Log out</button>");
           $logout.appendTo($("#estateDetails-container"));
@@ -53,9 +53,9 @@ function invalidateSessionEstateDetails() {
              $( "#estateDetails-container" ).empty();
              var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
              $addProperty.appendTo($("#estateDetails-container"));
-             var $signup = $("<button class='ui inverted blue button' onclick='document.getElementById('signUpEstateDetails').style.display='block''>Sign up</button>");
+             var $signup = $("<button class='ui inverted blue button' onclick=document.getElementById('signUpEstateDetails').style.display='block'>Sign up</button>");
              $signup.appendTo($("#estateDetails-container"));
-             var $login = $("<button class='ui inverted blue button' onclick='document.getElementById('logInEstateDetails').style.display='block''>Log in</button>");
+             var $login = $("<button class='ui inverted blue button' onclick=document.getElementById('logInEstateDetails').style.display='block'>Log in</button>");
              $login.appendTo($("#estateDetails-container"));
 
          }
