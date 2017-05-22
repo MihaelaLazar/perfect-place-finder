@@ -824,9 +824,7 @@ function initMap() {
     };
     var marker = new google.maps.Marker({
         position: cityCoordinates,
-        map: map,
         title: "Click here to zoom",
-        icon: icon
     });
     markerGlobal = marker;
 
@@ -913,7 +911,7 @@ function checkSelectedOverlays() {
 
     if(document.getElementById("transitLayer").checked) {
         addOverlay("transitLayer");
-    } 
+    }
 }
 
 /* This function changes the state of overlays on checking/unchecking the checkbox: add/ remove overlay. */

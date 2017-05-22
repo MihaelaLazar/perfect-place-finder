@@ -111,3 +111,11 @@ input[type=text], input[type=password] {
     padding: 5px;
     transform: translateY(5%);
 }
+
+@media screen and (max-width: 520px) {
+    #menuBar {
+        .class : vertical;
+    }
+
+
+}

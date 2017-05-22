@@ -24,15 +24,15 @@ public class EstateRepositoryImpl implements EstateRepository {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
-    public Serializable findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException {
+    public Estate findByAttribute(String columnName, Serializable identifier, Class modelClass) throws PersistenceException {
         final Query query = entityManager.createQuery("SELECT o FROM " + modelClass.getSimpleName()
                 + " o WHERE o." + columnName + "=:identifier");
         query.setParameter("identifier", identifier);
 
-        final List<Estate> results = query.getResultList();
+        final List<Serializable> results = query.getResultList();
 
         if (!results.isEmpty()) {
-            return results.iterator().next();
+            return (Estate)results.iterator().next();
         }
 
         return null;

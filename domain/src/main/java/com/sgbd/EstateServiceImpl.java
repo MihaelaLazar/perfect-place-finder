@@ -167,7 +167,7 @@ public class EstateServiceImpl implements EstateService {
         estate.setSurface(estateUpdateDTO.getSurface());
         estate.setRooms(estateUpdateDTO.getRoomsNumber());
         estate.setUtilities(estateUpdateDTO.getUtilities());
-        String estateTransactionType = "";
+        String estateTransactionType;
         if (estateUpdateDTO.getBuyPrice() != 0) {
             estateTransactionType = "sale";
         } else {
@@ -183,7 +183,7 @@ public class EstateServiceImpl implements EstateService {
         }
 
         estate = estateRepository.saveOrUpdate(estate);
-        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
+//        estate = (Estate)estateRepository.findByAttribute("id", estate.getID(), Estate.class);
 
         for(int index = 0; index < announcementAttachementsImagesNames.length; index ++) {
             Attachement attachement = new Attachement( announcementAttachementsImagesNames[index], AttachType.JPEG);
