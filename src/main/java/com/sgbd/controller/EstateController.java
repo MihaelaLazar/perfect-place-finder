@@ -45,6 +45,13 @@ public class EstateController {
 
     private static final int NUMBER_OF_COLUMNS = 13;
 
+    /**
+     *
+     * @param response
+     * @param request
+     * @return the addProperty.html resource
+     */
+
     @RequestMapping(path = "/add/property", method = RequestMethod.GET)
     public ResponseEntity<String> redirectToAddProperty(Response response, Request request) {
         response.setContentType("text/html");
@@ -57,6 +64,15 @@ public class EstateController {
 
         return new ResponseEntity<>("Redirect to add property", HttpStatus.OK);
     }
+
+    /**
+     *
+     * @param response
+     * @param request
+     * @param estateDTO estateDTO
+     * @paramType sfhjdgf
+     * @return "Added property" if transaction could be done, otherwise: "Could not add property"
+     */
 
     @RequestMapping(path = "/add/property", headers = "Accept=application/json", method = RequestMethod.POST)
     @ResponseBody
@@ -82,7 +98,7 @@ public class EstateController {
         } catch(PersistenceException e) {
             return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         } catch (InvalidPropertiesFormatException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (DataIntegrityViolationException e) {
             return new ResponseEntity<>("Could not add property", HttpStatus.CONFLICT);
         } catch (SQLException e) {

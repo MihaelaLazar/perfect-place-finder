@@ -31,39 +31,39 @@ public class Estate implements Serializable {
     private Long ID;
 
     @Column(name = "TYPE_OF_ESTATE", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private String type;
 
     @Column(name = "TYPE_OF_TRANSACTION", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private String typeOfTransaction;
 
     @Column(name = "ADDRESS", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private String address;
 
     @Column(name = "SURFACE", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private Long surface;
 
     @Column(name = "ROOMS", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private Long rooms;
 
     @Column(name = "RENT_PRICE", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private Long rentPrice;
 
     @Column(name = "BUY_PRICE", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private Long buyPrice;
 
     @Column(name = "DIVISION", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private String division;
 
     @Column(name = "YEAR_OF_CONSTRUCTION", nullable = false)
-    @NotEmpty @NotNull
+     @NotNull
     private Long constructionYear;
 
     @Column(name = "DESCRIPTION", nullable = false)
@@ -73,13 +73,13 @@ public class Estate implements Serializable {
     @Column(name = "CREATION_DATE", nullable = false)
     @Type(type = "date")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty @NotNull
+    @NotNull
     private Date creationDate;
 
     @Column(name = "LAST_UPDATE", nullable = false)
     @Type(type = "date")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotEmpty @NotNull
+    @NotNull
     private Date lastUpdate;
 
     @Column(name = "CITY", nullable = false)
@@ -91,11 +91,11 @@ public class Estate implements Serializable {
     private String contactNumber;
 
     @Column(name = "ID_USER")
-    @NotEmpty @NotNull
+    @NotNull
     private Long idUser;
 
     @Column(name = "UTILITIES", nullable = false)
-    @NotEmpty @NotNull
+    @NotNull
     private Long utilities;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

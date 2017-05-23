@@ -126,8 +126,9 @@ public class EstateServiceImpl implements EstateService {
         } else {
             estate.setTypeOfTransaction("SALE");
         }
-        estate = (Estate) estateRepository.save(estate, Estate.class);
-
+        if (validateEstate(estate)) {
+            estate = (Estate) estateRepository.save(estate, Estate.class);
+        }
         Set<Attachement> announcementAttachements = new HashSet<>();
         String[] announcementAttachementsImagesNames = estateDTO.getAnnouncementImagesArray().toArray(new String[estateDTO.getAnnouncementImagesArray().size()]);
         String[] announcementAttachementsImagesIconURI = estateDTO.getAnnouncementImagesIconsURIArray().toArray(new String[estateDTO.getAnnouncementImagesIconsURIArray().size()]);
@@ -139,8 +140,11 @@ public class EstateServiceImpl implements EstateService {
             announcementAttachements.add(attachement);
         }
         estate.setEstateAttachements(announcementAttachements);
-
-        return estateRepository.saveOrUpdate(estate);
+        if (validateEstate(estate)) {
+            return estateRepository.saveOrUpdate(estate);
+        } else {
+            throw new InvalidPropertiesFormatException("invalid properties");
+        }
     }
 
     private boolean validateCity(String city) {
