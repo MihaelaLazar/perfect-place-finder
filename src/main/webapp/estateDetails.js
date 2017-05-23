@@ -201,6 +201,9 @@ window.onload = function() {
             $('#estate-utilities').text('Utilities: ' + utilities);
             initMap2();
             renderPhotosOfAnnouncement(estateDetails);
+            var childrenHeight = 0;
+
+//            $("#backToTop").css("height", 500);
         }
     });
 }
