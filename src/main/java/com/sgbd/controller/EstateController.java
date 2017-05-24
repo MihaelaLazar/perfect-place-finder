@@ -8,6 +8,10 @@ import com.sgbd.model.Attachement;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.util.ImageUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +49,13 @@ public class EstateController {
 
     private static final int NUMBER_OF_COLUMNS = 13;
 
-    /**
-     *
-     * @param response
-     * @param request
-     * @return the addProperty.html resource
-     */
-
+    @ApiOperation(value = "This endpoint redirects to addProperty.html page.", nickname = "doStuff", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     @RequestMapping(path = "/add/property", method = RequestMethod.GET)
     public ResponseEntity<String> redirectToAddProperty(Response response, Request request) {
         response.setContentType("text/html");
@@ -65,26 +69,15 @@ public class EstateController {
         return new ResponseEntity<>("Redirect to add property", HttpStatus.OK);
     }
 
-    /**
-     *
-     * @param response
-     * @param request
-     * @param estateDTO estateDTO
-     * @paramType sfhjdgf
-     * @return "Added property" if transaction could be done, otherwise: "Could not add property"
-     */
-
     @RequestMapping(path = "/add/property", headers = "Accept=application/json", method = RequestMethod.POST)
+    @ApiOperation(value = "This endpoint adds a property/announcement.", nickname = "doStuff", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - added property", response = String.class),
+            @ApiResponse(code = 409, message = "Conflict - property with same address already existent."),
+            @ApiResponse(code = 404, message = "Not Found")}
+    )
     @ResponseBody
     public ResponseEntity<String> getAddProperty(Response response, Request request, @RequestBody EstateDTO estateDTO) {
-
-//        try {
-//            OracleCon.getOracleCon().addProperty(estateDTO);
-//        } catch (SQLException e) {
-//            return new ResponseEntity<>("DUPLICATE PROPERTY", HttpStatus.FORBIDDEN);
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
         Long idUser = (Long)request.getSession(false).getAttribute("ID");
         if(estateDTO.getRealEstateType().equals("Commercial space")){
             estateDTO.setRealEstateType("space");
@@ -142,6 +135,10 @@ public class EstateController {
     }
 
     @RequestMapping(path = "/getByFilters", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns a list with estates filtered by given filters.", nickname = "doStuff", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = PaginatedEstatesDetails.class)}
+    )
     public ResponseEntity<PaginatedEstatesDetails> getEstates(Request request, Response response){
         response.setContentType(JSON.getContentType());
         PaginatedEstatesDetails paginatedEstatesDetails = estateService.getEstatesByFilters(request.getQueryString());
@@ -167,6 +164,11 @@ public class EstateController {
     }
 
     @RequestMapping(path = "/getDetails", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns a json response with details about given announcement(estate).", nickname = "doStuff", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - added property", response = Estate.class),
+            @ApiResponse(code = 404, message = "Not Found")}
+    )
     public ResponseEntity<Estate> getEstateDetails(Request request, Response response) {
         Estate estate = (Estate) estateService.findById(Long.parseLong(request.getParameter("id")));
         response.setContentType(JSON.getContentType());
@@ -185,6 +187,13 @@ public class EstateController {
     }
 
     @RequestMapping(path = "/save/image", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+    @ApiOperation(value = "This endpoint saves and announcement attached image.", nickname = "doStuff", response = ImageDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = ImageDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ImageDTO saveImage(HttpServletRequest request, HttpServletResponse response, @RequestParam("image") MultipartFile multiPart){
         InputStream inputStream = null;
         String newFile = request.getParameter("image");
@@ -237,6 +246,13 @@ public class EstateController {
 
     @RequestMapping(path = "/update/property",headers = "Accept=application/json", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint updates a given announcement of the user logged in.", nickname = "doStuff", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 403, message = "Forbidden - Update property could not execute."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> updateProperty(Request request, Response response, @RequestBody EstateUpdateDTO estateUpdateDTO) {
         try {
             estateService.updateEstate(estateUpdateDTO);
@@ -248,6 +264,13 @@ public class EstateController {
 
     @RequestMapping(path = "/delete/property", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint deletes an announcement", nickname = "deleteProperty", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 403, message = "Forbidden - Could not delete property"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> deleteProperty(Request request, Response response, @RequestBody Long estateId) {
         try{
             estateService.deleteEstate(estateId);
@@ -259,6 +282,14 @@ public class EstateController {
 
     @RequestMapping(path = "/send/message", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint sends a message to the user who posted the announcement.", nickname = "sendMessage", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 403, message = "Forbidden - Could not send message"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Incorrect input fields"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> sendMessage (Request request, Response response, @RequestBody MessageDTO messageDTO) {
         String errorMessage = "";
         if (messageDTO.getPhone() == "") {
@@ -294,30 +325,51 @@ public class EstateController {
             } catch (SQLException e) {
                 return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
             }
-            return new ResponseEntity<String>("Ok, message sent", HttpStatus.OK);
+            return new ResponseEntity<>("Ok, message sent", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>(errorMessage, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
         }
     }
 
     @RequestMapping(path = "/delete/message", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint deletes a message.", nickname = "deleteMessage", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - Message deleted", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 403, message = "Forbidden - Could not send message"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Incorrect input fields"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> deleteMessage (Response response, Request request, @RequestBody MessageToDeleteDTO messageToDeleteDTO) {
         try {
             estateService.deleteMessage(messageToDeleteDTO);
         } catch (SQLException e) {
-            return new ResponseEntity<>("Could not update property", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Could not delete message", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<String>("Message deleted", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/getAllAnnouncements", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns all announcements from database (admin page).", nickname = "getAllAnnouncements", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<Estate>> getAllAnnouncements(Request request, Response response){
         List<Estate> estates = estateService.getAllEstates();
         return new ResponseEntity<>(estates, HttpStatus.OK);
     }
 
+
     @RequestMapping(path = "/getAllMessages", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns all messages from database (admin page).", nickname = "getAllMessages", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<Message>> getAllMessages(Request request, Response response){
         List<Message> messages = estateService.getAllMessages();
         return new ResponseEntity<>(messages, HttpStatus.OK);
