@@ -7,6 +7,9 @@ import com.sgbd.exceptions.InvalidUserPasswordException;
 import com.sgbd.model.Estate;
 import com.sgbd.model.Message;
 import com.sgbd.model.User;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +38,12 @@ public class UserController {
 
     @RequestMapping(path = "/create/user", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addPerson(Request request, Response response, @RequestBody SignUpDTO user) {
+    @ApiOperation(value = "This endpoint creates a new user (sign-in).", nickname = "signin", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 409, message = "Unauthorized - already existent user with same email."),
+            @ApiResponse(code = 500, message = "Failure")})
+    public ResponseEntity<String> signin(Request request, Response response, @RequestBody SignUpDTO user) {
         try {
             userService.createUser(user);
             response.setContentType(JSON.getContentType());
@@ -53,6 +61,11 @@ public class UserController {
 
     @RequestMapping(path = "/verify/user", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint logs an user (log-in).", nickname = "login", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - logged in", response = String.class),
+            @ApiResponse(code = 403, message = "Forbidden - email not found/incorrect password."),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> validateUser(Response response, Request request, @RequestBody LoginDTO loginDTO) {
         HttpSession session = request.getSession(true);
         try {
@@ -95,6 +108,11 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/getProfile", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint redirects user to his profile.", nickname = "getProfile", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 409, message = "Unauthorized - user not logged in"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> redirectToProfile(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html");
         HttpSession session = request.getSession(false);
@@ -111,6 +129,11 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/check/session", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint checks if session is existent.", nickname = "session", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - session existent.", response = String.class),
+            @ApiResponse(code = 409, message = "Session not existent."),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> checkSession(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -122,6 +145,10 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/logout", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint invalidates session.", nickname = "signin", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - session invalidated.", response = String.class),
+            @ApiResponse(code = 500, message = "Failure")})
     public String invalidateSession (HttpServletRequest request) {
         if (request.getSession(false) != null) {
             request.getSession(false).invalidate();
@@ -130,6 +157,13 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/addProperty", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint redirects to addProperty.html page.", nickname = "redirectAddProperty", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> redirectToAddProperty (HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -143,6 +177,13 @@ public class UserController {
 
     @RequestMapping(path = "/user/getAnnouncements", method = RequestMethod.GET)
     @ResponseBody
+    @ApiOperation(value = "This endpoint returns a list of user announcements.", nickname = "getAnnouncements", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<Estate>> getAnnouncements(Response response, Request request) {
         HttpSession session = request.getSession();
         Long id = (Long) session.getAttribute("ID");
@@ -159,6 +200,13 @@ public class UserController {
 
     @RequestMapping(path = "/user/add/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint creates a favorite user announcement.", nickname = "addFavAnnouncement", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - fav announcement added.", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> addFavoriteAnnouncement(Response response, Request request) {
         HttpSession session = request.getSession();
         if (session != null) {
@@ -183,6 +231,13 @@ public class UserController {
 
     @RequestMapping(path = "/user/delete/favoriteAnnouncement", method = RequestMethod.POST)
     @ResponseBody
+    @ApiOperation(value = "This endpoint deletes a favorite user announcement.", nickname = "deleteFavAnnouncement", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - fav announcement deleted.", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> deleteFavoriteAnnouncement(Response response, Request request) {
         HttpSession session = request.getSession();
         if (session != null) {
@@ -206,6 +261,13 @@ public class UserController {
 
     @RequestMapping(path = "/user/get/favoriteAnnouncements", method = RequestMethod.GET)
     @ResponseBody
+    @ApiOperation(value = "This endpoint returns a list with favorite user announcements.", nickname = "getAllFavAnnouncement", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - fav announcements returned.", response = String.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<Estate>> getUserFavoriteAnnouncements(Response response, Request request){
         HttpSession session = request.getSession();
         List<Estate> favoriteAnnouncements = new LinkedList<>();
@@ -224,6 +286,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/get/messages", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns user's messages.", nickname = "getUserMesages", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - messages returned.", response = String.class),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<Message>> getMessages (Response response, Request request) {
         List<Message> messages = new ArrayList<>();
         HttpSession session = request.getSession(false);
@@ -242,6 +310,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/update/profile", method = RequestMethod.POST)
+    @ApiOperation(value = "This endpoint updates user's profile(email).", nickname = "updateEmail", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "Success - email updated.", response = String.class),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String>  updateProfile (Request request, Response response, @RequestBody UserUpdateDTO userUpdateDTO ) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -271,6 +345,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/update/password", method = RequestMethod.POST)
+    @ApiOperation(value = "This endpoint updates user's password.", nickname = "updatePassword", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "Success - fav announcement added.", response = String.class),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> updatePassword(Request request, Response response, @RequestBody UserUpdatePasswordDTO userUpdatePassword){
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -293,6 +373,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/get/profileAccount", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns users's profile account.", nickname = "getUserAccount", response = UserDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success ", response = String.class),
+            @ApiResponse(code = 409, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<UserDTO> getUSerProfileAccount(Request request, Response response) {
         UserDTO userDTO = new UserDTO();
         HttpSession session = request.getSession(false);
@@ -314,6 +400,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/getAll", method = RequestMethod.GET)
+    @ApiOperation(value = "This endpoint returns all users from database", nickname = "addFavAnnouncement", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - fav announcement added.", response = String.class),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(admin not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<List<UserDTO>> getAllUsers (Request request, Response response) {
         List<UserDTO> users = new LinkedList<>();
         users = userService.getAllUsers();
@@ -321,6 +413,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/user/deleteAccount", method = RequestMethod.POST)
+    @ApiOperation(value = "This endpoint deletes user account.", nickname = "deleteUser", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success - account deleted.", response = String.class),
+            @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
     public ResponseEntity<String> deleteUserAccount(Request request, Response response){
         userService.deleteUserAccount(Long.parseLong(request.getParameter("id")));
         return new ResponseEntity<>("User deleted", HttpStatus.OK);
