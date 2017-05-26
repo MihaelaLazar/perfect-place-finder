@@ -45,7 +45,7 @@ public class ImageUtil {
             Graphics g = bi.createGraphics();
             icon.paintIcon(null, g, 0, 0);
             g.dispose();
-            bi = resizeImage(bi, 1000, 1000);
+            bi = resizeImage(bi, 700, 700);
             scaledImage = bi;
             iconPathname = AppConstants.UPLOAD_PATH + File.separator + "icon"+ fileName;
             ImageIO.write(bi, "jpg", new File(iconPathname));

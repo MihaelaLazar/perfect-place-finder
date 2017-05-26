@@ -10,6 +10,7 @@ import com.sgbd.model.User;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -414,6 +415,7 @@ public class UserController {
 
     @RequestMapping(path = "/user/deleteAccount", method = RequestMethod.POST)
     @ApiOperation(value = "This endpoint deletes user account.", nickname = "deleteUser", response = String.class)
+    @ResponseHeader
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success - account deleted.", response = String.class),
             @ApiResponse(code = 400, message = "Bad request - session not existent(user not logged in)."),

@@ -9,7 +9,10 @@ window.onload = function () {
             var currentDiv;
             var favoriteAnnouncement;
             for (var i = 0; i < userEstates.length; i ++){
-                var shortDescription = userEstates[i].description.substr(1, 70);
+                var shortDescription = userEstates[i].description;
+                if (userEstates[i].description.length > 70) {
+                        shortDescription = userEstates[i].description.substr(1, 70);
+                }
                  if (userEstates[i].estateAttachements.length > 0) {
                     currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + userEstates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + shortDescription + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'> </div></div></div></div></div></div>");
                     favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='"+ userEstates[i].estateAttachements[0].iconUri + "'onclick='bounce()'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Additional Details</div></div></div>");
@@ -275,6 +278,32 @@ function getField(id) {
     } else {
         $('#accountSettings').css("display", "none");
         if (id === 'announcements') {
+            $("#estatesProfile").empty();
+            $.ajax ({
+                     method: 'GET',
+                     url: '/user/getAnnouncements',
+                     contentType: false,
+                     success (data) {
+                        console.log(data);
+                        var userEstates = data;
+                        var currentDiv;
+                        var favoriteAnnouncement;
+                        for (var i = 0; i < userEstates.length; i ++){
+                            var shortDescription = userEstates[i].description;
+                            if (userEstates[i].description.length > 70) {
+                                    shortDescription = userEstates[i].description.substr(1, 70);
+                            }
+                             if (userEstates[i].estateAttachements.length > 0) {
+                                currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + userEstates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + shortDescription + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'> </div></div></div></div></div></div>");
+                                favoriteAnnouncement = $("<div class='item' id='"+ userEstates[i].id +"'><div class='ui small image'> <img src='"+ userEstates[i].estateAttachements[0].iconUri + "'onclick='bounce()'></div><div class='content'><a class='header'>Header</a><div class='meta'><span>Description</span></div><div class='description'><p></p></div><div class='extra'>Additional Details</div></div></div>");
+                             } else {
+                                 currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='./images/house-logo-md.png' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + shortDescription + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'></div></div></div></div></div></div>");
+                             }
+                             $("#estatesProfile").append(currentDiv);
+
+                        }
+                     }
+                });
             $('#announcements').css("display", "block");
             $('#messages').css("display", "none");
             $('#favouritesEstates').css("display", "none");
@@ -345,6 +374,9 @@ function updateEstate(id) {
                 }
             }
             $('#description-profile').text(estateDetails.description);
+            $('#list-of-images-profile').empty();
+            var firstImagetoAdd = $("<label for='file-profile' class='ui large image'> <img id='image-profile' src='/images/image.png'></label><input accept=''.jpg, .jpeg, .png'' multiple type='file' id='file-profile' style='display:none' >");
+            $('#list-of-images-profile').append(firstImagetoAdd);
             if (estateDetails.estateAttachements.length > 0) {
                 for (var index = 0; index < estateDetails.estateAttachements.length; index ++) {
                     var imageName;
@@ -567,7 +599,7 @@ function updatePropertyPOST(event) {
             data: JSON.stringify(postDataPropertyUpdate),
             success (data) {
                 console.log(data);
-                document.getElementById('updated-estate-modal-success').style.display='block';
+                document.getElementById('f').style.display='block';
             },
             error: function (xhr, ajaxOptions, thrownError,textStatus) {
                 console.log('error Status code ' + xhr.status);

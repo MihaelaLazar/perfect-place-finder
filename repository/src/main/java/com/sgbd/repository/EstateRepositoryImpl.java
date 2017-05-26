@@ -85,7 +85,10 @@ public class EstateRepositoryImpl implements EstateRepository {
     @Override
     @Transactional
     public List<Estate> getUserAnnouncements(Long id) {
-        Query query = entityManager.createQuery("from Estate WHERE ID_USER = " + id);
+        final Query query = entityManager.createQuery(" FROM " + Estate.class.getSimpleName()
+                + " WHERE " + "idUser" + " =:identifier");
+        query.setParameter("identifier", id);
+
         List<Estate> estates = (List<Estate>) query.getResultList();
         return estates;
     }
