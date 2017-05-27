@@ -135,12 +135,11 @@ public class EstateServiceImpl implements EstateService {
     }
 
     @Override
-    @Transactional
     public Serializable saveEstate(EstateDTO estateDTO, Long idUser) throws InvalidPropertiesFormatException, SQLException, DataIntegrityViolationException  {
 
         Estate estate;
         estate = createEstate(estateDTO, idUser);
-        estateDTO.setCity(estateDTO.getCity().split(" ")[0]);
+        estate.setCity(estateDTO.getCity().split(" ")[0]);
         if (!validateCity(estateDTO.getCity())) {
             throw new InvalidPropertiesFormatException("Invalid city");
         }

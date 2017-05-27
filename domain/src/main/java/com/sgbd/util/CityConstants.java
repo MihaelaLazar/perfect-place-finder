@@ -4,6 +4,7 @@ public enum CityConstants {
 
     IASI("Iasi"),
     BUCURESTI("Bucuresti"),
+    BUCHAREST("Bucharest"),
     LONDON("London"),
     NEWYORK("New York");
 

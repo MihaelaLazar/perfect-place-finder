@@ -121,9 +121,9 @@ window.onload = function() {
                 }
             );
             if (estateDetails.rentPrice != 0 ) {
-                $('#estate-price').text("Price:   " + estateDetails.rentPrice);
+                $('#estate-price').text("Price:  €  " + estateDetails.rentPrice);
             }else {
-                $('#estate-price').text("Price:  " + estateDetails.buyPrice);
+                $('#estate-price').text("Price: €  " + estateDetails.buyPrice);
             }
             if (estateDetails.rooms > 0) {
                 $('#rooms-surface-contact').text(estateDetails.rooms + " room/s, " + estateDetails.surface + " mp, " + estateDetails.contactNumber);

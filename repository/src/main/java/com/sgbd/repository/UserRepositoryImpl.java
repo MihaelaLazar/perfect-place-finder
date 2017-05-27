@@ -124,7 +124,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public List<User> getAllUsers() {
         final Query query = entityManager.createQuery("SELECT o FROM " + User.class.getSimpleName()
-                + " o ");
+                + " o WHERE o.role = 'user'");
         final List<User> results = query.getResultList();
         return results;
     }
