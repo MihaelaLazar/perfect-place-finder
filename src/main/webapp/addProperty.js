@@ -292,7 +292,11 @@ window.onclick = function(event) {
     } else {
         if (event.target == modalPropertySuccess) {
             modalPropertySuccess.style.display = "none";
-        }
+        } else {
+          if(event.target === document.getElementById('image-size-addProperty') ) {
+                  document.getElementById('image-size-addProperty').style.display = "none";
+          }
+      }
     }
 }
 
@@ -349,6 +353,7 @@ $('#file1').change(function() {
     if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
         if(this.files[0].size>1048576) {
             console.log('File size is larger than 1MB!');
+            document.getElementById('image-size-addProperty').style.display = "none";
         } else {
             var reader = new FileReader();
             reader.onload = function (e){

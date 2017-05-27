@@ -11,7 +11,7 @@ window.onload = function () {
             for (var i = 0; i < userEstates.length; i ++){
                 var shortDescription = userEstates[i].description;
                 if (userEstates[i].description.length > 70) {
-                        shortDescription = userEstates[i].description.substr(1, 70);
+                        shortDescription = userEstates[i].description.substr(0, 70);
                 }
                  if (userEstates[i].estateAttachements.length > 0) {
                     currentDiv =  $("<div id='"+ userEstates[i].id +"' class='only row'><div class='column'><div class='ui raised card' style='width:91%;margin-top:-1%;margin-left:2%;'><div class='content'><img class='right floated tiny ui image' src='" + userEstates[i].estateAttachements[0].iconUri+"' style='width:120px;'><div class='header'>" + userEstates[i].typeOfTransaction + " " + userEstates[i].rooms + " room/s " + userEstates[i].type + "</div><div class='meta'>" + userEstates[i].city + "</div><div class='description'>" + shortDescription + "</div></div><div class='extra content'><div class='ui grid'><div class='thirteen wide column' ><div class='ui two buttons'><input type='hidden' name='estate' value='" + userEstates[i].id + "' /><button class='ui blue button' onclick='updateEstate(" + userEstates[i].id + ")'>Update</button><button class='ui basic black button' type='submit' onclick='deleteEstate(" + userEstates[i].id + ")'>Delete</button></div></div><div class='two wide column'> </div></div></div></div></div></div>");
@@ -108,6 +108,10 @@ window.onclick = function(event) {
                                             } else {
                                                 if(event.target === document.getElementById('updated-estate-modal-error') ) {
                                                         document.getElementById('updated-estate-modal-error').style.display = "none";
+                                                } else {
+                                                    if(event.target === document.getElementById('image-size') ) {
+                                                            document.getElementById('image-size').style.display = "none";
+                                                    }
                                                 }
                                             }
                                     }
@@ -419,6 +423,7 @@ $('#file-profile').change(function() {
     if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
         if(this.files[0].size>1048576) {
             console.log('File size is larger than 1MB!');
+            $('#image-size').css("display", "block");
         } else {
             var reader = new FileReader();
             reader.onload = function (e){
