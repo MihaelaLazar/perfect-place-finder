@@ -33,3 +33,14 @@
     margin-left: 75%;
     top:5px;
 }
+
+#category-select, #price, #comfort-select,
+#city-chosen, #usable-surface,#bathrooms,
+#rooms-select, #floor, #construction-year,
+#furniture-utilities-select, #division-select,
+#map11
+    {
+        box-shadow: 0px 0px 0px 1px #D4D4D5,
+                    0px 2px 4px 0px rgba(34, 36, 38, 0.12),
+                    0px 2px 10px 0px rgba(34, 36, 38, 0.15);
+    }
