@@ -891,6 +891,7 @@ function initMap() {
 function getCityCoordinates(city_id) {
     var i = 0;
     var currentCityCoordinates = {};
+    console.log('CITY TO FIND: ' + city_id);
     for (i = 0; i < citiesCenterCoordinates.length; i++){
         if (city_id == citiesCenterCoordinates[i].name.toLowerCase()){
             currentCityCoordinates.lat = citiesCenterCoordinates[i].lat;
