@@ -79,11 +79,18 @@ public class EstateServiceImpl implements EstateService {
                 }
             }
         }
-        if(filters.get("minPrice") != null) {
-            queryFilters += " AND" +  " min_price <= " + filters.get("minPrice");
+
+        if(filters.get("minPriceSale") != null) {
+            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPriceSale"), "sale");
         }
-        if(filters.get("maxPrice") != null) {
-            queryFilters += " AND" +  " max_price >= " + filters.get("minPrice");
+        if(filters.get("minPriceRent") != null) {
+            queryFilters += " AND" +  " RENT_PRICE >= " + getRealMinPrice(filters.get("minPriceRent"), "rent");
+        }
+        if(filters.get("maxPriceSale") != null) {
+            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMaxPrice(filters.get("maxPriceSale"), "sale");
+        }
+        if(filters.get("maxPriceRent") != null) {
+            queryFilters += " AND" +  " RENT_PRICE <=" + getRealMaxPrice(filters.get("maxPriceRent"),"rent");
         }
         if(filters.get("year") != null) {
             switch (filters.get("year")){
@@ -109,6 +116,22 @@ public class EstateServiceImpl implements EstateService {
             offset = Integer.parseInt(filters.get("offset"));
         }
         return estateRepository.getEstatesByFilters(queryFilters,offset);
+    }
+
+    private String getRealMinPrice(String minPrice, String typeOfEstate) {
+        Long price = 0l;
+        if (typeOfEstate.equalsIgnoreCase("sale")){
+            return minPrice +"000";
+        }
+        return minPrice;
+    }
+
+    private String getRealMaxPrice(String maxPrice, String typeOfEstate) {
+        Long price = 0l;
+        if (typeOfEstate.equalsIgnoreCase("sale")){
+            return maxPrice +"000";
+        }
+        return maxPrice;
     }
 
     @Override
@@ -199,15 +222,19 @@ public class EstateServiceImpl implements EstateService {
 //            throw new DataIntegrityViolationException(e.getMessage());
 //        }
         for(int index = 0; index < announcementAttachementsImagesNames.length; index ++) {
-            Attachement attachement = new Attachement( announcementAttachementsImagesNames[index], AttachType.JPEG);
+
             try {
+                Attachement attachement = new Attachement( announcementAttachementsImagesNames[index], AttachType.JPEG);
                 attachement.setIconUri(ImageUtil.convertToURI(announcementAttachementsImagesNames[index]));
+                attachement.setImageName(announcementAttachementsImagesNames[index].split("\\\\")[2]);
+                attachement.setIdAnnouncement(estate.getID());
+                announcementAttachements.add(attachement);
             } catch (IOException e) {
                 e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            attachement.setImageName(announcementAttachementsImagesNames[index].split("\\\\")[2]);
-            attachement.setIdAnnouncement(estate.getID());
-            announcementAttachements.add(attachement);
+
         }
         estate.getEstateAttachements().clear();
         estate.getEstateAttachements().addAll(announcementAttachements);

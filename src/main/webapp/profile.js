@@ -374,9 +374,9 @@ function updateEstate(id) {
                 }
             }
             $('#description-profile').text(estateDetails.description);
-            $('#list-of-images-profile').empty();
-            var firstImagetoAdd = $("<label for='file-profile' class='ui large image'> <img id='image-profile' src='/images/image.png'></label><input accept=''.jpg, .jpeg, .png'' multiple type='file' id='file-profile' style='display:none' >");
-            $('#list-of-images-profile').append(firstImagetoAdd);
+//            $('#list-of-images-profile').empty();
+//            var firstImagetoAdd = $("<label for='file-profile' class='ui large image'> <img id='image-profile' src='/images/image.png'></label><input accept=''.jpg, .jpeg, .png'' multiple type='file' id='file-profile' style='display:none' >");
+//            $('#list-of-images-profile').append(firstImagetoAdd);
             if (estateDetails.estateAttachements.length > 0) {
                 for (var index = 0; index < estateDetails.estateAttachements.length; index ++) {
                     var imageName;
@@ -438,7 +438,7 @@ $('#file-profile').change(function() {
                 success : function(data) {
                     $('#image-profile').attr('src','/images/image.png');
                     console.log("image added: " + data.iconPathname);
-                    var newImage = $("<div class='ui fluid image' id='" + data.imageName + "' style='margin-top:-0.5%;'><a onclick={deleteImage('" + data.imageName + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + data.imageURI +"'></div></div> ");
+                    var newImage = $("<div class='ui fluid image' id='" + data.imageName + "' style='margin-top:-0.5%;'><a onclick={deleteImageProfile('" + data.imageName + "')} style='position:absolute; right:0; top:0;'> <i class=' large remove icon' ></i></a> <img src='" + data.imageURI +"'></div></div> ");
                     $('#list-of-images-profile').append(newImage);
                     announcementImagesArrayProfile[announcementImagesArrayCountProfile] = data.imageName;
                     announcementImagesArrayProfilePathToFile[announcementImagesArrayCountProfile] = data.iconPathname;
@@ -453,12 +453,14 @@ $('#file-profile').change(function() {
 
 function deleteImageProfile(id) {
     console.log("IMAGE TO DELETE: " + id);
+    console.log("all images: " + announcementImagesArrayProfile);
     for(var i = announcementImagesArrayProfile.length - 1; i >= 0; i--) {
         if(announcementImagesArrayProfile[i] === id) {
             announcementImagesArrayProfile.splice(i, 1);
             announcementImagesArrayProfilePathToFile.splice(i, 1);
+            console.log("FOUND IMAGE TO DELETE");
 //            announcementImagesArrayProfilePathToFile = announcementImagesArrayProfilePathToFile - 1;
-            announcementImagesArrayProfile = announcementImagesArrayCountProfile - 1;
+            announcementImagesArrayCountProfile = announcementImagesArrayCountProfile - 1;
             $('#list-of-images-profile').remove("#" + id);
             var imageToDelete = document.getElementById(id);
             imageToDelete.parentNode.removeChild(imageToDelete);
@@ -600,12 +602,14 @@ function updatePropertyPOST(event) {
             success (data) {
                 console.log(data);
                 document.getElementById('f').style.display='block';
+                location.reload();
             },
             error: function (xhr, ajaxOptions, thrownError,textStatus) {
                 console.log('error Status code ' + xhr.status);
                 console.log('Text status: ' + xhr.responseText);
                 if (xhr.status === 200){
                     document.getElementById('updated-estate-modal-success').style.display='block';
+                    location.reload();
                 }
                 if (xhr.status === 403) {
                     document.getElementById('updated-estate-modal-error').style.display='block';
