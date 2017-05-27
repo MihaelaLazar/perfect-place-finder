@@ -235,6 +235,7 @@ function addPropertyPOST(event) {
                     $('#error-description').css("display", "none");
                     $('#error-phone').css("display", "none");
                     $('#error-floor').css("display", "none");
+                    console.log('addddedddd');
                 },
                 error: function (xhr, ajaxOptions, thrownError,textStatus) {
                     var errors = xhr.responseText;
@@ -292,9 +293,14 @@ window.onclick = function(event) {
     } else {
         if (event.target == modalPropertySuccess) {
             modalPropertySuccess.style.display = "none";
+            location.reload();
         } else {
           if(event.target === document.getElementById('image-size-addProperty') ) {
                   document.getElementById('image-size-addProperty').style.display = "none";
+          } else {
+                if (event.target === document.getElementById('image-error')) {
+                    document.getElementById('image-error').style.display = "none";
+                }
           }
       }
     }
@@ -353,7 +359,7 @@ $('#file1').change(function() {
     if (this.files && this.files[0] && this.files[0].name.match(/\.(jpg|jpeg|png|JPG|JPEG)$/) ) {
         if(this.files[0].size>1048576) {
             console.log('File size is larger than 1MB!');
-            document.getElementById('image-size-addProperty').style.display = "none";
+            document.getElementById('image-size-addProperty').style.display = "block";
         } else {
             var reader = new FileReader();
             reader.onload = function (e){
@@ -382,7 +388,7 @@ $('#file1').change(function() {
                 }
             });
         }
-    } else console.log('This is not an image file!');
+    } else document.getElementById('image-error').style.display = "block";
 });
 
 function redirectToSearchCity() {

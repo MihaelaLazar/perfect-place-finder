@@ -6,7 +6,8 @@ public enum CityConstants {
     BUCURESTI("Bucuresti"),
     BUCHAREST("Bucharest"),
     LONDON("London"),
-    NEWYORK("New York");
+    NEWYORK("New York"),
+    NY("NY");
 
 
     private String city;

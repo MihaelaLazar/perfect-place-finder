@@ -81,28 +81,95 @@
     </div>
 
     <div class="modal" id="addPropertySuccessfulModal">
-        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-            <form class="ui form">
-                <h2>Successfully added property.</h2>
-            </form>
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;  border-radius: 6px; ">
+            <div class="container" style="background-color:white; height:130px;border-radius: 6px;">
+                <br/>
+                <div class="header" style="text-align: center;">
+                    <h1>Successfully added property.</h1>
+                </div>
+                <div style=" margin-top:-60px; float:right;">
+                    <a href="#" onclick="document.getElementById('addPropertySuccessfulModal').style.display = 'none';location.reload();">Close</a>
+                </div>
+
+                <button class="ui inverted blue button" style="float:right;" onclick="document.getElementById('addPropertySuccessfulModal').style.display = 'none';location.reload();">Ok</button>
+            </div>
         </div>
     </div>
 
     <div class="modal" id="addPropertyFailedModal">
-        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-            <form class="ui form">
-                <h2>Cannot add property. Already existent property with same address.</h2>
-            </form>
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%;  border-radius: 6px; ">
+            <div class="container" style="background-color:white; height:130px;border-radius: 6px;">
+                <br/>
+                <div class="header" style="text-align: center;">
+                    <h1>Cannot add property. Already existent property with same address.</h1>
+                </div>
+                <div style=" margin-top:-60px; float:right;">
+                    <a href="#" onclick="document.getElementById('addPropertyFailedModal').style.display = 'none';location.reload();">Close</a>
+                </div>
+
+                <button class="ui inverted blue button" style="float:right;" onclick="document.getElementById('addPropertyFailedModal').style.display = 'none'; location.reload();">Ok</button>
+            </div>
         </div>
     </div>
 
     <div class="modal" id="image-size-addProperty" style="display:none;">
-        <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-            <form class="ui form">
-                <h2>Image size is larger than 1MB!</h2>
-            </form>
+        <div class="modal-content animate" action="./searchCity.html" style="width:30%; border-radius: 6px; ">
+            <div class="container" style="background-color:white; height:130px;border-radius: 6px;">
+                <br/>
+                <div class="header" style="text-align: center;">
+                    <h1>Image size is larger than 1MB!</h1>
+                </div>
+                <div style=" margin-top:-60px; float:right;">
+                    <a href="#" onclick="document.getElementById('image-size-addProperty').style.display = 'none'">Close</a>
+                </div>
+
+                <button class="ui inverted blue button" style="float:right;" onclick="document.getElementById('image-size-addProperty').style.display = 'none'">Cancel</button>
+            </div>
         </div>
     </div>
+
+    <div class="modal" id="image-error" style="display:none;  border-right: 1px solid #ddd;">
+        <div class="modal-content animate" action="./searchCity.html" style="width:25%; border-radius: 6px; ">
+            <div class="container" style="background-color:white; height:100px;border-radius: 6px;">
+                <br/>
+                <div class="header" style="text-align: center;">
+                    <h1>This is not an image file!</h1>
+                </div>
+                <div style=" margin-top:-60px; float:right;">
+                    <a href="#" onclick="document.getElementById('image-error').style.display = 'none'">Close</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!--<div class="modal"  style="display:none;">-->
+        <!--<div class="ui standard test modal transition visible active" style="margin-top: -234.358px; display: block !important;">-->
+            <!--<div class="header">-->
+                <!--Select a Photo-->
+            <!--</div>-->
+            <!--<div class="image content">-->
+                <!--<div class="ui medium image">-->
+                    <!--<img src="/images/avatar2/large/rachel.png">-->
+                <!--</div>-->
+                <!--<div class="description">-->
+                    <!--<div class="ui header">Default Profile Image</div>-->
+                    <!--<p>We've found the following <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your e-mail address.</p>-->
+                    <!--<p>Is it okay to use this photo?</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="actions">-->
+                <!--<div class="ui black deny button">-->
+                    <!--Nope-->
+                <!--</div>-->
+                <!--<div class="ui positive right labeled icon button">-->
+                    <!--Yep, that's me-->
+                    <!--<i class="checkmark icon"></i>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 
     <div>
         <div>

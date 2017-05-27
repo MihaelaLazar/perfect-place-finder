@@ -66,18 +66,30 @@
   </center>
 
   <div class="modal" id="logInStatus-homePage">
-    <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-      <form class="ui form">
-        <h2>Successfully logged in</h2>
-      </form>
+    <div class="modal-content animate" action="./searchCity.html" style="width:30%; border-radius: 6px;">
+      <div class="container" style="background-color:white; height:100px;border-radius: 6px;">
+        <br/>
+        <div class="header" style="text-align: center;">
+          <h1>Successfully logged in</h1>
+        </div>
+        <div style=" margin-top:-60px; float:right;">
+          <a href="#" onclick="document.getElementById('logInStatus-homePage').style.display = 'none';">Close</a>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="modal" id="logInStatusFailed-homePage">
-    <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-      <form class="ui form">
-        <h2>Incorrect email/password</h2>
-      </form>
+    <div class="modal-content animate" action="./searchCity.html" style="width:30%; border-radius: 6px;">
+      <div class="container" style="background-color:white; height:100px;border-radius: 6px;">
+        <br/>
+        <div class="header" style="text-align: center;">
+          <h1>Incorrect email/password</h1>
+        </div>
+        <div style=" margin-top:-60px; float:right;">
+          <a href="#" onclick="document.getElementById('logInStatusFailed-homePage').style.display = 'none';">Close</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -114,17 +126,30 @@
 
   <div class="modal" id="signInStatus-homePage">
     <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-      <form class="ui form">
-        <h2>Successfully signed in</h2>
-      </form>
+      <div class="container" style="background-color:white; height:130px;border-radius: 6px;">
+        <br/>
+        <div class="header" style="text-align: center;">
+          <h1>Successfully signed in</h1>
+        </div>
+        <div style=" margin-top:-60px; float:right;">
+          <a href="#" onclick="document.getElementById('signInStatus-homePage').style.display = 'none';">Close</a>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <div class="modal" id="signInStatusFailed-homePage">
     <div class="modal-content animate" action="./searchCity.html" style="width:30%;">
-      <form class="ui form">
-        <h2>Email already existent in data base</h2>
-      </form>
+      <div class="container" style="background-color:white; height:130px;border-radius: 6px;">
+        <br/>
+        <div class="header" style="text-align: center;">
+          <h1>Email already existent in data base</h1>
+        </div>
+        <div style=" margin-top:-60px; float:right;">
+          <a href="#" onclick="document.getElementById('signInStatusFailed-homePage').style.display = 'none';">Close</a>
+        </div>
+      </div>
     </div>
   </div>
 

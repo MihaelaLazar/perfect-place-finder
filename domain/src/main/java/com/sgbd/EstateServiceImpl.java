@@ -140,7 +140,7 @@ public class EstateServiceImpl implements EstateService {
         Estate estate;
         estate = createEstate(estateDTO, idUser);
         estate.setCity(estateDTO.getCity().split(" ")[0]);
-        if (!validateCity(estateDTO.getCity())) {
+        if (!validateCity(estate.getCity())) {
             throw new InvalidPropertiesFormatException("Invalid city");
         }
         if (estateDTO.getBuyPrice() != 0 ){
