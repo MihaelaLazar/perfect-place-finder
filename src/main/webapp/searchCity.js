@@ -216,11 +216,11 @@ function getEstatesByFilter() {
     if (getQueryVariable('square') != null) {
         window.history.pushState({}, null, removeURLParameter(window.location.search,'square'));
     }
-    if (getQueryVariable('minPriceSale') != null) {
-        window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
+    if (getQueryVariable('minPrice') != null) {
+        window.history.pushState({}, null, removeURLParameter(window.location.search,'minPrice'));
     }
-    if (getQueryVariable('maxPriceSale') != null) {
-        window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
+    if (getQueryVariable('maxPrice') != null) {
+        window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPrice'));
     }
     if (getQueryVariable('year') != null) {
         window.history.pushState({}, null, removeURLParameter(window.location.search,'year'));
@@ -241,10 +241,10 @@ function getEstatesByFilter() {
         insertParam('square', square_id);
     }
     if(min_price_sale_id != 0 ){
-        insertParam('minPriceSale',min_price_sale_id);
+        insertParam('minPrice',min_price_sale_id);
     }
     if (max_price_sale_id != 0){
-        insertParam('maxPriceSale', max_price_sale_id);
+        insertParam('maxPrice', max_price_sale_id);
     }
     if (year_id != 0) {
         insertParam('year', year_id);
@@ -264,11 +264,11 @@ function getEstatesByFilter() {
             addOption('sale', 'min');
             addOption('sale', 'max');
             transTypeVisible = 0;
-            if (getQueryVariable('minPriceSale') != null) {
-                window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
+            if (getQueryVariable('minPrice') != null) {
+                window.history.pushState({}, null, removeURLParameter(window.location.search,'minPrice'));
             }
-            if (getQueryVariable('maxPriceSale') != null) {
-                window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
+            if (getQueryVariable('maxPrice') != null) {
+                window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPrice'));
             }
         } else {
             if (document.getElementById('transType').value === 'rent' && transTypeVisible === 0){
@@ -277,18 +277,18 @@ function getEstatesByFilter() {
                 for(i = selectboxMin.options.length - 1 ; i >= 0 ; i--) {
                     selectboxMin.remove(i);
                 }
-                var selectboxMax = document.getElementById("maxPriceSale");
+                var selectboxMax = document.getElementById("maxPrice");
                 for(i = selectboxMax.options.length - 1 ; i >= 0 ; i--) {
                     selectboxMax.remove(i);
                 }
                 addOption('rent', 'min');
                 addOption('rent', 'max');
                 transTypeVisible = 1;
-                if (getQueryVariable('minPriceSale') != null) {
-                    window.history.pushState({}, null, removeURLParameter(window.location.search,'minPriceSale'));
+                if (getQueryVariable('minPrice') != null) {
+                    window.history.pushState({}, null, removeURLParameter(window.location.search,'minPrice'));
                 }
-                if (getQueryVariable('maxPriceSale') != null) {
-                    window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPriceSale'));
+                if (getQueryVariable('maxPrice') != null) {
+                    window.history.pushState({}, null, removeURLParameter(window.location.search,'maxPrice'));
                 }
             }
         }

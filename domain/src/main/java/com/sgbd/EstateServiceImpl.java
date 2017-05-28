@@ -83,18 +83,24 @@ public class EstateServiceImpl implements EstateService {
                 }
             }
         }
+        if (filters.get("minPrice") != null && filters.get("transType") == null) {
+            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPrice"), filters) + " AND  upper(TYPE_OF_TRANSACTION) = 'SALE' ";
+        }
+        if (filters.get("maxPrice") != null && filters.get("transType") == null) {
+            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMinPrice(filters.get("maxPrice"), filters) + " AND  upper(TYPE_OF_TRANSACTION) = 'SALE' ";
+        }
 
-        if(filters.get("minPriceSale") != null) {
-            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPriceSale"), filters);
+        if(filters.get("minPrice") != null && filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale") ) {
+            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPrice"), filters);
         }
-        if(filters.get("minPriceRent") != null) {
-            queryFilters += " AND" +  " RENT_PRICE >= " + getRealMinPrice(filters.get("minPriceRent"), filters);
+        if(filters.get("minPrice") != null && filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("rent")) {
+            queryFilters += " AND" +  " RENT_PRICE >= " + getRealMinPrice(filters.get("minPrice"), filters);
         }
-        if(filters.get("maxPriceSale") != null) {
-            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMaxPrice(filters.get("maxPriceSale"), filters);
+        if(filters.get("maxPrice") != null && filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")) {
+            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMaxPrice(filters.get("maxPrice"), filters);
         }
-        if(filters.get("maxPriceRent") != null) {
-            queryFilters += " AND" +  " RENT_PRICE <=" + getRealMaxPrice(filters.get("maxPriceRent"),filters);
+        if(filters.get("maxPrice") != null && filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("rent")) {
+            queryFilters += " AND" +  " RENT_PRICE <=" + getRealMaxPrice(filters.get("maxPrice"),filters);
         }
         if(filters.get("year") != null) {
             switch (filters.get("year")){
@@ -123,14 +129,14 @@ public class EstateServiceImpl implements EstateService {
     }
 
     private String getRealMinPrice(String minPrice, Map<String,String> filters) {
-        if (filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")){
+        if ((filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")) ||  filters.get("transType") == null){
             return minPrice +"000";
         }
         return minPrice;
     }
 
     private String getRealMaxPrice(String maxPrice, Map<String,String> filters) {
-        if (filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")){
+        if ((filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")) || filters.get("transType") == null){
             return maxPrice +"000";
         }
         return maxPrice;
