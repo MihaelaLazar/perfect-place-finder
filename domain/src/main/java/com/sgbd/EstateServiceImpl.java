@@ -85,16 +85,16 @@ public class EstateServiceImpl implements EstateService {
         }
 
         if(filters.get("minPriceSale") != null) {
-            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPriceSale"), "sale");
+            queryFilters += " AND" +  " BUY_PRICE >= " + getRealMinPrice(filters.get("minPriceSale"), filters);
         }
         if(filters.get("minPriceRent") != null) {
-            queryFilters += " AND" +  " RENT_PRICE >= " + getRealMinPrice(filters.get("minPriceRent"), "rent");
+            queryFilters += " AND" +  " RENT_PRICE >= " + getRealMinPrice(filters.get("minPriceRent"), filters);
         }
         if(filters.get("maxPriceSale") != null) {
-            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMaxPrice(filters.get("maxPriceSale"), "sale");
+            queryFilters += " AND" +  " BUY_PRICE <= " + getRealMaxPrice(filters.get("maxPriceSale"), filters);
         }
         if(filters.get("maxPriceRent") != null) {
-            queryFilters += " AND" +  " RENT_PRICE <=" + getRealMaxPrice(filters.get("maxPriceRent"),"rent");
+            queryFilters += " AND" +  " RENT_PRICE <=" + getRealMaxPrice(filters.get("maxPriceRent"),filters);
         }
         if(filters.get("year") != null) {
             switch (filters.get("year")){
@@ -122,17 +122,15 @@ public class EstateServiceImpl implements EstateService {
         return estateRepository.getEstatesByFilters(queryFilters,offset);
     }
 
-    private String getRealMinPrice(String minPrice, String typeOfEstate) {
-        Long price = 0l;
-        if (typeOfEstate.equalsIgnoreCase("sale")){
+    private String getRealMinPrice(String minPrice, Map<String,String> filters) {
+        if (filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")){
             return minPrice +"000";
         }
         return minPrice;
     }
 
-    private String getRealMaxPrice(String maxPrice, String typeOfEstate) {
-        Long price = 0l;
-        if (typeOfEstate.equalsIgnoreCase("sale")){
+    private String getRealMaxPrice(String maxPrice, Map<String,String> filters) {
+        if (filters.get("transType") != null && filters.get("transType").equalsIgnoreCase("sale")){
             return maxPrice +"000";
         }
         return maxPrice;
