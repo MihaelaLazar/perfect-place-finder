@@ -13,7 +13,6 @@ function checkSession() {
     var data = request.responseText;
     if (request.status === 200) {
           console.log("session existent");
-          console.log(data);
           $( "#searchCity-container" ).empty();
           var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertySearchCity() >Add property</button>");
           $addProperty.appendTo($("#searchCity-container"));
@@ -273,7 +272,6 @@ function getEstatesByFilter() {
             }
         } else {
             if (document.getElementById('transType').value === 'rent' && transTypeVisible === 0){
-                console.log('TRANS TYPE IS RENT');
                 var i;
                 var selectboxMin = document.getElementById("minPriceSale");
                 for(i = selectboxMin.options.length - 1 ; i >= 0 ; i--) {
@@ -322,7 +320,6 @@ function getEstatesByFilter() {
             } else {
                 price = estatesByFilters.estates[i].rentPrice;
             }
-//            console.log(estatesByFilters.estates[i].address);
             if (loggedInUser != "not existent") {
                 var isFavorite = checkIfEstateIsFavorite(estatesByFilters.estates[i].id, estatesByFilters.favEstates);
                 if (isFavorite === 1) {
@@ -379,7 +376,6 @@ function getEstatesByFilter() {
         var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
         $( "#number-of-properties" ).empty();
         $('#number-of-properties').append(numberOfProperties);
-        console.log('before initMap in getEstatesByFilter');
         initMap();
     }
     request.open(method, url,true);
@@ -672,8 +668,6 @@ window.onload = function () {
         document.getElementById('square').value = getQueryVariable('square');
     }
     getEstatesByFilter();
-    console.log("ON LOAD");
-    console.log('before initMap in window.onload');
     initMap();
     var i;
     var firstChildPut = false;
@@ -684,10 +678,6 @@ window.onload = function () {
 /* This function is for lazy loading the announcements from  database*/
 $("#scrolling").scroll(function () {
     if (isScrollBottom()) {
-        console.log("reached the bottom");
-        console.log("numberOfPropertiesReturned: " + numberOfPropertiesReturned);
-        console.log("currentCountOfProperties : " + currentCountOfProperties);
-        console.log("totalCountOfProperties : " + totalCountOfProperties);
         if (currentCountOfProperties < totalCountOfProperties ) {
             loadMore();
         }
@@ -708,7 +698,6 @@ function isScrollBottom() {
 /* This function (will) load more data from database.*/
 function loadMore() {
     offset = offset + 10;
- //   console.log('offset increased by 10');
     if (getQueryVariable('offset') != null) {
         window.history.pushState({}, null, removeURLParameter(window.location.search,'offset'));
     }
@@ -724,7 +713,6 @@ function loadMore() {
         status = request.status; // HTTP response status, e.g., 200 for "200 OK"
         data = request.responseText; // Returned data, e.g., an HTML document.
         var estatesByFilters = JSON.parse(data);
-        console.log('estates returned: ' + estatesByFilters.estates.length);
         for(var i = 0; i < estatesByFilters.estates.length; i ++ ) {
             var currentDiv;
             if (loggedInUser != "not existent") {
@@ -777,14 +765,13 @@ function loadMore() {
             estatesMarkers[i] = marker;
         }
         c = estatesByFilters.totalCount;
-        console.log("IN GET :totalCountOfProperties: " + totalCountOfProperties);
         currentCountOfProperties = currentCountOfProperties + estatesByFilters.estates.length;
         numberOfPropertiesReturned = estatesByFilters.estates.length;
         var numberOfProperties = $("<h3 class='ui left aligned header'>Number of properties: "+ currentCountOfProperties + "/"+ totalCountOfProperties + "</h3>");
         $( "#number-of-properties" ).empty();
         $('#number-of-properties').append(numberOfProperties);
-        console.log('before initMap in loadMore');
-        initMap();
+//        initMap();
+        addMoreMarkers();
     }
     request.open(method, url,true);
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -864,7 +851,35 @@ function initMap() {
     pollutionLayerNewYork = new google.maps.Data();
     pollutionLayerLondon = new google.maps.Data();
 
-    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//    var icon = {
+//        url: "images/Marker Filled-50.png",
+//        scaledSize: new google.maps.Size(40, 40),
+//        origin: new google.maps.Point(0,0),
+//        anchor: new google.maps.Point(0, 0)
+//    };
+//    var markers = estatesMarkersCoordinates.map(function(location,i) {
+//        return new google.maps.Marker({
+//            position: location,
+//            icon:  icon,
+//            //draggable: true,
+//            animation: google.maps.Animation.DROP
+//        });
+//    });
+//
+//    var markerCluster = new MarkerClusterer(map, estatesMarkers,
+//        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+//    for(var i = 0; i < markers.length; i ++) {
+//        estatesMarkers[i] = markers[i];
+//    }
+    addMoreMarkers();
+    checkSelectedOverlays();
+}
+
+
+/* This function adds more markers on map when scroll is down.(load more) */
+function addMoreMarkers() {
+
     var icon = {
         url: "images/Marker Filled-50.png",
         scaledSize: new google.maps.Size(40, 40),
@@ -874,7 +889,6 @@ function initMap() {
     var markers = estatesMarkersCoordinates.map(function(location,i) {
         return new google.maps.Marker({
             position: location,
-            label: labels[i % labels.length],
             icon:  icon,
             //draggable: true,
             animation: google.maps.Animation.DROP
@@ -886,14 +900,12 @@ function initMap() {
     for(var i = 0; i < markers.length; i ++) {
         estatesMarkers[i] = markers[i];
     }
-    checkSelectedOverlays();
 }
 
 /* This function gets chosen city coordinates to place the center of map on the center of the city. */
 function getCityCoordinates(city_id) {
     var i = 0;
     var currentCityCoordinates = {};
-    console.log('CITY TO FIND: ' + city_id);
     for (i = 0; i < citiesCenterCoordinates.length; i++){
         if (city_id == citiesCenterCoordinates[i].name.toLowerCase()){
             currentCityCoordinates.lat = citiesCenterCoordinates[i].lat;
@@ -1009,7 +1021,6 @@ function addOverlay(id) {
                     });
                     smogMarkersArray[i] = {marker: marker, circle: cityCircle};
                 }
-                //console.log(smogMarkersArray);
             } else {
                 if (id == 'noiseLayer'){
                     var icon = {
@@ -1024,7 +1035,6 @@ function addOverlay(id) {
                         url: '/get/noise/tweets',
                         contentType: false,
                         success: function (data) {
-                            console.log(data);
                             for (var i = 0; i < data.length; i ++) {
                                 var latCoordinate = data[i].split(',')[0];
                                 var longCoordinate = data[i].split(',')[1];
@@ -1089,46 +1099,6 @@ function addOverlay(id) {
                             });
 
                             map.overlayMapTypes.insertAt(0,waqiMapOverlay);
-//                            pollutionLayerIasi.addGeoJson(iasiPollution);
-//                            pollutionLayerIasi.setStyle(function(feature) {
-//                                return ({
-//                                    fillColor: feature.getProperty('color'),
-//                                    strokeWeight: 1,
-//                                    strokeColor: feature.getProperty('strokeColor'),
-//                                    fillOpacity: feature.getProperty('fillOpacity')
-//                                });
-//                            });
-//                            pollutionLayerIasi.setMap(map);
-//                            pollutionLayerBucuresti.addGeoJson(bucurestiPollution);
-//                            pollutionLayerBucuresti.setStyle(function(feature) {
-//                                return ({
-//                                    fillColor: feature.getProperty('color'),
-//                                    strokeWeight: 1,
-//                                    strokeColor: feature.getProperty('strokeColor'),
-//                                    fillOpacity: feature.getProperty('fillOpacity')
-//                                });
-//                            });
-//                            pollutionLayerBucuresti.setMap(map);
-//                            pollutionLayerNewYork.addGeoJson(newyorkPollution);
-//                            pollutionLayerNewYork.setStyle(function(feature) {
-//                                return ({
-//                                    fillColor: feature.getProperty('color'),
-//                                    strokeWeight: 1,
-//                                    strokeColor: feature.getProperty('strokeColor'),
-//                                    fillOpacity: feature.getProperty('fillOpacity')
-//                                });
-//                            });
-//                            pollutionLayerNewYork.setMap(map);
-//                            pollutionLayerLondon.addGeoJson(LondonPollution);
-//                            pollutionLayerLondon.setStyle(function(feature) {
-//                                return ({
-//                                    fillColor: feature.getProperty('color'),
-//                                    strokeWeight: 0.5,
-//                                    strokeColor: feature.getProperty('strokeColor'),
-//                                    fillOpacity: feature.getProperty('fillOpacity')
-//                                });
-//                            });
-//                            pollutionLayerLondon.setMap(map);
 
                         } else {
                             if (id === "congestionLayer"){
@@ -1238,7 +1208,6 @@ window.onclick = function(event) {
 }
 
 function verifyLoginDataSearchCity(loginData) {
-    console.log("In verifyData() " + JSON.stringify(loginData) );
     $.ajax({
         method: 'POST',
         url: '/verify/user',
@@ -1249,12 +1218,7 @@ function verifyLoginDataSearchCity(loginData) {
                 console.log('Status code ' + xhr.status + "data: " + data);
                 document.getElementById('loginButton').style.display='none';
                 document.getElementById('logInStatus').style.display='block';
-                // document.getElementById('login-searchCity').style.display = 'none';
-                // document.getElementById('signup-searchCity').style.display = 'none';
-                // document.getElementById('logout-searchCity').style.display = 'block';
                 checkSession();
-                // $('#loggedInButton-searchCity').text(data);
-                // document.getElementById('loggedIn-searchCity').style.display='block';
                 checkSession();
                 getEstatesByFilter();
         },
@@ -1293,7 +1257,6 @@ function verifyLoginDataSearchCity(loginData) {
 function logInPOST() {
     $('#password-input-login').removeClass('error');
     $('#email-input-login').removeClass('error');
-    console.log('logInPOST');
     var url = "/verify/user";
     var method = "POST";
     var passInput = document.getElementById('password-login');

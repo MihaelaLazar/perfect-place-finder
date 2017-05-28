@@ -342,7 +342,7 @@ public class UserController {
             session.setAttribute("username", userUpdateDTO.getEmail());
         }
 
-        return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @RequestMapping(path = "/user/update/password", method = RequestMethod.POST)

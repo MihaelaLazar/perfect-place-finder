@@ -4,7 +4,6 @@ window.onload = function () {
          url: '/user/getAnnouncements',
          contentType: false,
          success (data) {
-            console.log(data);
             var userEstates = data;
             var currentDiv;
             var favoriteAnnouncement;
@@ -30,7 +29,6 @@ window.onload = function () {
         url: '/user/get/messages',
         contentType: false,
         success(data) {
-            console.log(data);
             var messages = data;
             for (var index = 0; index < messages.length; index ++) {
                 var messagesPart = messages[index].text.split(".");
@@ -74,7 +72,6 @@ window.onload = function () {
         url: '/user/get/profileAccount',
         contentType: false,
         success (data){
-            console.log(data);
             $('#first-name-homePage').val( data.firstname);
             $('#last-name-homePage').val(data.lastname);
             $('#email-homePage').val(data.email);
@@ -137,8 +134,10 @@ function updateUserProfile() {
          contentType: 'application/json;charset=UTF-8',
          data: JSON.stringify(updateUserData),
          success (data) {
+            console.log('updated email');
             $('#email-homePage').val(document.getElementById('newEmailSignUp-homePage').value);
             $('#newEmailSignUp-homePage').val("");
+            document.getElementById('updated-profile-modal-success').style.display = "block";
          },
          error : function (xhr, ajaxOptions, thrownError,textStatus) {
              console.log('error Status code ' + xhr.status);
@@ -149,7 +148,8 @@ function updateUserProfile() {
              if (xhr.responseText === "Update could not be completed.") {
                     document.getElementById('updated-profile-modal-error').style.display = "block";
              }
-             if (xhr.status === 202) {
+             if (xhr.status === 202 || xhr.status === 200) {
+                    console.log('updated email');
                     document.getElementById('updated-profile-modal-success').style.display = "block";
              }
          }
@@ -237,7 +237,7 @@ function deleteEstate(id) {
         contentType: 'application/json;charset=UTF-8',
         data: id.toString(),
         success (data) {
-            console.log(data);
+//            console.log(data);
         },
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
             console.log('error Status code ' + xhr.status);
@@ -288,7 +288,6 @@ function getField(id) {
                      url: '/user/getAnnouncements',
                      contentType: false,
                      success (data) {
-                        console.log(data);
                         var userEstates = data;
                         var currentDiv;
                         var favoriteAnnouncement;
@@ -351,7 +350,6 @@ function updateEstate(id) {
         enctype: 'multipart/form-data',
         success : function(data) {
             var estateDetails = data;
-            console.log(estateDetails);
             if (estateDetails.buyPrice !== 0){
                 $('#price-input-profile').val(estateDetails.buyPrice);
                 $('#transaction-type-sale-input-profile').prop("checked", true);
@@ -390,7 +388,6 @@ function updateEstate(id) {
                     announcementImagesArrayProfile[index] = estateDetails.estateAttachements[index].imageName;
                     announcementImagesArrayProfilePathToFile[index] = estateDetails.estateAttachements[index].pathToFile;
 //                    announcementImagesIconsURIArrayProfile[index] = estateDetails.estateAttachements[index].iconURI;
-                    console.log('DATA URI: ' + estateDetails.estateAttachements[index].iconURI);
                 }
             }
             if (estateDetails.utilities !== 0) {
@@ -458,7 +455,6 @@ $('#file-profile').change(function() {
 
 function deleteImageProfile(id) {
     console.log("IMAGE TO DELETE: " + id);
-    console.log("all images: " + announcementImagesArrayProfile);
     for(var i = announcementImagesArrayProfile.length - 1; i >= 0; i--) {
         if(announcementImagesArrayProfile[i] === id) {
             announcementImagesArrayProfile.splice(i, 1);
@@ -556,26 +552,21 @@ function updatePropertyPOST(event) {
         isValidUpdate = false;
     }
     if (bathroomsProfile === "" && categoryProfile !== "space") {
-        console.log("bathrooms null");
         isValidUpdate = false;
     }
     if (roomsProfile === "" && categoryProfile !== "space") {
-        console.log("rooms null");
         isValidUpdate = false;
     }
     if (surfaceProfile === "") {
-        console.log("surface null");
         isValidUpdate = false;
     }
     if (descriptionProfile === "") {
-        console.log("description null");
         categoryProfile = false;
     }
     if (categoryProfile === "appartment" && floorProfile === ""){
         isValidUpdate = false;
     }
     if (furnitureProfile === "" && categoryProfile !== "space") {
-        console.log("furniture null");
         furnitureProfile = 0;
         isValidUpdate = false;
     }
@@ -605,7 +596,6 @@ function updatePropertyPOST(event) {
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(postDataPropertyUpdate),
             success (data) {
-                console.log(data);
                 document.getElementById('f').style.display='block';
                 location.reload();
             },
