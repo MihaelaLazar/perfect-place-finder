@@ -25,6 +25,8 @@ function checkSession() {
     } else {
         console.log("not existent session");
         $( "#searchCity-container" ).empty();
+        var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertySearchCity() >Add property</button>");
+        $addProperty.appendTo($("#searchCity-container"));
         var $signup = $("<button class='ui inverted blue button' onclick=document.getElementById('signupButton').style.display='block' style='margin-top:5px;'>Sign up</button>");
         $signup.appendTo($("#searchCity-container"));
         var $login = $("<button class='ui inverted blue button' onclick=document.getElementById('loginButton').style.display='block' style='margin-top:5px;'>Log in</button>");
@@ -44,6 +46,7 @@ function redirectToAddPropertySearchCity() {
         error: function (xhr, ajaxOptions, thrownError,textStatus) {
             console.log('error Status code ' + xhr.status);
             console.log('Not logged in');
+            document.getElementById('loginButton').style.display = 'block';
         }
     });
 }

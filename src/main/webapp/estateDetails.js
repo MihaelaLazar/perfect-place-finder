@@ -32,7 +32,7 @@ function checkSession() {
     } else {
         console.log("not existent session");
         $( "#estateDetails-container" ).empty();
-        var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+        var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertyEstateDetails()>Add property</button>");
         $addProperty.appendTo($("#estateDetails-container"));
         var $signup = $("<button class='ui inverted blue button' onclick=document.getElementById('signUpEstateDetails').style.display='block'>Sign up</button>");
         $signup.appendTo($("#estateDetails-container"));
@@ -225,6 +225,10 @@ function renderPhotosOfAnnouncement(estateDetails) {
     var nextImageArrow = $("<a class='next' onclick='plusSlides(1)'>&#10095;</a>");
     $('#slide-show').append(previousImageArrow);
     $('#slide-show').append(nextImageArrow);
+    if (numberOfImages === 0) {
+        var newImage = $("<div class='mySlides fade' style='display: initial;'> <div style='width: 100%; height: 50%; border: lightblue; margin: auto;'>  <img class='ui big image' src='images/no-image-available.jpg' alt='' style='min-height:60%;height:405px; margin: auto;'/></div> </a></div> ");
+        $('#slide-show').append(newImage);
+    }
 }
 
 var globalMap2;
@@ -555,7 +559,7 @@ function verifyLoginDataEstateDetails(loginData) {
         success: function(data, textStatus, xhr) {
                 console.log('Status code ' + xhr.status + "data: " + data);
                  $( "#estateDetails-container" ).empty();
-                 var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' >Add property</button>");
+                 var $addProperty = $("<button class='ui inverted blue button' style='margin-top:5px;' onclick=redirectToAddPropertyEstateDetails() >Add property</button>");
                  $addProperty.appendTo($("#estateDetails-container"));
                  var $currentDiv = $("<button id='loggedIn' style='margin-top:5px;' class='ui inverted blue button' onclick='redirectToProfileEstateDetails()' >" + data+"</button>");
                   $currentDiv.appendTo($("#estateDetails-container"));
@@ -589,6 +593,20 @@ function verifyLoginDataEstateDetails(loginData) {
             }
         }
     });
+}
+
+function redirectToAddPropertyEstateDetails() {
+     $.ajax ({
+            method: 'GET',
+            url: '/user/addProperty',
+            contentType: false,
+            success: function (data) {
+                window.location = data;
+            },
+            error: function (xhr, ajaxOptions, thrownError,textStatus) {
+                document.getElementById('logInEstateDetails').style.display = 'block';
+            }
+        });
 }
 
 /* POST request to server for user login.  */
