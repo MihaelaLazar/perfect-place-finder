@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -30,15 +31,15 @@ public class User implements Serializable {
 
     @Column(name="FIRSTNAME", nullable = false)
     @NotEmpty
-    @Range (min = 4, max = 8)
+    @Size(min = 3)
     private String firstName;
 
     @Column(name="LASTNAME" , nullable = false)
-    @Range (min = 4, max = 8)
+    @Size (min = 3)
     private String lastName;
 
     @Column(name="PASSWORD", nullable = false)
-    @Range (min = 4, max = 8)
+    @Size (min = 4)
     private String password;
 
     @Column(name="KEY")

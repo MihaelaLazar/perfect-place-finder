@@ -322,6 +322,7 @@ function getEstatesByFilter() {
             } else {
                 price = estatesByFilters.estates[i].rentPrice;
             }
+//            console.log(estatesByFilters.estates[i].address);
             if (loggedInUser != "not existent") {
                 var isFavorite = checkIfEstateIsFavorite(estatesByFilters.estates[i].id, estatesByFilters.favEstates);
                 if (isFavorite === 1) {
@@ -348,6 +349,7 @@ function getEstatesByFilter() {
             $("#estates").append(currentDiv);
             var address = estatesByFilters.estates[i].address.split(" ");
             var latLong = new google.maps.LatLng(address[0], address[1]);
+            console.log(latLong);
             var icon = {
                 url: "images/Marker Filled-50.png",
                 scaledSize: new google.maps.Size(40, 40),

@@ -62,7 +62,11 @@ public class EstateServiceImpl implements EstateService {
         String queryFilters = "";
 
         if(filters.get("city") != null) {
-            queryFilters += " upper(city) = '" + filters.get("city").toUpperCase().replaceAll("%20"," ") + "'" ;
+            if (filters.get("city").equalsIgnoreCase("NY")) {
+                queryFilters += " upper(city) = 'New York'" ;
+            }else {
+                queryFilters += " upper(city) = '" + filters.get("city").toUpperCase().replaceAll("%20"," ") + "'" ;
+            }
         }
         if(filters.get("type") != null) {
             queryFilters += " AND" +  " upper(TYPE_OF_ESTATE) = '" + filters.get("type").toUpperCase() + "'";

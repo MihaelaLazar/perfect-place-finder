@@ -165,7 +165,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Message> getUserMessages(Long id) {
-//        User user = userRepository.findByAttribute("id", id, User.class);
         List<Message> messages = new ArrayList<>();
         List<Estate> estates = estateRepository.getUserEstates(id);
         if (estates != null && estates.size() > 0) {
@@ -174,7 +173,6 @@ public class UserServiceImpl implements UserService{
                     for(Message estateMessage : estate.getEstateMessages()) {
                         estateMessage.setCreatedAtToString();
                         messages.add(estateMessage);
-                        System.out.println(estateMessage.getCreatedAt().toString());
                     }
                 }
             }
@@ -269,12 +267,26 @@ public class UserServiceImpl implements UserService{
             System.out.println("Could not encrypt password");
         }
         try {
-            userRepository.saveOrUpdate(user);
+            if (validateUser(user)) {
+                userRepository.saveOrUpdate(user);
+            } else {
+                throw new DataIntegrityViolationException("Could not update user password");
+            }
         }catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(e.getMessage());
         }catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
 
+    }
+
+    private boolean validateUser(User user) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        javax.validation.Validator validator = factory.getValidator();
+        if (validator.validate(user).size() == 0){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

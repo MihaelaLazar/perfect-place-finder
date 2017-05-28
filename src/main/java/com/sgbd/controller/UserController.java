@@ -368,6 +368,8 @@ public class UserController {
                 userService.updateUserPassword(userUpdatePassword, (Long) session.getAttribute("ID"));
             } catch (SQLException e) {
                 return new ResponseEntity<>("Update password could not be completed.", HttpStatus.BAD_REQUEST);
+            }catch (DataIntegrityViolationException e) {
+                return new ResponseEntity<>("Update password could not be completed.", HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity<>("invalid session", HttpStatus.ACCEPTED);
