@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService{
             user.setLastName(signUpDTO.getLastName());
             user.setEmail(signUpDTO.getEmail());
             user.setPassword(signUpDTO.getPassword());
+            user.setRole("user");
         }
         try {
             String passAndKey[] = SecurityUtil.encryptPassword(user.getPassword());

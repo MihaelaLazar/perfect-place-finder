@@ -1,12 +1,6 @@
 package com.sgbd;
 
-import java.io.IOException;
 import java.util.Base64;
-import java.util.Date;
-import java.util.Random;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -36,6 +30,8 @@ public class Main {
 
 
     }
+
+
 
     /**
      * gets the AES encryption key. In your actual programs, this should be safely
