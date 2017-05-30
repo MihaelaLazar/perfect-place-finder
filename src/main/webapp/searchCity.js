@@ -790,12 +790,15 @@ function loadMore() {
 
     // request.send(JSON.stringify(getData));
 }
-
-
+function eqfeed_callback(data) {
+    features=map.data.addGeoJson(data);
+}
+var features;
 var map  = null;
 var markerGlobal;
 var trafficLayer;
 var transitLayer;
+var earthquakeLayer;
 var pollutionLayerIasi;
 var pollutionLayerBucuresti;
 var pollutionLayerNewYork;
@@ -810,6 +813,13 @@ var estatesMarkersCoordinates = [];
 var estatesMarkers= [];
 /* This function initializes the map on the page and adds cluster to markers(of announcements). */
 function initMap() {
+
+    // var script = document.createElement('script');
+    // script.setAttribute(
+    //     'src',
+    //     'https://storage.googleapis.com/mapsdevsite/json/quakes.geo.json');
+    // document.getElementsByTagName('head')[0].appendChild(script);
+
     console.log("initMap");
     cityCoordinates = getCityCoordinates(getQueryVariable('city'));
     if (getQueryVariable('city') === null) {
@@ -945,6 +955,10 @@ function checkSelectedOverlays() {
     if(document.getElementById("transitLayer").checked) {
         addOverlay("transitLayer");
     }
+
+    if(document.getElementById("earthquakeLayer").checked) {
+        addOverlay("earthquakeLayer");
+    }
 }
 
 /* This function changes the state of overlays on checking/unchecking the checkbox: add/ remove overlay. */
@@ -987,7 +1001,11 @@ function removeOverlay(id) {
                     } else {
                         if (id === "congestionLayer"){
                             heatmap.setMap(null);
-
+                        }else{
+                            if(id==="earthquakeLayer"){
+                                for (var i = 0; i < features.length; i++)
+                                    map.data.remove(features[i]);
+                            }
                         }
                     }
                 }
@@ -1118,6 +1136,15 @@ function addOverlay(id) {
                                     map: map
                                 });
                                 changeGradient();
+                            }else{
+                                if(id==="earthquakeLayer"){
+
+                                    var script = document.createElement('script');
+                                    script.setAttribute(
+                                        'src',
+                                        'https://storage.googleapis.com/mapsdevsite/json/quakes.geo.json');
+                                    document.getElementsByTagName('head')[0].appendChild(script);
+                                }
                             }
                         }
                     }
