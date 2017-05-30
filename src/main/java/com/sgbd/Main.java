@@ -8,29 +8,33 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 public class Main {
+//
+//    public static void main(String[] args) throws Exception {
+//        String plainText = "Hello World";
+//        SecretKey secKey = getSecretEncryptionKey();
+//        byte[] cipherText = encryptText(plainText, secKey);
+//        String decryptedText = decryptText(cipherText, secKey);
+//
+//        System.out.println("Original Text:" + plainText);
+//        System.out.println("AES Key (Hex Form):"+bytesToHex(secKey.getEncoded()));
+//        System.out.println("Encrypted Text (Hex Form):" + bytesToHex(cipherText));
+//        System.out.println("Decrypted Text:" + decryptedText);
+//
+//        String keyAfter = Base64.getEncoder().encodeToString(secKey.getEncoded());
+//        System.out.println("After key(string form) : " + keyAfter);
+//        // decode the base64 encoded string
+//        byte[] decodedKey = Base64.getDecoder().decode(keyAfter);
+//        // rebuild key using SecretKeySpec
+//        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+//        System.out.println("After key(hex form) : " + bytesToHex(originalKey.getEncoded()));
+//
+//
+//    }
 
-    public static void main(String[] args) throws Exception {
-        String plainText = "Hello World";
-        SecretKey secKey = getSecretEncryptionKey();
-        byte[] cipherText = encryptText(plainText, secKey);
-        String decryptedText = decryptText(cipherText, secKey);
 
-        System.out.println("Original Text:" + plainText);
-        System.out.println("AES Key (Hex Form):"+bytesToHex(secKey.getEncoded()));
-        System.out.println("Encrypted Text (Hex Form):" + bytesToHex(cipherText));
-        System.out.println("Decrypted Text:" + decryptedText);
-
-        String keyAfter = Base64.getEncoder().encodeToString(secKey.getEncoded());
-        System.out.println("After key(string form) : " + keyAfter);
-        // decode the base64 encoded string
-        byte[] decodedKey = Base64.getDecoder().decode(keyAfter);
-        // rebuild key using SecretKeySpec
-        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        System.out.println("After key(hex form) : " + bytesToHex(originalKey.getEncoded()));
-
-
+    public static void main(String[] args) {
+       Test t = new Test();
     }
-
 
 
     /**
@@ -85,56 +89,19 @@ public class Main {
         return DatatypeConverter.printHexBinary(hash);
     }
 
-//    private static Random rand = new Random((new Date()).getTime());
-//
-//    public static void main(String[] args) throws Exception {
-//
-//        String st = "acaiberry94";
-//
-//        String enc = encrypt(st);
-//
-//        System.out.println("Encrypted string :" + enc);
-//
-//        System.out.println("Decrypted string :" + decrypt(enc));
-//
-//    }
-//
-//    public static String encrypt(String str) {
-//
-//        BASE64Encoder encoder = new BASE64Encoder();
-//
-//        byte[] salt = new byte[8];
-//
-//        rand.nextBytes(salt);
-//
-//        return encoder.encode(salt) + encoder.encode(str.getBytes());
-//    }
-//
-//    public static String decrypt(String encstr) {
-//
-//        if (encstr.length() > 12) {
-//
-//            String cipher = encstr.substring(12);
-//
-//            BASE64Decoder decoder = new BASE64Decoder();
-//
-//            try {
-//
-//                return new String(decoder.decodeBuffer(cipher));
-//
-//            } catch (IOException e) {
-//
-//                //  throw new InvalidImplementationException(
-//
-//                //Fail
-//
-//            }
-//
-//        }
-//
-//        return null;
-//    }
 
+}
+ class Test {
+    // Declaratii de variabile statice
+    static int x = 0, y, z;
+    // Bloc static de initializare
+    static {
+        System.out.println("Initializare clasa...");
+        int t=1;
+        y = 2;
+        z = x + y + t;
+    }
+    public Test() {
 
-
+    }
 }

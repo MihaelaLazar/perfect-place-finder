@@ -18,6 +18,9 @@ public class SecurityUtil {
         String passwordToSave = bytesToHex(cipherText);
         String keyToSave = Base64.getEncoder().encodeToString(secKey.getEncoded());
         String passwordAndKey[] = {passwordToSave, keyToSave};
+
+
+
         return passwordAndKey;
     }
 
@@ -68,6 +71,7 @@ public class SecurityUtil {
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         }
+
         return byteCipherText;
     }
 
