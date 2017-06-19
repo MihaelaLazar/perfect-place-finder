@@ -313,10 +313,47 @@ function getEstatesByFilter() {
 
         status = request.status; // HTTP response status, e.g., 200 for "200 OK"
         data = request.responseText; // Returned data, e.g., an HTML document.
+        console.log("here");
         var estatesByFilters = JSON.parse(data);
+        console.log(estatesByFilters);
+
+        //de aici
+
+        var pi = Math.PI;
+        var R = 6371; //equatorial radius
+        var distances = [];
+        var closest = -1;
+
+        for(var i = 0; i < estatesByFilters.estates.length; i ++ ){
+            var address = estatesByFilters.estates[i].address.split(" ");
+
+            var lat2 = address[0];
+            var lon2 = address[1];
+            var chLat = lat2-lat1;
+            var chLon = lon2-lon1;
+            var dLat = chLat*(pi/180);
+            var dLon = chLon*(pi/180);
+
+            var rLat1 = lat1*(pi/180);
+            var rLat2 = lat2*(pi/180);
+
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(rLat1) * Math.cos(rLat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            var d = R * c;
+
+            distances[i] = d;
+            if ( closest == -1 || d < distances[closest] ) {
+                closest = i;
+            }
+
+        }
+        console.log(estatesByFilters.estates[closest]);
+        //pana aici
+
         for(var i = 0; i < estatesByFilters.estates.length; i ++ ) {
             var currentDiv;
-            var shortDescription = estatesByFilters.estates[i].description.substr(0, 65) + "...";
+            var shortDescription = estatesByFilters.estates[i].description + "...";
             var price;
             if (estatesByFilters.estates[i].buyPrice != 0) {
                 price = estatesByFilters.estates[i].buyPrice;
@@ -349,7 +386,7 @@ function getEstatesByFilter() {
             $("#estates").append(currentDiv);
             var address = estatesByFilters.estates[i].address.split(" ");
             var latLong = new google.maps.LatLng(address[0], address[1]);
-            console.log(latLong);
+            //console.log(latLong);
             var icon = {
                 url: "images/Marker Filled-50.png",
                 scaledSize: new google.maps.Size(40, 40),
@@ -385,7 +422,7 @@ function getEstatesByFilter() {
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.send();
 
-    // request.send(JSON.stringify(getData));
+     //request.send(JSON.stringify(getData));
 
 }
 
@@ -794,6 +831,7 @@ function eqfeed_callback(data) {
     features=map.data.addGeoJson(data);
 }
 var features;
+var showGeoPins=1;
 var map  = null;
 var markerGlobal;
 var trafficLayer;
@@ -811,43 +849,44 @@ var cityCoordinates;
 var heatmap;
 var estatesMarkersCoordinates = [];
 var estatesMarkers= [];
+
+var lat1,lon1;//pt. geolocation
+
 /* This function initializes the map on the page and adds cluster to markers(of announcements). */
 function initMap() {
 
-//     if (navigator.geolocation) {
-//         navigator.geolocation.getCurrentPosition(function(position) {
-//             var pos = {
-//                 lat: position.coords.latitude,
-//                 lng: position.coords.longitude
-//             };
-//
-//             infoWindow.setPosition(pos);
-//             infoWindow.setContent('Location found.');
-//             infoWindow.open(map);
-//             map.setCenter(pos);
-//         }, function() {
-//             handleLocationError(true, infoWindow, map.getCenter());
-//         });
-//     } else {
-//         // Browser doesn't support Geolocation
-//         handleLocationError(false, infoWindow, map.getCenter());
-//     }
-//
-//
-// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//     infoWindow.setPosition(pos);
-//     infoWindow.setContent(browserHasGeolocation ?
-//         'Error: The Geolocation service failed.' :
-//         'Error: Your browser doesn\'t support geolocation.');
-//     infoWindow.open(map);
-// }
+    if(showGeoPins==1){
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                lat1=pos.lat;
+                lon1=pos.lng;
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('Location found.');
+                infoWindow.open(map);
+                map.setCenter(pos);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
 
 
-    // var script = document.createElement('script');
-    // script.setAttribute(
-    //     'src',
-    //     'https://storage.googleapis.com/mapsdevsite/json/quakes.geo.json');
-    // document.getElementsByTagName('head')[0].appendChild(script);
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+}
+
 
     console.log("initMap");
     cityCoordinates = getCityCoordinates(getQueryVariable('city'));
@@ -988,6 +1027,9 @@ function checkSelectedOverlays() {
     if(document.getElementById("earthquakeLayer").checked) {
         addOverlay("earthquakeLayer");
     }
+    if(document.getElementById("geolocationLayer").checked) {
+        addOverlay("geolocationLayer");
+    }
 }
 
 /* This function changes the state of overlays on checking/unchecking the checkbox: add/ remove overlay. */
@@ -1034,6 +1076,11 @@ function removeOverlay(id) {
                             if(id==="earthquakeLayer"){
                                 for (var i = 0; i < features.length; i++)
                                     map.data.remove(features[i]);
+                            }else{
+                                if(id==="geolocationLayer"){
+                                    showGeoPins=0;
+                                    initMap();
+                                }
                             }
                         }
                     }
